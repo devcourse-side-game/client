@@ -47,8 +47,6 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 ## Library
 
-## last modified
-
 ### Redux
 @reduxjs/toolkit npm install react-redux (25-06-09 added)
 ### MUI	
