@@ -44,3 +44,20 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+## Library
+
+## last modified
+
+### Redux
+@reduxjs/toolkit npm install react-redux (25-06-09 added)
+### MUI	
+@mui/material @emotion/react @emotion/styled (25-06-09 added)
+### react-router-dom	
+react-router-dom (25-06-09 added)
+### React Query	
+@tanstack/react-query (25-06-09 added)
+### React Hook Form	
+react-hook-form (25-06-09 added)
+### Axios	
+axios (25-06-09 added)
