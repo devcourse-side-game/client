@@ -45,6 +45,30 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
+## ESLint 설정
+
+`npm run lint` : ESLint 확인 명령어
+
+`npm run lint:fix` : 잘못된 규칙을 자동으로 고쳐줌. (변수 명명 변경은 X)
+
+
+### 자동 저장 시 ESLint/prettier 자동 수정
+
+- Ctrl+Shift+P (Win/Linux) 또는 ⌘+Shift+P (Mac) → “Preferences: Open Settings (JSON)” 입력 후 선택
+
+``` json
+    "powermode.shake.enabled": false,
+    // 저장 시 자동 포맷
+    "editor.formatOnSave": true,
+
+    // 저장 시 ESLint로 자동 고침 실행
+    "editor.codeActionsOnSave": {
+        "source.fixAll": "explicit",
+        "source.fixAll.eslint": "explicit"
+    },
+```
+
+
 ## Library
 
 ### Redux
@@ -59,3 +83,4 @@ react-router-dom (25-06-09 added)
 react-hook-form (25-06-09 added)
 ### Axios	
 axios (25-06-09 added)
+
