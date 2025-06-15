@@ -1,8 +1,8 @@
 import React from 'react';
 import { Stack, Avatar, Typography, Chip } from '@mui/material';
-import { PartyMemberProps } from '../types/Party';
+import { PartyMember } from '../types/Party';
 
-function PartyMemberListItem({ member }: { member: PartyMemberProps }) {
+function PartyMemberListItem({ member }: { member: PartyMember }) {
 	return (
 		<Stack
 			direction='row'

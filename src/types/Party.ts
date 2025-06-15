@@ -1,5 +1,5 @@
-// 임시 데이터 타입 및 더미데이터
-export type PartyListItemProps = {
+//파티관련
+export type Party = {
 	id: number;
 	title: string;
 	game_id: number;
@@ -33,11 +33,20 @@ export type PartyListItemDetailProps = {
 	created_at: string;
 	updated_at: string;
 	description: string;
-	members: PartyMemberProps[];
+	members: PartyMember[];
 };
-export type PartyMemberProps = {
+export type PartyListItemProps = {
+	party: Party;
+};
+
+// 파티게시판 멤버관련
+export type PartyMember = {
 	id: number;
 	username: string;
 	is_leader: boolean;
 	joined_at: string;
+};
+
+export type PartyMemberListProps = {
+	members: PartyMember[];
 };

@@ -14,24 +14,6 @@ import { PartyListItemProps, PartyListItemDetailProps } from '../types/Party';
 
 // 임시 데이터 타입 및 더미데이터
 
-const dummyItem: PartyListItemProps = {
-	id: 1,
-	title: '로스트아크 발탄 하드 파티 모집',
-	game_id: 1,
-	game_name: '로스트아크',
-	purpose_tag: '레이드',
-	max_participants: 8,
-	current_participants: 3,
-	start_time: '2025-06-10T18:00:00',
-	end_time: '2025-06-10T20:00:00',
-	is_completed: false,
-	is_private: false,
-	creator_id: 1,
-	creator_name: '개멋있는사람',
-	created_at: '2025-06-03T14:30:00+09:00',
-	updated_at: '2025-06-03T14:30:00+09:00',
-};
-
 const dummyDetailItem: PartyListItemDetailProps = {
 	id: 1,
 	title: '로스트아크 발탄 하드 파티 모집',
@@ -65,12 +47,12 @@ const dummyDetailItem: PartyListItemDetailProps = {
 	],
 };
 
-function PartyListItem() {
+function PartyListItem({ party }: PartyListItemProps) {
 	// props => listItem: PartyListItemProps | null = dummyItem
 	// 아코디언 확장시 파티 세부 정보 api 호출
 	return (
-		<Accordion sx={{ mb: 1 }}>
-			<AccordionSummary sx={{ backgroundColor: 'gray' }}>
+		<Accordion>
+			<AccordionSummary>
 				<Box
 					sx={{
 						height: '50px',
@@ -84,31 +66,20 @@ function PartyListItem() {
 				</Box>
 				<Stack direction='column'>
 					<Stack direction='row' spacing={1}>
-						<Chip
-							label={dummyItem.game_name}
-							sx={{ fontSize: '10px', height: '14px' }}
-						/>
-						<Chip
-							label={dummyItem.is_completed ? '모집완료' : '모집중'}
-							sx={{
-								fontSize: '10px',
-								height: '14px',
-								backgroundColor: dummyItem.is_completed ? 'green' : 'gray',
-								color: 'white',
-							}}
-						/>
-						<div>{getTimeAgo(dummyItem.created_at)}</div>
+						<Chip label={party.game_name} />
+						<Chip label={party.is_completed ? '모집완료' : '모집중'} />
+						<div>{getTimeAgo(party.created_at)}</div>
 					</Stack>
 					<Stack direction='row' spacing={0.5}>
-						<b>{dummyItem.title}</b>
+						<b>{party.title}</b>
 						<div>
-							{dummyItem.current_participants} / {dummyItem.max_participants}
+							{party.current_participants} / {party.max_participants}
 						</div>
 					</Stack>
-					<div>{dummyItem.creator_name}</div>
+					<div>{party.creator_name}</div>
 				</Stack>
 			</AccordionSummary>
-			<AccordionDetails sx={{ backgroundColor: 'darkgray' }}>
+			<AccordionDetails>
 				<Stack direction='column'>
 					<Typography variant='subtitle2' align='left'>
 						파티 세부 정보
@@ -117,7 +88,7 @@ function PartyListItem() {
 						{dummyDetailItem.description}
 					</Typography>
 					<Typography variant='subtitle2' align='left'>
-						파티원 ({dummyItem.current_participants} / {dummyItem.max_participants})
+						파티원 ({party.current_participants} / {party.max_participants})
 					</Typography>
 					<PartyMemberList members={dummyDetailItem.members} />
 				</Stack>
