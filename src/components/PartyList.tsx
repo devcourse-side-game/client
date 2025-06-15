@@ -23,15 +23,18 @@ const dummyItem: Party = {
 
 function PartyList() {
 	return (
-		<div>
-			<List
-				sx={{ display: 'flex', flexDirection: 'column', maxWidth: '80%', width: '800px' }}
-			>
-				<PartyListItem party={dummyItem} />
-				<PartyListItem party={dummyItem} />
-				<PartyListItem party={dummyItem} />
-			</List>
-		</div>
+		<List
+			sx={{
+				display: 'flex',
+				flexDirection: 'column',
+				maxWidth: '80%',
+				width: '800px',
+			}}
+		>
+			<PartyListItem party={dummyItem} />
+			<PartyListItem party={dummyItem} />
+			<PartyListItem party={dummyItem} />
+		</List>
 	);
 }
 

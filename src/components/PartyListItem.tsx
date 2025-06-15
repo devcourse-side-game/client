@@ -11,6 +11,7 @@ import {
 import { getTimeAgo } from '../utils/formatters/date';
 import PartyMemberList from './PartyMemberList';
 import { PartyListItemProps, PartyListItemDetailProps } from '../types/Party';
+import { PARTY_LIST_ITEM } from '../constants/Party';
 
 // 임시 데이터 타입 및 더미데이터
 
@@ -82,13 +83,16 @@ function PartyListItem({ party }: PartyListItemProps) {
 			<AccordionDetails>
 				<Stack direction='column'>
 					<Typography variant='subtitle2' align='left'>
-						파티 세부 정보
+						{PARTY_LIST_ITEM.DETAILS_TITLE}
 					</Typography>
 					<Typography variant='body1' align='left'>
 						{dummyDetailItem.description}
 					</Typography>
 					<Typography variant='subtitle2' align='left'>
-						파티원 ({party.current_participants} / {party.max_participants})
+						{PARTY_LIST_ITEM.getPartyMembersTitle(
+							party.current_participants,
+							party.max_participants
+						)}
 					</Typography>
 					<PartyMemberList members={dummyDetailItem.members} />
 				</Stack>
