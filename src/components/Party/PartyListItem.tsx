@@ -8,10 +8,10 @@ import {
 	Stack,
 	Typography,
 } from '@mui/material';
-import { getTimeAgo } from '../utils/formatters/date';
+import { getTimeAgo } from '../../utils/formatters/date';
 import PartyMemberList from './PartyMemberList';
-import { PartyListItemProps, PartyListItemDetailProps } from '../types/Party';
-import { PARTY_LIST_ITEM } from '../constants/Party';
+import { PartyListItemProps, PartyListItemDetailProps } from '../../types/Party';
+import { PARTY_LIST_ITEM } from '../../constants/Party';
 
 // 임시 데이터 타입 및 더미데이터
 

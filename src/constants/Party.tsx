@@ -17,6 +17,3 @@ export const BOARD_PARTY = {
 	PARTY_BOARD_TITLE: '게임 파티 게시판',
 	PARTY_BOARD_SUBTITLE: '함께 게임할 파티원을 찾아보세요!',
 };
-
-/* <Typography>게임 파티 게시판</Typography>
-				<Typography>함께 게임할 파티원을 찾아보세요!</Typography> */

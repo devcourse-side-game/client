@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { TextField, Autocomplete } from '@mui/material';
 
+// feat gpt
+// 이게 훅으로 들어가야 할지 고민중
 // 1. 선택 가능한 전체 옵션 데이터
 const gameOptions = [
 	{ id: 1, title: '로스트아크', category: 'MMORPG' },

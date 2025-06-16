@@ -1,7 +1,7 @@
 import React from 'react';
 import List from '@mui/material/List';
 import PartyListItem from './PartyListItem';
-import { Party } from '../types/Party';
+import { Party } from '../../types/Party';
 
 const dummyItem: Party = {
 	id: 1,

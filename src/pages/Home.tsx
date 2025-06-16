@@ -1,7 +1,7 @@
 import React from 'react';
 import TestHeader from '../testSori/TestHeader';
 import TestFooter from '../testSori/TestFooter';
-import PartyBoard from '../components/PartyBoard';
+import PartyBoard from '../components/Party/PartyBoard';
 
 function Home() {
 	return (
