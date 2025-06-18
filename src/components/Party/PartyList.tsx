@@ -1,29 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import List from '@mui/material/List';
 import PartyListItem from './PartyListItem';
-import { TParty } from '../../types/Party';
 import { useParties } from '../../hooks/useParties';
-
-const dummyItem: TParty = {
-	id: 1,
-	title: '로스트아크 발탄 하드 파티 모집',
-	game_id: 1,
-	game_name: '로스트아크',
-	purpose_tag: '레이드',
-	max_participants: 8,
-	current_participants: 3,
-	start_time: '2025-06-10T18:00:00',
-	end_time: '2025-06-10T20:00:00',
-	is_completed: false,
-	is_private: false,
-	creator_id: 1,
-	creator_name: '개멋있는사람',
-	created_at: '2025-06-03T14:30:00+09:00',
-	updated_at: '2025-06-03T14:30:00+09:00',
-};
 
 function PartyList() {
 	const { data, isLoading, isError, error } = useParties();
+	const [expandedPartyId, setExpandedPartyId] = useState<number | null>(null);
 
 	if (isLoading) return <div>파티 목록 로딩중...</div>;
 	if (isError) return <div> 에러가 발생했습니다 : {error.message} </div>;
@@ -36,10 +18,15 @@ function PartyList() {
 				width: '800px',
 			}}
 		>
-			{data?.parties.map((party) => (party ? <PartyListItem party={party} /> : null))}
-			<PartyListItem party={dummyItem} />
-			<PartyListItem party={dummyItem} />
-			<PartyListItem party={dummyItem} />
+			{data?.parties.map((party) =>
+				party ? (
+					<PartyListItem
+						party={party}
+						expandedPartyId={expandedPartyId}
+						setExpandedPartyId={setExpandedPartyId}
+					/>
+				) : null
+			)}
 		</List>
 	);
 }

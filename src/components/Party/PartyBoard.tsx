@@ -3,7 +3,7 @@ import { Button, Typography } from '@mui/material';
 import { BOARD_PARTY } from '../../constants/Party';
 import PartyFilter from './PartyFilter';
 import PartyList from './PartyList';
-import { QueryClient, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 
 function PartyBoard() {
 	const queryClient = useQueryClient();

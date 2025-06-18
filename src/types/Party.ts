@@ -16,7 +16,7 @@ export type TParty = {
 	created_at: string;
 	updated_at: string;
 };
-export type TPartyListItemDetailProps = {
+export type TPartyListItemDetailResponse = {
 	id: number;
 	title: string;
 	game_id: number;
@@ -35,9 +35,6 @@ export type TPartyListItemDetailProps = {
 	description: string;
 	members: TPartyMember[];
 };
-export type TPartyListItemProps = {
-	party: TParty;
-};
 
 // 파티게시판 멤버관련
 export type TPartyMember = {
@@ -45,10 +42,6 @@ export type TPartyMember = {
 	username: string;
 	is_leader: boolean;
 	joined_at: string;
-};
-
-export type TPartyMemberListProps = {
-	members: TPartyMember[];
 };
 
 export type TGetPartiesResponse = {
