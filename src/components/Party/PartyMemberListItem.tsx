@@ -1,9 +1,9 @@
 import React from 'react';
 import { Stack, Avatar, Typography, Chip, Button, Box } from '@mui/material';
-import { PartyMember } from '../../types/Party';
+import { TPartyMember } from '../../types/Party';
 import { PARTY_LIST_ITEM } from '../../constants/Party';
 
-function PartyMemberListItem({ member }: { member: PartyMember }) {
+function PartyMemberListItem({ member }: { member: TPartyMember }) {
 	return (
 		<Stack direction='row'>
 			<Avatar alt='tester'></Avatar>

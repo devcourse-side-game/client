@@ -1,9 +1,10 @@
 import React from 'react';
 import List from '@mui/material/List';
 import PartyListItem from './PartyListItem';
-import { Party } from '../../types/Party';
+import { TParty } from '../../types/Party';
+import { useParties } from '../../hooks/useParties';
 
-const dummyItem: Party = {
+const dummyItem: TParty = {
 	id: 1,
 	title: '로스트아크 발탄 하드 파티 모집',
 	game_id: 1,
@@ -22,6 +23,10 @@ const dummyItem: Party = {
 };
 
 function PartyList() {
+	const { data, isLoading, isError, error } = useParties();
+
+	if (isLoading) return <div>파티 목록 로딩중...</div>;
+	if (isError) return <div> 에러가 발생했습니다 : {error.message} </div>;
 	return (
 		<List
 			sx={{
@@ -31,6 +36,7 @@ function PartyList() {
 				width: '800px',
 			}}
 		>
+			{data?.parties.map((party) => (party ? <PartyListItem party={party} /> : null))}
 			<PartyListItem party={dummyItem} />
 			<PartyListItem party={dummyItem} />
 			<PartyListItem party={dummyItem} />

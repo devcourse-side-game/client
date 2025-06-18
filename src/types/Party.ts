@@ -1,5 +1,5 @@
 //파티관련
-export type Party = {
+export type TParty = {
 	id: number;
 	title: string;
 	game_id: number;
@@ -16,7 +16,7 @@ export type Party = {
 	created_at: string;
 	updated_at: string;
 };
-export type PartyListItemDetailProps = {
+export type TPartyListItemDetailProps = {
 	id: number;
 	title: string;
 	game_id: number;
@@ -33,20 +33,27 @@ export type PartyListItemDetailProps = {
 	created_at: string;
 	updated_at: string;
 	description: string;
-	members: PartyMember[];
+	members: TPartyMember[];
 };
-export type PartyListItemProps = {
-	party: Party;
+export type TPartyListItemProps = {
+	party: TParty;
 };
 
 // 파티게시판 멤버관련
-export type PartyMember = {
+export type TPartyMember = {
 	id: number;
 	username: string;
 	is_leader: boolean;
 	joined_at: string;
 };
 
-export type PartyMemberListProps = {
-	members: PartyMember[];
+export type TPartyMemberListProps = {
+	members: TPartyMember[];
+};
+
+export type TGetPartiesResponse = {
+	parties: TParty[];
+	total: number;
+	page: number;
+	limit: number;
 };

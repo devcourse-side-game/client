@@ -10,12 +10,12 @@ import {
 } from '@mui/material';
 import { getTimeAgo } from '../../utils/formatters/date';
 import PartyMemberList from './PartyMemberList';
-import { PartyListItemProps, PartyListItemDetailProps } from '../../types/Party';
+import { TPartyListItemProps, TPartyListItemDetailProps } from '../../types/Party';
 import { PARTY_LIST_ITEM } from '../../constants/Party';
 
 // 임시 데이터 타입 및 더미데이터
 
-const dummyDetailItem: PartyListItemDetailProps = {
+const dummyDetailItem: TPartyListItemDetailProps = {
 	id: 1,
 	title: '로스트아크 발탄 하드 파티 모집',
 	game_id: 1,
@@ -48,9 +48,10 @@ const dummyDetailItem: PartyListItemDetailProps = {
 	],
 };
 
-function PartyListItem({ party }: PartyListItemProps) {
+function PartyListItem({ party }: TPartyListItemProps) {
 	// props => listItem: PartyListItemProps | null = dummyItem
 	// 아코디언 확장시 파티 세부 정보 api 호출
+	// 리스트 아이템 클릭 시
 	return (
 		<Accordion>
 			<AccordionSummary>
