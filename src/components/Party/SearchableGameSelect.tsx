@@ -27,9 +27,9 @@ function SearchableGameSelect({ setOptionGame }: TSearchableGameSelectProps) {
 			value={selectedGame}
 			// 사용자가 항목을 선택했을 때 호출되는 함수
 			// newValue는 선택된 gameOptions 객체입니다. (예: { id: 1, title: '로스트아크', ... })
-			onChange={(event: any, newValue: TOptionGame | null) => {
+			onChange={(event, newValue: TOptionGame | null) => {
 				setSelectedGame(newValue);
-				if (selectedGame) setOptionGame(selectedGame);
+				setOptionGame(newValue);
 			}}
 			// 드롭다운에 표시될 전체 옵션 배열
 			options={gameOptions}

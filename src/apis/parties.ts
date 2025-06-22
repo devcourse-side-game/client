@@ -8,15 +8,30 @@ export const fetchParties = async ({
 	queryKey,
 }: QueryFunctionContext<['parties', TFilterOptions[]]>): Promise<TGetPartiesResponse> => {
 	const [_queryName, filterOptions] = queryKey;
+
+	let optionGameParam = '';
+	let optionPartyOwnerNameParam = '';
+	let optionPartyTitleParam = '';
+
 	if (filterOptions.length) {
-		// type을 Enum 또는 상수화 필요
-		const optionGameId = filterOptions.findIndex((option) => option.type === 'gameId');
-		const optionPartyOwnerName = filterOptions.findIndex(
+		// 필터 옵션 적용type을 Enum 또는 상수화 필요
+		const optionGameId = filterOptions.find((option) => option.type === 'gameId');
+		console.log('test : ' + optionGameId?.label);
+		optionGameParam = optionGameId?.value ? `game_id=${optionGameId.value}` : '';
+
+		// optionPartyOwnerName 와 optionPartyTitle 은 백엔드와 회의 후 추후 옵션 추가 필요
+		const optionPartyOwnerName = filterOptions.find(
 			(option) => option.type === 'partyOwnerName'
 		);
-		const optionPartyTitle = filterOptions.findIndex((option) => option.type === 'partyTitle');
+		optionPartyOwnerNameParam = optionPartyOwnerName?.value ? '' : '';
+		const optionPartyTitle = filterOptions.find((option) => option.type === 'partyTitle');
+		optionPartyTitleParam = optionPartyTitle?.value ? '' : '';
 	}
-	const response = await axios.get<TGetPartiesResponse>(`${API_BASE_URL_MOCK}/api/parties`);
+	const API_URL_PARAMS = `?${optionGameParam}`;
+	const response = await axios.get<TGetPartiesResponse>(
+		`${API_BASE_URL_MOCK}/api/parties${API_URL_PARAMS}`
+	);
+	console.log(`fetch url : ${API_BASE_URL_MOCK}/api/parties${API_URL_PARAMS}`);
 	return response.data;
 };
 /** 기능 : 파티 세부 정보 조회 */

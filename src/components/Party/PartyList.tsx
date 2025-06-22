@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import List from '@mui/material/List';
 import PartyListItem from './PartyListItem';
-import { useParties } from '../../hooks/useParties';
 import { TGetPartiesResponse, TParty } from '../../types/Party';
 
 type TPartyListProps = {
