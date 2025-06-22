@@ -1,9 +1,21 @@
 import axios from 'axios';
-import { TGetPartiesResponse, TPartyListItemDetailResponse } from '../types/Party';
+import { QueryFunctionContext } from '@tanstack/react-query';
+import { TFilterOptions, TGetPartiesResponse, TPartyListItemDetailResponse } from '../types/Party';
 
 const API_BASE_URL_MOCK = 'http://localhost:3001';
 /** 기능 : 파티 목록 조회 */
-export const fetchParties = async (): Promise<TGetPartiesResponse> => {
+export const fetchParties = async ({
+	queryKey,
+}: QueryFunctionContext<['parties', TFilterOptions[]]>): Promise<TGetPartiesResponse> => {
+	const [_queryName, filterOptions] = queryKey;
+	if (filterOptions.length) {
+		// type을 Enum 또는 상수화 필요
+		const optionGameId = filterOptions.findIndex((option) => option.type === 'gameId');
+		const optionPartyOwnerName = filterOptions.findIndex(
+			(option) => option.type === 'partyOwnerName'
+		);
+		const optionPartyTitle = filterOptions.findIndex((option) => option.type === 'partyTitle');
+	}
 	const response = await axios.get<TGetPartiesResponse>(`${API_BASE_URL_MOCK}/api/parties`);
 	return response.data;
 };

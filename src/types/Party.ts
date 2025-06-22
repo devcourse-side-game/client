@@ -50,3 +50,20 @@ export type TGetPartiesResponse = {
 	page: number;
 	limit: number;
 };
+
+// 검색 옵션
+export type TFilterOptions = {
+	type: string;
+	value: string | number | null;
+	label: string;
+};
+export type TPartyListFilterOptions = {
+	options: TFilterOptions[];
+};
+
+// gameOptions 배열에 있는 객체의 타입 정의
+export type TOptionGame = {
+	id: number;
+	title: string;
+	category: string;
+};

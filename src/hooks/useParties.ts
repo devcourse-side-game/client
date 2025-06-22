@@ -1,16 +1,18 @@
 import { QueryFunctionContext, useQuery } from '@tanstack/react-query';
-import { TGetPartiesResponse, TPartyListItemDetailResponse } from '../types/Party';
+import { TFilterOptions, TGetPartiesResponse, TPartyListItemDetailResponse } from '../types/Party';
 import { fetchParties, fetchPartyDetail } from '../apis/parties';
 
-export const useParties = () => {
-	return useQuery<TGetPartiesResponse, Error>({
-		queryKey: ['parties'],
-		queryFn: fetchParties,
-		refetchOnWindowFocus: false,
-		refetchOnMount: false,
-		refetchOnReconnect: false,
-		//refetchInterval: 1000 * 10,
-	});
+export const useParties = (partyListFilterOptions: TFilterOptions[]) => {
+	return useQuery<TGetPartiesResponse, Error, TGetPartiesResponse, ['parties', TFilterOptions[]]>(
+		{
+			queryKey: ['parties', partyListFilterOptions],
+			queryFn: fetchParties,
+			refetchOnWindowFocus: false,
+			refetchOnMount: false,
+			refetchOnReconnect: false,
+			//refetchInterval: 1000 * 10,
+		}
+	);
 };
 
 export const useSelectedPartyDetail = (partyId: number) => {
