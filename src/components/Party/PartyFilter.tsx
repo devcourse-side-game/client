@@ -14,5 +14,4 @@ function PartyFilter() {
 		</Box>
 	);
 }
-
 export default PartyFilter;

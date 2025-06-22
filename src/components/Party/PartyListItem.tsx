@@ -7,6 +7,7 @@ import PartyListItemDetail from './PartyListItemDetail';
 // 임시 데이터 타입 및 더미데이터
 
 export type TPartyListItemProps = {
+	key: number;
 	party: TParty;
 	expandedPartyId: number | null;
 	setExpandedPartyId: Dispatch<SetStateAction<number | null>>;
