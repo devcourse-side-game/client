@@ -45,6 +45,15 @@ export default tseslint.config(
 					selector: 'method',
 					format: null, // 클래스/객체 메서드도 제외
 				},
+				{
+					selector: 'variable',
+					modifiers: ['const'],
+					format: ['UPPER_CASE'],
+					filter: {
+						regex: '^[A-Z0-9_]+$',
+						match: true,
+					},
+				},
 			],
 			'prettier/prettier': [
 				'error',
