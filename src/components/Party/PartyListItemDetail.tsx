@@ -11,7 +11,7 @@ type TPartyListItemDetailProps = {
 function PartyListItemDetail({ partyId }: TPartyListItemDetailProps) {
 	const { data, isLoading, isError, error } = useSelectedPartyDetail(partyId);
 
-	if (isLoading) return <div>파티원 목록 로딩중...</div>;
+	if (isLoading) return <div>파티세부 정보 로딩중...</div>;
 	if (isError) return <div> 에러가 발생했습니다 : {error.message} </div>;
 	return (
 		<Stack direction='column'>

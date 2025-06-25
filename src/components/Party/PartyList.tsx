@@ -10,9 +10,18 @@ type TPartyListProps = {
 	isSuccess: boolean;
 	isError: boolean;
 	error: Error | null;
+	onJoinClicked: (partyId: number) => void;
 };
 
-function PartyList({ data, isLoading, isFetching, isSuccess, isError, error }: TPartyListProps) {
+function PartyList({
+	data,
+	isLoading,
+	isFetching,
+	isSuccess,
+	isError,
+	error,
+	onJoinClicked,
+}: TPartyListProps) {
 	const [expandedPartyId, setExpandedPartyId] = useState<number | null>(null);
 
 	// parties의 값이 성공적으로 변경됬을 경우 현재 열려야 하는 아코디언 정보를 초기화
@@ -41,6 +50,7 @@ function PartyList({ data, isLoading, isFetching, isSuccess, isError, error }: T
 						party={party}
 						expandedPartyId={expandedPartyId}
 						setExpandedPartyId={setExpandedPartyId}
+						onJoinClicked={onJoinClicked}
 					/>
 				) : null
 			)}

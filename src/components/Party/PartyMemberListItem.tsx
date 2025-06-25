@@ -11,11 +11,14 @@ function PartyMemberListItem({ member }: { member: TPartyMember }) {
 				<Stack direction='row' alignItems='center'>
 					<Typography variant='subtitle1'>{member.username}</Typography>
 					{member.is_leader ? <Chip label='파티장' /> : <></>}
+					<Button>파티장 넘기기</Button>
 				</Stack>
 				<Typography variant='subtitle2'>닉네임이!</Typography>
 			</Stack>
 			<Box sx={{ flexGrow: 1 }}></Box>
+
 			<Button>{PARTY_LIST_ITEM.BTN_MEMBER_BAN_TEXT}</Button>
+			<Button>좋아요</Button>
 		</Stack>
 	);
 }

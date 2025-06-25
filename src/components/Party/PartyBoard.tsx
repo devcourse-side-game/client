@@ -4,16 +4,15 @@ import { BOARD_PARTY } from '../../constants/Party';
 import PartyFilter from './PartyFilter';
 import PartyList from './PartyList';
 import { useQueryClient } from '@tanstack/react-query';
-import { TFilterOptions, TPartyModalType } from '../../types/Party';
+import { TFilterOptions, TModalState } from '../../types/Party';
 import { useParties } from '../../hooks/useParties';
-import PartyCreateForm from './PartyModal/partyCreate/PartyCreateForm';
 import CommonModal from './PartyModal/CommonModal';
 import PartyCreateFlow from './PartyModal/partyCreate/PartyCreateFlow';
+import PartyJoinFlow from './PartyModal/partyJoin/PartyJoinFlow';
 
 function PartyBoard() {
 	const queryClient = useQueryClient();
-	const [isPartyCreateModalOpen, setIsPartyCreateModalOpen] = useState<boolean>(false);
-	const [modalType, setModalType] = useState<TPartyModalType>('');
+	const [modalState, setModalState] = useState<TModalState>({ type: '', partyId: undefined });
 	const [filterOptions, setFilterOptions] = useState<TFilterOptions[]>([]);
 	const { data, isLoading, isFetching, isSuccess, isError, error } = useParties(filterOptions);
 	/* 게시판 데이터 무효화를 통해 파티 목록 갱신*/
@@ -21,7 +20,14 @@ function PartyBoard() {
 		queryClient.invalidateQueries({ queryKey: ['parties'] });
 	};
 	const handleCloseModal = () => {
-		setModalType('');
+		setModalState({ type: '', partyId: undefined });
+	};
+	const handleOpenCreateModal = () => {
+		setModalState({ type: 'create' });
+	};
+	const handleOpenJoinModal = (partyId: number) => {
+		console.log(`partyBoard 실행! partyId: ${partyId}`);
+		setModalState({ type: 'join', partyId: partyId });
 	};
 
 	return (
@@ -33,21 +39,15 @@ function PartyBoard() {
 				setFilterOptions={setFilterOptions}
 			></PartyFilter>
 			<Button onClick={handleRefreshClick}>새로운 게시글 불러오기</Button>
-			<Button
-				onClick={() => {
-					setModalType('create');
-				}}
-			>
-				파티 생성
-			</Button>
-			<CommonModal open={modalType !== ''} onClose={handleCloseModal} title=''>
-				{modalType === 'create' && <PartyCreateFlow onFlowComplete={handleCloseModal} />}
-				{modalType === 'join' && <PartyCreateFlow onFlowComplete={handleCloseModal} />}
+			<Button onClick={handleOpenCreateModal}>파티 생성</Button>
+			<CommonModal open={modalState.type !== ''} onClose={handleCloseModal} title=''>
+				{modalState.type === 'join' && modalState.partyId ? (
+					<PartyJoinFlow onFlowComplete={handleCloseModal} partyId={modalState.partyId} />
+				) : null}
+				{modalState.type === 'create' ? (
+					<PartyCreateFlow onFlowComplete={handleCloseModal} />
+				) : null}
 			</CommonModal>
-
-			{isPartyCreateModalOpen ? (
-				<PartyCreateForm setIsPartyCreateModalOpen={setIsPartyCreateModalOpen} />
-			) : null}
 
 			<PartyList
 				data={data}
@@ -56,6 +56,7 @@ function PartyBoard() {
 				isSuccess={isSuccess}
 				isError={isError}
 				error={error}
+				onJoinClicked={handleOpenJoinModal}
 			></PartyList>
 		</div>
 	);

@@ -21,6 +21,7 @@ type TPartyCreateFormProps = {
 };
 
 function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
+	const [formTitle, setFormTitle] = useState('');
 	const [optionGame, setOptionGame] = useState<TOptionGame | null>(null);
 	const [purposeTag, setPurposeTag] = useState<string>('');
 	const [formDescription, setFormDescription] = useState<string>('');
@@ -30,7 +31,6 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 	const [isPrivateChecked, setIsPrivateChecked] = useState(false);
 
 	const [view, setView] = useState<TPartyFormFlow>('form');
-	const [formTitle, setFormTitle] = useState('');
 
 	const { mutate, isPending } = useCreateParty();
 

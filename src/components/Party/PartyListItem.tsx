@@ -1,5 +1,13 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { Accordion, AccordionSummary, AccordionDetails, Box, Chip, Stack } from '@mui/material';
+import {
+	Accordion,
+	AccordionSummary,
+	AccordionDetails,
+	Box,
+	Chip,
+	Stack,
+	Button,
+} from '@mui/material';
 import { getTimeAgo } from '../../utils/formatters/date';
 import { TParty } from '../../types/Party';
 import PartyListItemDetail from './PartyListItemDetail';
@@ -11,9 +19,15 @@ export type TPartyListItemProps = {
 	party: TParty;
 	expandedPartyId: number | null;
 	setExpandedPartyId: Dispatch<SetStateAction<number | null>>;
+	onJoinClicked: (partyId: number) => void;
 };
 
-function PartyListItem({ party, expandedPartyId, setExpandedPartyId }: TPartyListItemProps) {
+function PartyListItem({
+	party,
+	expandedPartyId,
+	setExpandedPartyId,
+	onJoinClicked,
+}: TPartyListItemProps) {
 	// props => listItem: PartyListItemProps | null = dummyItem
 	// 아코디언 확장시 파티 세부 정보 api 호출
 
@@ -54,6 +68,14 @@ function PartyListItem({ party, expandedPartyId, setExpandedPartyId }: TPartyLis
 			</AccordionSummary>
 			<AccordionDetails>
 				<PartyListItemDetail partyId={party.id} />
+				<Button
+					onClick={() => {
+						console.log(`참가버튼 클릭 : ${party.id}`);
+						onJoinClicked(party.id);
+					}}
+				>
+					파티 참가
+				</Button>
 			</AccordionDetails>
 		</Accordion>
 	);
