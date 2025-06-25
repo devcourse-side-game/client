@@ -67,3 +67,36 @@ export type TOptionGame = {
 	title: string;
 	category: string;
 };
+
+// 파티 생성 리퀘스트
+export type TPartyCreateRequest = {
+	title: string;
+	gameId: number | undefined;
+	purposeTag: string;
+	maxParticipants: number;
+	startTime: string;
+	endTime: string;
+	description: string;
+	isPrivate: boolean;
+	accessCode: string;
+};
+
+// 파티 생성 실패 응답
+export type TPartyCreateSuccessResponse = {
+	message: string;
+	partyId: number;
+};
+
+//파티 생성 성공 응답
+export type TBadRequestResponse = {
+	statusCode: number;
+	message: string;
+	error: string;
+};
+
+//인증 실패 응답
+export type TBadAuthResponse = {
+	statusCode: number;
+	message: string;
+	error: string;
+};

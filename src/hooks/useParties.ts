@@ -1,6 +1,12 @@
-import { QueryFunctionContext, useQuery } from '@tanstack/react-query';
-import { TFilterOptions, TGetPartiesResponse, TPartyListItemDetailResponse } from '../types/Party';
-import { fetchParties, fetchPartyDetail } from '../apis/parties';
+import { QueryFunctionContext, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+	TFilterOptions,
+	TGetPartiesResponse,
+	TPartyCreateRequest,
+	TPartyCreateSuccessResponse,
+	TPartyListItemDetailResponse,
+} from '../types/Party';
+import { createParty, fetchParties, fetchPartyDetail } from '../apis/parties';
 
 export const useParties = (partyListFilterOptions: TFilterOptions[]) => {
 	return useQuery<TGetPartiesResponse, Error, TGetPartiesResponse, ['parties', TFilterOptions[]]>(
@@ -38,5 +44,24 @@ export const useSelectedPartyDetail = (partyId: number) => {
 		refetchOnMount: false,
 		refetchOnReconnect: false,
 		//refetchInterval: 1000 * 10,
+	});
+};
+
+export const useCreateParty = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation<TPartyCreateSuccessResponse, Error, TPartyCreateRequest, unknown>({
+		mutationFn: createParty,
+		onSuccess: (data, variables, context) => {
+			console.log('게시판 생성 성공');
+			console.dir(data);
+			// 성공했을 시 성공을 알려야함
+
+			queryClient.invalidateQueries({ queryKey: ['parties'] });
+		},
+		onError: (error, variables, context) => {
+			console.error('게시판 생성 실패', error);
+			// 실패시 옵션
+		},
 	});
 };
