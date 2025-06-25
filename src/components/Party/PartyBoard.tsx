@@ -1,21 +1,27 @@
 import React, { useState } from 'react';
-import { Button, Typography } from '@mui/material';
+import { Button, Stack, Typography } from '@mui/material';
 import { BOARD_PARTY } from '../../constants/Party';
 import PartyFilter from './PartyFilter';
 import PartyList from './PartyList';
 import { useQueryClient } from '@tanstack/react-query';
-import { TFilterOptions } from '../../types/Party';
+import { TFilterOptions, TPartyModalType } from '../../types/Party';
 import { useParties } from '../../hooks/useParties';
 import PartyCreateForm from './partyCreate/PartyCreateForm';
+import CommonModal from './partyCreate/CommonModal';
+import PartyCreateFlow from './partyCreate/PartyCreateFlow';
 
 function PartyBoard() {
 	const queryClient = useQueryClient();
 	const [isPartyCreateModalOpen, setIsPartyCreateModalOpen] = useState<boolean>(false);
+	const [modalType, setModalType] = useState<TPartyModalType>('');
 	const [filterOptions, setFilterOptions] = useState<TFilterOptions[]>([]);
 	const { data, isLoading, isFetching, isSuccess, isError, error } = useParties(filterOptions);
 	/* 게시판 데이터 무효화를 통해 파티 목록 갱신*/
 	const handleRefreshClick = () => {
 		queryClient.invalidateQueries({ queryKey: ['parties'] });
+	};
+	const handleCloseModal = () => {
+		setModalType('');
 	};
 
 	return (
@@ -29,14 +35,20 @@ function PartyBoard() {
 			<Button onClick={handleRefreshClick}>새로운 게시글 불러오기</Button>
 			<Button
 				onClick={() => {
-					setIsPartyCreateModalOpen(!isPartyCreateModalOpen);
+					setModalType('create');
 				}}
 			>
 				파티 생성
 			</Button>
+			<CommonModal open={modalType !== ''} onClose={handleCloseModal} title=''>
+				{modalType === 'create' && <PartyCreateFlow onFlowComplete={handleCloseModal} />}
+				{modalType === 'join' && <PartyCreateFlow onFlowComplete={handleCloseModal} />}
+			</CommonModal>
+
 			{isPartyCreateModalOpen ? (
 				<PartyCreateForm setIsPartyCreateModalOpen={setIsPartyCreateModalOpen} />
 			) : null}
+
 			<PartyList
 				data={data}
 				isLoading={isLoading}

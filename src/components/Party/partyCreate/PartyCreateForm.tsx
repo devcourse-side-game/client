@@ -1,3 +1,8 @@
+/** 
+CommonModal, PartyCreateForm 사용 이전 쓰이던 코드입니다. 현재는 기능하지 않습니다
+
+*/
+
 import {
 	Box,
 	Button,
@@ -32,7 +37,7 @@ function PartyCreateForm({ setIsPartyCreateModalOpen }: TPartyCreateFormProps) {
 
 	const [isSuccessDialogOpen, setIsSuccessDialogOpen] = useState(false);
 
-	const { mutate, isPending } = useCreateParty();
+	const { mutate } = useCreateParty();
 
 	const handleOnClick = () => {
 		const newParty: TPartyCreateRequest = {

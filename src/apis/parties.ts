@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { QueryFunctionContext } from '@tanstack/react-query';
 import {
-	TBadAuthResponse,
-	TBadRequestResponse,
 	TFilterOptions,
 	TGetPartiesResponse,
 	TPartyCreateRequest,
