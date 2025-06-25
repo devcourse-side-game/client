@@ -1,6 +1,10 @@
 import {
 	Box,
 	Button,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogTitle,
 	FormControlLabel,
 	FormGroup,
 	InputAdornment,
@@ -23,9 +27,12 @@ function PartyCreateForm({ setIsPartyCreateModalOpen }: TPartyCreateFormProps) {
 	const [formDescription, setFormDescription] = useState<string>('');
 	const [formMaxNum, setFormMaxNum] = useState<number>(4);
 	const [formOwnerNickname, setFormOwnerNickname] = useState<string>('');
+	const [accessCode, setAccessCode] = useState<string>('');
 	const [isPrivateChecked, setIsPrivateChecked] = useState(false);
 
-	const { mutate, isPending, isError, error, isSuccess } = useCreateParty();
+	const [isSuccessDialogOpen, setIsSuccessDialogOpen] = useState(false);
+
+	const { mutate, isPending } = useCreateParty();
 
 	const handleOnClick = () => {
 		const newParty: TPartyCreateRequest = {
@@ -37,17 +44,24 @@ function PartyCreateForm({ setIsPartyCreateModalOpen }: TPartyCreateFormProps) {
 			endTime: String(Date.now()),
 			description: formDescription ? formDescription : '',
 			isPrivate: isPrivateChecked,
-			accessCode: '1234',
+			accessCode: accessCode,
 		};
 		mutate(newParty, {
 			onSuccess: (data) => {
 				console.log(data.message);
+				setIsSuccessDialogOpen(true);
 			},
 			onError: (error) => {
 				console.log(error.message);
 			},
 		});
 	};
+
+	const handleCloseSuccessDialog = () => {
+		setIsSuccessDialogOpen(false);
+		setIsPartyCreateModalOpen(false);
+	};
+
 	//const label = { inputProps: { 'aria-label': 'Switch demo' } };
 	return (
 		<Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -78,6 +92,17 @@ function PartyCreateForm({ setIsPartyCreateModalOpen }: TPartyCreateFormProps) {
 					label={isPrivateChecked ? '비공개 파티' : '공개 파티'}
 				/>
 			</FormGroup>
+			{isPrivateChecked ? (
+				<Box>
+					<div>비밀번호</div>
+					<TextField
+						value={formTitle}
+						type='text'
+						label='참가 비밀번호를 설정하세요'
+						onChange={(e) => setAccessCode(e.target.value)}
+					/>
+				</Box>
+			) : null}
 			<Box>
 				<div>파티 목적</div>
 				<TextField
@@ -123,6 +148,15 @@ function PartyCreateForm({ setIsPartyCreateModalOpen }: TPartyCreateFormProps) {
 				/>
 			</Box>
 			<Button onClick={handleOnClick}>파티 생성</Button>
+			<Dialog open={isSuccessDialogOpen} onClose={handleCloseSuccessDialog}>
+				<DialogTitle>성공</DialogTitle>
+				<DialogContent>파티가 성공적으로 생성되었습니다!</DialogContent>
+				<DialogActions>
+					<Button onClick={handleCloseSuccessDialog} autoFocus>
+						확인
+					</Button>
+				</DialogActions>
+			</Dialog>
 		</Box>
 	);
 }
