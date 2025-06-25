@@ -100,3 +100,8 @@ export type TBadAuthResponse = {
 	message: string;
 	error: string;
 };
+
+/**  */
+export type TPartyFormFlow = 'form' | 'success';
+
+export type TPartyModalType = 'create' | 'join' | '';

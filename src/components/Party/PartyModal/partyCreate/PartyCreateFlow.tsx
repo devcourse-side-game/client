@@ -12,9 +12,9 @@ import {
 	Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
-import SearchableGameSelect from '../SearchableGameSelect';
-import { TOptionGame, TPartyCreateFlow, TPartyCreateRequest } from '../../../types/Party';
-import { useCreateParty } from '../../../hooks/useParties';
+import SearchableGameSelect from '../../SearchableGameSelect';
+import { TOptionGame, TPartyFormFlow, TPartyCreateRequest } from '../../../../types/Party';
+import { useCreateParty } from '../../../../hooks/useParties';
 
 type TPartyCreateFormProps = {
 	onFlowComplete: () => void;
@@ -29,7 +29,7 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 	const [accessCode, setAccessCode] = useState<string>('');
 	const [isPrivateChecked, setIsPrivateChecked] = useState(false);
 
-	const [view, setView] = useState<TPartyCreateFlow>('form');
+	const [view, setView] = useState<TPartyFormFlow>('form');
 	const [formTitle, setFormTitle] = useState('');
 
 	const { mutate, isPending } = useCreateParty();

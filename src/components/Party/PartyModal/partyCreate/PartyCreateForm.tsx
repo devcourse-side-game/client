@@ -17,9 +17,9 @@ import {
 	TextField,
 } from '@mui/material';
 import React, { Dispatch, SetStateAction, useState } from 'react';
-import SearchableGameSelect from '../SearchableGameSelect';
-import { TOptionGame, TPartyCreateRequest } from '../../../types/Party';
-import { useCreateParty } from '../../../hooks/useParties';
+import SearchableGameSelect from '../../SearchableGameSelect';
+import { TOptionGame, TPartyCreateRequest } from '../../../../types/Party';
+import { useCreateParty } from '../../../../hooks/useParties';
 
 type TPartyCreateFormProps = {
 	setIsPartyCreateModalOpen: Dispatch<SetStateAction<boolean>>;

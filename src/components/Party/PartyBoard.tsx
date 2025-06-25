@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { Button, Stack, Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { BOARD_PARTY } from '../../constants/Party';
 import PartyFilter from './PartyFilter';
 import PartyList from './PartyList';
 import { useQueryClient } from '@tanstack/react-query';
 import { TFilterOptions, TPartyModalType } from '../../types/Party';
 import { useParties } from '../../hooks/useParties';
-import PartyCreateForm from './partyCreate/PartyCreateForm';
-import CommonModal from './partyCreate/CommonModal';
-import PartyCreateFlow from './partyCreate/PartyCreateFlow';
+import PartyCreateForm from './PartyModal/partyCreate/PartyCreateForm';
+import CommonModal from './PartyModal/CommonModal';
+import PartyCreateFlow from './PartyModal/partyCreate/PartyCreateFlow';
 
 function PartyBoard() {
 	const queryClient = useQueryClient();
