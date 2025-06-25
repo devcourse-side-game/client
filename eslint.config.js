@@ -25,6 +25,7 @@ export default tseslint.config(
 			'arrow-body-style': 'off',
 			'prefer-arrow-callback': 'off',
 			'react/jsx-no-target-blank': 'off',
+			'@typescript-eslint/no-empty-interface': 'off',
 			'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
 			'@typescript-eslint/naming-convention': [
 				'error',

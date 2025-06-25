@@ -6,8 +6,7 @@ import theme from './theme';
 import Header from './layouts/Header';
 // import Footer from './layouts/Footer';
 import { Provider } from 'react-redux';
-import { store } from './stores';
-
+import { store } from './stores/index';
 function App() {
 	return (
 		<Provider store={store}>

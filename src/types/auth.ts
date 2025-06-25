@@ -1,4 +1,4 @@
-import { FormType } from "../constants/enums";
+import { FormType } from '../constants/enums';
 
 export interface FormTitleProps {
 	title: string;
@@ -13,15 +13,22 @@ export interface InputProps {
 	onChange: (value: string) => void;
 }
 
-export interface SignData {
-	email: string;
-	password: string;
-}
+// export interface SignData {
+// 	email: string;
+// 	password: string;
+// }
 
-export interface LoginData {
+// export interface LoginData {
+// 	email: string;
+// 	password: string;
+// 	username: string;
+// }
+
+export interface IUserFormData {
 	email: string;
 	password: string;
-	username: string;
+	username?: string;
+	passwordCheck?: string;
 }
 
 export interface PasswordValidBoxPorps {

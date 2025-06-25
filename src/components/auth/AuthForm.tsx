@@ -1,110 +1,200 @@
-import { Button, FormControl, FormHelperText, Grid, TextField } from '@mui/material';
-import { useState } from 'react';
+import { Box, Button, FormControl, FormHelperText, Grid, Link, TextField } from '@mui/material';
+import { useMemo } from 'react';
 import { FormType } from '../../constants/enums';
-
-interface FormTypeProps {
-	formType: number;
-}
+import { FormTypeProps } from '../../types/auth';
+import { Controller } from 'react-hook-form';
+import { useAuthForm } from '../../hooks/useAuthForm';
+import {
+	ALREADU_USED_USERNAME,
+	ENTER_EMAIL,
+	ENTER_PASSWORD,
+	ENTER_USERNAME,
+} from '../../constants/error';
+import PasswordValidBox from './PasswordValidBox';
+import {
+	LOGIN_TITLE,
+	PASSWORD_LENGTH_VALID,
+	PASSWORD_LETTER_VALID,
+	SIGNUP_TITLE,
+} from '../../constants/auth';
+import { validatePassword } from '../../utils/passwordValidation';
+// import CommonModal from '../common/commonMadal';
+import axios, { AxiosError } from 'axios';
 
 function AuthForm({ formType }: FormTypeProps) {
-	const [username, setUsername] = useState('');
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-	const [passwordCheck, setPasswordCheck] = useState('');
-	const [errorMsg, setErrorMsg] = useState('');
-	const [error, setError] = useState(false);
+	const { control, handleSubmit, errors, watch, getValues, setError } = useAuthForm({ formType });
+	const passwordValue = watch('password');
 
-	async function handleSubmit(formType: number) {
-		// 이메일 확인
-		await isValidEmailAddress();
-		if (FormType.SIGNUP == formType) {
-			// 비밀번호 정규식
-			await isValidPasswordRegex();
-			// 비밀번호 재확인
-			await confirmPassword();
-		}
-	}
+	const { isLengthValid, isComplexValid } = useMemo(() => {
+		return validatePassword(passwordValue);
+	}, [passwordValue]);
 
-	async function isValidEmailAddress() {
-		if (!email) {
-			setErrorMsg('이메일을 입력해주세요.');
-			setError(true);
+	const errorMessage =
+		errors.email?.message ||
+		errors.password?.message ||
+		errors.passwordCheck?.message ||
+		errors.username?.message ||
+		'';
+
+	async function confirmUsername() {
+		const usernameValue = getValues('username');
+		if (!usernameValue) {
+			setError('username', { message: ENTER_USERNAME });
 		} else {
-			const isValid = await isValidEmailRegex();
-			if (!isValid) {
-				setError(true);
-				setErrorMsg('올바른 이메일 형식을 입력해주세요.');
-			} else {
-				setError(false);
-				setErrorMsg('');
+			try {
+				const res = await axios.post('/auth/nicknameCheck', {
+					nickname: usernameValue,
+				});
+
+				console.log('닉네임 중복 확인: ', res);
+			} catch (error: unknown) {
+				const axiosError = error as AxiosError;
+				if (axiosError.response) {
+					const { status } = axiosError.response;
+
+					switch (status) {
+						case 409: // 이미 사용중인 닉네임
+							setError('username', { message: ALREADU_USED_USERNAME });
+							break;
+					}
+				}
 			}
 		}
 	}
 
-	function isValidEmailRegex() {
-		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		return emailRegex.test(email);
-	}
-
-	function isValidPasswordRegex() {}
-
-	function confirmPassword() {}
-
-	function confirmUsername() {
-		// 닉네임 확인 api 호출
-		alert('닉네임 확인 api 호출');
-	}
-
 	return (
-		<FormControl fullWidth error={error} margin='normal'>
-			{FormType.SIGNUP === formType && (
-				<Grid container spacing={2}>
-					<Grid size={10}>
-						<TextField
-							label='닉네임'
-							value={username}
-							onChange={(e) => setUsername(e.target.value)}
-							aria-describedby='helper-text'
-							fullWidth
+		<>
+			{/* <CommonModal /> */}
+			<form onSubmit={handleSubmit}>
+				<FormControl fullWidth error={!!errors.email} margin='normal'>
+					{FormType.SIGNUP === formType && (
+						<>
+							<Controller
+								name='username'
+								control={control}
+								defaultValue=''
+								rules={{
+									required: ENTER_USERNAME,
+								}}
+								render={({ field }) => (
+									<Grid container spacing={2} sx={{ marginBottom: '10px' }}>
+										<Grid size={10}>
+											<TextField {...field} fullWidth label='닉네임' />
+										</Grid>
+										<Grid size={'grow'} sx={{ height: '100%' }}>
+											<Button
+												variant='contained'
+												fullWidth
+												onClick={confirmUsername}
+												sx={{ height: '55px' }}
+											>
+												확인
+											</Button>
+										</Grid>
+									</Grid>
+								)}
+							/>
+						</>
+					)}
+					{/* TODO :: 추후 email, password 테스트 코드 삭제  */}
+					<Controller
+						name='email'
+						control={control}
+						defaultValue='test@example.com'
+						rules={{
+							required: ENTER_EMAIL,
+						}}
+						render={({ field }) => (
+							<TextField {...field} label='이메일' sx={{ marginBottom: '10px' }} />
+						)}
+					/>
+
+					{FormType.LOGIN === formType && (
+						<Controller
+							name='password'
+							control={control}
+							defaultValue='Test1234!'
+							rules={{
+								required: ENTER_PASSWORD,
+								validate: (value) => value.length > 0 || ENTER_PASSWORD,
+							}}
+							render={({ field }) => (
+								<TextField
+									{...field}
+									type='password'
+									label='비밀번호'
+									sx={{ marginBottom: '10px' }}
+								/>
+							)}
 						/>
-					</Grid>
-					<Grid size={'grow'}>
-						<Button variant='contained' fullWidth onClick={confirmUsername}>
-							확인
-						</Button>
-					</Grid>
-				</Grid>
-			)}
-			<TextField
-				label='email'
-				value={email}
-				onChange={(e) => setEmail(e.target.value)}
-				aria-describedby='helper-text'
-			/>
-			<TextField
-				label='password'
-				value={password}
-				type='password'
-				onChange={(e) => setPassword(e.target.value)}
-				aria-describedby='helper-text'
-			/>
+					)}
 
+					{FormType.SIGNUP === formType && (
+						<>
+							<Controller
+								name='password'
+								control={control}
+								defaultValue=''
+								rules={{
+									required: ENTER_PASSWORD,
+									validate: (value) => value.length > 0 || ENTER_PASSWORD,
+								}}
+								render={({ field }) => (
+									<TextField
+										{...field}
+										type='password'
+										label='비밀번호'
+										sx={{ marginBottom: '10px' }}
+									/>
+								)}
+							/>
+
+							<Controller
+								name='passwordCheck'
+								control={control}
+								defaultValue=''
+								rules={{
+									required: ENTER_PASSWORD,
+								}}
+								render={({ field }) => (
+									<TextField {...field} type='password' label='비밀번호 확인' />
+								)}
+							/>
+
+							<Box>
+								<PasswordValidBox
+									check={isLengthValid}
+									content={PASSWORD_LENGTH_VALID}
+								/>
+								<PasswordValidBox
+									check={isComplexValid}
+									content={PASSWORD_LETTER_VALID}
+								/>
+							</Box>
+						</>
+					)}
+
+					<FormHelperText
+						id='helper-text'
+						error={Boolean(errorMessage)}
+						sx={{
+							marginBottom: '10px',
+						}}
+					>
+						{errorMessage}
+					</FormHelperText>
+
+					<Button variant='contained' type='submit'>
+						{formType === FormType.LOGIN ? LOGIN_TITLE : SIGNUP_TITLE}
+					</Button>
+				</FormControl>
+			</form>
 			{FormType.SIGNUP === formType && (
-				<TextField
-					label='password 확인'
-					value={passwordCheck}
-					type='password'
-					onChange={(e) => setPasswordCheck(e.target.value)}
-					aria-describedby='helper-text'
-				/>
+				<Link sx={{ display: 'flex', justifyContent: 'center' }} href='/login'>
+					이미 계정이 있으신가요? 로그인하러 가기
+				</Link>
 			)}
-
-			<FormHelperText id='helper-text'>{errorMsg}</FormHelperText>
-
-			<Button variant='contained' onClick={() => handleSubmit(formType)}>
-				로그인
-			</Button>
-		</FormControl>
+		</>
 	);
 }
 
