@@ -18,8 +18,10 @@ type TPartyJoinFlowProps = {
 
 export default function PartyJoinFlow({ onFlowComplete, partyId }: TPartyJoinFlowProps) {
 	const { data, isLoading, isError, error } = useSelectedPartyDetail(partyId);
-	const [view, setView] = useState<TPartyFormFlow>('form');
 	const [formNickname, setFormNickname] = useState<string>('unknown');
+
+	// 모달 내 흐름 제어
+	const [view, setView] = useState<TPartyFormFlow>('form');
 
 	if (isLoading) return <div>파티세부 정보 로딩중...</div>;
 	if (isError) return <div> 에러가 발생했습니다 : {error.message} </div>;
@@ -59,11 +61,11 @@ export default function PartyJoinFlow({ onFlowComplete, partyId }: TPartyJoinFlo
 					{`${data?.title}파티에 참가합니다.`}
 				</Typography>
 				<Box>
-					<div>파티 제목</div>
+					<div>닉네임</div>
 					<TextField
 						value={formNickname}
 						type='text'
-						label='모집할 파티 제목을 입력하세요'
+						label='인게임 닉네임을 입력하세요'
 						onChange={(e) => setFormNickname(e.target.value)}
 					/>
 				</Box>

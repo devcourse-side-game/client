@@ -30,6 +30,7 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 	const [accessCode, setAccessCode] = useState<string>('');
 	const [isPrivateChecked, setIsPrivateChecked] = useState(false);
 
+	// 모달 내 흐름 제어
 	const [view, setView] = useState<TPartyFormFlow>('form');
 
 	const { mutate, isPending } = useCreateParty();
@@ -80,9 +81,8 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 			<DialogTitle>새로운 파티 생성</DialogTitle>
 			<DialogContent>
 				<Box sx={{ display: 'flex', flexDirection: 'column' }}>
-					<Box>파티 생성하기</Box>
 					<Box>
-						<div>파티 제목</div>
+						<div>파티 이름</div>
 						<TextField
 							value={formTitle}
 							type='text'

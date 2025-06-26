@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import List from '@mui/material/List';
 import PartyListItem from './PartyListItem';
-import { TGetPartiesResponse, TParty } from '../../types/Party';
+import { TGetPartiesResponse, TModalState, TParty } from '../../types/Party';
 
 type TPartyListProps = {
 	data: TGetPartiesResponse | undefined;
@@ -10,7 +10,7 @@ type TPartyListProps = {
 	isSuccess: boolean;
 	isError: boolean;
 	error: Error | null;
-	onJoinClicked: (partyId: number) => void;
+	onModalOpen: (state: TModalState) => void;
 };
 
 function PartyList({
@@ -20,7 +20,7 @@ function PartyList({
 	isSuccess,
 	isError,
 	error,
-	onJoinClicked,
+	onModalOpen,
 }: TPartyListProps) {
 	const [expandedPartyId, setExpandedPartyId] = useState<number | null>(null);
 
@@ -50,7 +50,7 @@ function PartyList({
 						party={party}
 						expandedPartyId={expandedPartyId}
 						setExpandedPartyId={setExpandedPartyId}
-						onJoinClicked={onJoinClicked}
+						onModalOpne={onModalOpen}
 					/>
 				) : null
 			)}

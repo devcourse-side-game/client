@@ -104,9 +104,22 @@ export type TBadAuthResponse = {
 /**  */
 export type TPartyFormFlow = 'form' | 'success';
 
-export type TPartyModalType = 'create' | 'join' | '';
+export type TPartyModalType = 'create' | 'join' | 'leaderChange' | 'memberBan' | 'memberLike' | '';
 
-export type TModalState = {
-	type: TPartyModalType;
-	partyId?: number;
-};
+export type TModalPayloadKeys = 'partyId' | 'targetUserId';
+
+// 모달에 필요한 데이터 타입들
+export type TCreatePartyData = null; // 'create' 타입은 추가 데이터가 필요 없음
+export type TJoinPartyData = { partyId: number };
+export type TMemberBanData = { partyId: number; userId: number; userName: string };
+export type TLeaderChangeData = { partyId: number; userId: number; userName: string };
+export type TmemberLikeData = { partyId: number; userId: number; userName: string };
+
+// 'type'을 기준으로 어떤 data 타입을 가질지 묶어줍니다.
+export type TModalState =
+	| { type: ''; payload?: null } // 모달의 닫힘 상태 표시
+	| { type: 'create'; payload?: TCreatePartyData } // data가 없으므로 optional
+	| { type: 'join'; payload: TJoinPartyData }
+	| { type: 'memberBan'; payload: TMemberBanData }
+	| { type: 'leaderChange'; payload: TLeaderChangeData }
+	| { type: 'memberLike'; payload: TmemberLikeData };

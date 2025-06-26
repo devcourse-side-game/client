@@ -1,35 +1,20 @@
 import React from 'react';
-import { Dialog, DialogTitle, DialogContent, IconButton } from '@mui/material';
+import { Dialog } from '@mui/material';
 //import CloseIcon from '@mui/icons-material/Close';
 
 type TCommonModalProps = {
+	// 모달이 열리는 조건
 	open: boolean;
+	// 모달이 닫힐 때 작동할 콜백 함수
 	onClose: () => void;
-	title: string;
+	// 모달 내부에 사용될 컴포넌트
 	children: React.ReactNode;
 };
 
-function CommonModal({ open, onClose, title, children }: TCommonModalProps) {
+function CommonModal({ open, onClose, children }: TCommonModalProps) {
 	return (
 		<Dialog open={open} onClose={onClose} fullWidth maxWidth='sm'>
-			<DialogTitle sx={{ m: 0, p: 2 }}>
-				{title}
-				{/* 닫기 버튼 */}
-				<IconButton
-					aria-label='close'
-					onClick={onClose}
-					sx={{
-						position: 'absolute',
-						right: 8,
-						top: 8,
-						color: (theme) => theme.palette.grey[500],
-					}}
-				>
-					{/* <CloseIcon /> */}
-				</IconButton>
-			</DialogTitle>
-
-			<DialogContent dividers>{children}</DialogContent>
+			{children}
 		</Dialog>
 	);
 }

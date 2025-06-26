@@ -9,7 +9,7 @@ import {
 	Button,
 } from '@mui/material';
 import { getTimeAgo } from '../../utils/formatters/date';
-import { TParty } from '../../types/Party';
+import { TModalState, TParty } from '../../types/Party';
 import PartyListItemDetail from './PartyListItemDetail';
 
 // 임시 데이터 타입 및 더미데이터
@@ -19,14 +19,14 @@ export type TPartyListItemProps = {
 	party: TParty;
 	expandedPartyId: number | null;
 	setExpandedPartyId: Dispatch<SetStateAction<number | null>>;
-	onJoinClicked: (partyId: number) => void;
+	onModalOpne: (state: TModalState) => void;
 };
 
 function PartyListItem({
 	party,
 	expandedPartyId,
 	setExpandedPartyId,
-	onJoinClicked,
+	onModalOpne,
 }: TPartyListItemProps) {
 	// props => listItem: PartyListItemProps | null = dummyItem
 	// 아코디언 확장시 파티 세부 정보 api 호출
@@ -71,7 +71,7 @@ function PartyListItem({
 				<Button
 					onClick={() => {
 						console.log(`참가버튼 클릭 : ${party.id}`);
-						onJoinClicked(party.id);
+						onModalOpne({ type: 'join', payload: { partyId: party.id } });
 					}}
 				>
 					파티 참가
