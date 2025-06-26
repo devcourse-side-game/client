@@ -23,6 +23,7 @@ coverage/
 .idea/
 .DS_Store
 *.config.js
+README.md
 
 
 # 패키지 관리

@@ -49,11 +49,19 @@ export default tseslint.config(
 				{
 					selector: 'variable',
 					modifiers: ['const'],
+<<<<<<< dev/hyerin
 					format: ['UPPER_CASE'],
 					filter: {
 						regex: '^[A-Z0-9_]+$',
 						match: true,
 					},
+=======
+					filter: {
+						regex: 'Context$', // 정규식: 이름이 Context로 끝나는 경우 - 함수형 컨텍스트
+						match: true,
+					},
+					format: ['PascalCase'],
+>>>>>>> test
 				},
 			],
 			'prettier/prettier': [
