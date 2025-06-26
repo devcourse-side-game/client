@@ -1,4 +1,5 @@
 import axios from 'axios';
+import api from './axios';
 import { QueryFunctionContext } from '@tanstack/react-query';
 import {
 	TFilterOptions,
@@ -19,6 +20,7 @@ export const fetchParties = async ({
 	// let optionPartyOwnerNameParam = '';
 	// let optionPartyTitleParam = '';
 
+	// 필터 옵션에 따라 URL 변경
 	if (filterOptions.length) {
 		// 필터 옵션 적용type을 Enum 또는 상수화 필요
 		const optionGameId = filterOptions.find((option) => option.type === 'gameId');
@@ -34,10 +36,11 @@ export const fetchParties = async ({
 		// optionPartyTitleParam = optionPartyTitle?.value ? '' : '';
 	}
 	const apiURLParams = `?${optionGameParam}`;
-	const response = await axios.get<TGetPartiesResponse>(
-		`${API_BASE_URL_MOCK}/api/parties${apiURLParams}`
-	);
-	console.log(`fetch url : ${API_BASE_URL_MOCK}/api/parties${apiURLParams}`);
+	const url = `${API_BASE_URL_MOCK}/api/parties${apiURLParams}`;
+	const response = await api.get<TGetPartiesResponse>(url);
+	// const response = await axios.get<TGetPartiesResponse>(
+	// 	`${API_BASE_URL_MOCK}/api/parties${apiURLParams}`
+	// );
 	return response.data;
 };
 /** 기능 : 파티 세부 정보 조회 */
