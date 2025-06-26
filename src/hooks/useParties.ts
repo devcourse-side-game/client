@@ -52,14 +52,14 @@ export const useCreateParty = () => {
 
 	return useMutation<TPartyCreateSuccessResponse, Error, TPartyCreateRequest, unknown>({
 		mutationFn: createParty,
-		onSuccess: (data, variables, context) => {
+		onSuccess: (data) => {
 			console.log('게시판 생성 성공');
 			console.dir(data);
 			// 성공했을 시 성공을 알려야함
 
 			queryClient.invalidateQueries({ queryKey: ['parties'] });
 		},
-		onError: (error, variables, context) => {
+		onError: (error) => {
 			console.error('게시판 생성 실패', error);
 			// 실패시 옵션
 		},

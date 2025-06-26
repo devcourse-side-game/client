@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import List from '@mui/material/List';
 import PartyListItem from './PartyListItem';
-import { TGetPartiesResponse, TModalState, TParty } from '../../types/Party';
+import { TGetPartiesResponse, TParty } from '../../types/Party';
 
 type TPartyListProps = {
 	data: TGetPartiesResponse | undefined;
@@ -10,18 +10,9 @@ type TPartyListProps = {
 	isSuccess: boolean;
 	isError: boolean;
 	error: Error | null;
-	onModalOpen: (state: TModalState) => void;
 };
 
-function PartyList({
-	data,
-	isLoading,
-	isFetching,
-	isSuccess,
-	isError,
-	error,
-	onModalOpen,
-}: TPartyListProps) {
+function PartyList({ data, isLoading, isFetching, isSuccess, isError, error }: TPartyListProps) {
 	const [expandedPartyId, setExpandedPartyId] = useState<number | null>(null);
 
 	// parties의 값이 성공적으로 변경됬을 경우 현재 열려야 하는 아코디언 정보를 초기화
@@ -50,7 +41,6 @@ function PartyList({
 						party={party}
 						expandedPartyId={expandedPartyId}
 						setExpandedPartyId={setExpandedPartyId}
-						onModalOpne={onModalOpen}
 					/>
 				) : null
 			)}

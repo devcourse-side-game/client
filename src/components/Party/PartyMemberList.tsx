@@ -5,15 +5,17 @@ import { TPartyMember } from '../../types/Party';
 
 export type TPartyMemberListProps = {
 	members: TPartyMember[] | null;
+	partyId: number | null;
 };
 
-function PartyMemberList({ members }: TPartyMemberListProps) {
+function PartyMemberList({ members, partyId }: TPartyMemberListProps) {
+	console.log(`partyId : ${partyId}`);
 	if (members === null) return <div>멤버가 없습니다</div>;
 	return (
 		<List>
 			{members.map((member) => (
 				<>
-					<PartyMemberListItem member={member} />
+					<PartyMemberListItem member={member} partyId={partyId} />
 					<Divider component='li' sx={{ borderColor: 'black' }} />
 				</>
 			))}

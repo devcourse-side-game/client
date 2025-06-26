@@ -9,8 +9,9 @@ import {
 	Button,
 } from '@mui/material';
 import { getTimeAgo } from '../../utils/formatters/date';
-import { TModalState, TParty } from '../../types/Party';
+import { TParty } from '../../types/Party';
 import PartyListItemDetail from './PartyListItemDetail';
+import { useModal } from '../../hooks/useModal';
 
 // 임시 데이터 타입 및 더미데이터
 
@@ -19,18 +20,11 @@ export type TPartyListItemProps = {
 	party: TParty;
 	expandedPartyId: number | null;
 	setExpandedPartyId: Dispatch<SetStateAction<number | null>>;
-	onModalOpne: (state: TModalState) => void;
 };
 
-function PartyListItem({
-	party,
-	expandedPartyId,
-	setExpandedPartyId,
-	onModalOpne,
-}: TPartyListItemProps) {
-	// props => listItem: PartyListItemProps | null = dummyItem
+function PartyListItem({ party, expandedPartyId, setExpandedPartyId }: TPartyListItemProps) {
+	const { openModal } = useModal();
 	// 아코디언 확장시 파티 세부 정보 api 호출
-
 	const handleOnAccordionChange = () => {
 		if (expandedPartyId === party.id) setExpandedPartyId(null);
 		else setExpandedPartyId(party.id);
@@ -71,7 +65,8 @@ function PartyListItem({
 				<Button
 					onClick={() => {
 						console.log(`참가버튼 클릭 : ${party.id}`);
-						onModalOpne({ type: 'join', payload: { partyId: party.id } });
+						openModal('join', { partyId: party.id });
+						//onModalOpne({ type: 'join', payload: { partyId: party.id } });
 					}}
 				>
 					파티 참가

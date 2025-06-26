@@ -106,20 +106,27 @@ export type TPartyFormFlow = 'form' | 'success';
 
 export type TPartyModalType = 'create' | 'join' | 'leaderChange' | 'memberBan' | 'memberLike' | '';
 
-export type TModalPayloadKeys = 'partyId' | 'targetUserId';
-
 // 모달에 필요한 데이터 타입들
 export type TCreatePartyData = null; // 'create' 타입은 추가 데이터가 필요 없음
 export type TJoinPartyData = { partyId: number };
 export type TMemberBanData = { partyId: number; userId: number; userName: string };
-export type TLeaderChangeData = { partyId: number; userId: number; userName: string };
-export type TmemberLikeData = { partyId: number; userId: number; userName: string };
+export type TLeaderChangeData = { partyId: number; userId: number; userName?: string };
+export type TMemberLikeData = { partyId: number; userId: number; userName?: string };
 
-// 'type'을 기준으로 어떤 data 타입을 가질지 묶어줍니다.
-export type TModalState =
-	| { type: ''; payload?: null } // 모달의 닫힘 상태 표시
-	| { type: 'create'; payload?: TCreatePartyData } // data가 없으므로 optional
-	| { type: 'join'; payload: TJoinPartyData }
-	| { type: 'memberBan'; payload: TMemberBanData }
-	| { type: 'leaderChange'; payload: TLeaderChangeData }
-	| { type: 'memberLike'; payload: TmemberLikeData };
+export interface ModalPayloadMap {
+	'': null;
+	create: null;
+	join: TJoinPartyData;
+	memberBan: TMemberBanData;
+	leaderChange: TLeaderChangeData;
+	memberLike: TMemberLikeData;
+}
+// ai 도움좀 받았습니다... 머리가 굳어가네요
+// 맵을 이용해 모든 경우의 수를 포함하는 단일 유니온 타입을 생성
+export type TModalState = {
+	// ModalPayloadMap의 모든 키(K)에 대해 반복
+	[K in keyof ModalPayloadMap]: {
+		type: K; // type은 반드시 키(K)와 같아야 하고,
+		payload: ModalPayloadMap[K]; // payload는 K에 해당하는 값이어야 한다는 규칙 생성
+	};
+}[keyof ModalPayloadMap]; // 모든 생성된 객체 타입을 OR(|)로 묶음

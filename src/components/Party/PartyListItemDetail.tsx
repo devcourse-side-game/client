@@ -13,6 +13,7 @@ function PartyListItemDetail({ partyId }: TPartyListItemDetailProps) {
 
 	if (isLoading) return <div>파티세부 정보 로딩중...</div>;
 	if (isError) return <div> 에러가 발생했습니다 : {error.message} </div>;
+	console.log(data);
 	return (
 		<Stack direction='column'>
 			<Typography variant='subtitle2' align='left'>
@@ -27,7 +28,7 @@ function PartyListItemDetail({ partyId }: TPartyListItemDetailProps) {
 					data ? data.max_participants : null
 				)}
 			</Typography>
-			<PartyMemberList members={data ? data.members : null} />
+			<PartyMemberList members={data ? data.members : null} partyId={data ? data.id : null} />
 		</Stack>
 	);
 }
