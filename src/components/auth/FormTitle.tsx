@@ -1,8 +1,5 @@
 import { Typography } from '@mui/material';
-
-interface FormTitleProps {
-	title: string;
-}
+import { FormTitleProps } from '../../types/auth';
 
 function FormTitle({ title }: FormTitleProps) {
 	return (
