@@ -66,7 +66,7 @@ function AuthForm({ formType }: FormTypeProps) {
 		<>
 			{/* <CommonModal /> */}
 			<form onSubmit={handleSubmit}>
-				<FormControl fullWidth error={!!errors.email} margin='normal'>
+				<FormControl fullWidth error={errorMessage !== ''} margin='normal'>
 					{FormType.SIGNUP === formType && (
 						<>
 							<Controller
@@ -79,7 +79,12 @@ function AuthForm({ formType }: FormTypeProps) {
 								render={({ field }) => (
 									<Grid container spacing={2} sx={{ marginBottom: '10px' }}>
 										<Grid size={10}>
-											<TextField {...field} fullWidth label='닉네임' />
+											<TextField
+												{...field}
+												error={!!errors.username}
+												fullWidth
+												label='닉네임'
+											/>
 										</Grid>
 										<Grid size={'grow'} sx={{ height: '100%' }}>
 											<Button
@@ -105,7 +110,12 @@ function AuthForm({ formType }: FormTypeProps) {
 							required: ENTER_EMAIL,
 						}}
 						render={({ field }) => (
-							<TextField {...field} label='이메일' sx={{ marginBottom: '10px' }} />
+							<TextField
+								{...field}
+								error={!!errors.email}
+								label='이메일'
+								sx={{ marginBottom: '10px' }}
+							/>
 						)}
 					/>
 
@@ -121,6 +131,7 @@ function AuthForm({ formType }: FormTypeProps) {
 							render={({ field }) => (
 								<TextField
 									{...field}
+									error={!!errors.password}
 									type='password'
 									label='비밀번호'
 									sx={{ marginBottom: '10px' }}
@@ -142,6 +153,7 @@ function AuthForm({ formType }: FormTypeProps) {
 								render={({ field }) => (
 									<TextField
 										{...field}
+										error={!!errors.password}
 										type='password'
 										label='비밀번호'
 										sx={{ marginBottom: '10px' }}
@@ -157,7 +169,12 @@ function AuthForm({ formType }: FormTypeProps) {
 									required: ENTER_PASSWORD,
 								}}
 								render={({ field }) => (
-									<TextField {...field} type='password' label='비밀번호 확인' />
+									<TextField
+										{...field}
+										error={!!errors.passwordCheck}
+										type='password'
+										label='비밀번호 확인'
+									/>
 								)}
 							/>
 
