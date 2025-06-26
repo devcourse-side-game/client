@@ -37,28 +37,26 @@ export const fetchParties = async ({
 	}
 	const apiURLParams = `?${optionGameParam}`;
 	const url = `${API_BASE_URL_MOCK}/api/parties${apiURLParams}`;
-	const response = await api.get<TGetPartiesResponse>(url);
-	// const response = await axios.get<TGetPartiesResponse>(
-	// 	`${API_BASE_URL_MOCK}/api/parties${apiURLParams}`
-	// );
+	// const response = await api.get<TGetPartiesResponse>(url);
+	const response = await axios.get<TGetPartiesResponse>(url);
 	return response.data;
 };
 /** 기능 : 파티 세부 정보 조회 */
-export const fetchPartyDetail = async (partyId: number): Promise<TPartyListItemDetailResponse> => {
+export const fetchPartyDetail = async (payload: number): Promise<TPartyListItemDetailResponse> => {
 	const response = await axios.get<TPartyListItemDetailResponse>(
-		`${API_BASE_URL_MOCK}/api/parties/${partyId}`
+		`${API_BASE_URL_MOCK}/api/parties/${payload}`
 	);
 	return response.data;
 };
 //데이터가 소팅된 상태로 넘어오나? 날짜별로 소팅하는 시점은?
 
 export const createParty = async (
-	newParty: TPartyCreateRequest
+	payload: TPartyCreateRequest
 ): Promise<TPartyCreateSuccessResponse> => {
 	try {
 		const response = await axios.post<TPartyCreateSuccessResponse>(
 			`${API_BASE_URL_MOCK}/api/parties`,
-			newParty
+			payload
 		);
 		return response.data;
 	} catch (error) {
