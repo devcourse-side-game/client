@@ -45,6 +45,15 @@ export default tseslint.config(
 					selector: 'method',
 					format: null, // 클래스/객체 메서드도 제외
 				},
+				{
+					selector: 'variable',
+					modifiers: ['const'],
+					filter: {
+						regex: 'Context$', // 정규식: 이름이 Context로 끝나는 경우 - 함수형 컨텍스트
+						match: true,
+					},
+					format: ['PascalCase'],
+				},
 			],
 			'prettier/prettier': [
 				'error',

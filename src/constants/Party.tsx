@@ -8,7 +8,8 @@ export const PARTY_LIST_ITEM = {
 	 * @param max 최대 파티원 수
 	 * @returns "(current / max)" 형식의 문자열
 	 */
-	getPartyMembersTitle: (current: number, max: number) => `파티원 (${current} /${max})`,
+	getPartyMembersTitle: (current: number | null, max: number | null) =>
+		`파티원 (${current ? current : 'null'} /${max ? max : 'null'})`,
 	// member 관리
 	BTN_MEMBER_BAN_TEXT: '강퇴',
 };
