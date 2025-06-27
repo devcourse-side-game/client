@@ -1,7 +1,6 @@
 import { ListItemText, MenuItem } from '@mui/material';
 import { IMenuItem } from '../../types/user';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 
 function MenuItemCompoent({ menuTitle, path }: IMenuItem) {
 	const navigate = useNavigate();

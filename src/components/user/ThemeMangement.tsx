@@ -1,4 +1,6 @@
-import { Box, Container, Divider, Typography } from '@mui/material';
+import { Box, Button, Container, Divider, Grid, Typography } from '@mui/material';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import LightModeIcon from '@mui/icons-material/LightMode';
 
 function ThemeMangement() {
 	return (
@@ -10,6 +12,21 @@ function ThemeMangement() {
 			</Box>
 
 			<Divider sx={{ my: 2 }} />
+
+			<Grid container spacing={1}>
+				<Grid size={4}>
+					<Button variant='outlined' fullWidth sx={{ height: '45px' }}>
+						<DarkModeIcon />
+						다크 모드
+					</Button>
+				</Grid>
+				<Grid size={4}>
+					<Button variant='outlined' fullWidth sx={{ height: '45px' }}>
+						<LightModeIcon />
+						라이트 모드
+					</Button>
+				</Grid>
+			</Grid>
 		</Container>
 	);
 }

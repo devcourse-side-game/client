@@ -1,4 +1,5 @@
 import { Box, Container, Divider, Typography } from '@mui/material';
+import GameConectBox from './GameConectBox';
 
 function GameMangement() {
 	return (
@@ -10,6 +11,11 @@ function GameMangement() {
 			</Box>
 
 			<Divider sx={{ my: 2 }} />
+
+			<Container>
+				<GameConectBox />
+				<GameConectBox />
+			</Container>
 		</Container>
 	);
 }
