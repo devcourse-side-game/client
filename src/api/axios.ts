@@ -8,4 +8,19 @@ const api = axios.create({
 	withCredentials: true, // 쿠키 사용 시 필요
 });
 
+api.interceptors.request.use((config) => {
+	// 로그인 관련 API는 토큰 없이 요청
+	const noAuthPaths = ['/login', '/signup'];
+	const isPublic = noAuthPaths.some((path) => config.url?.includes(path));
+
+	if (!isPublic) {
+		const token = localStorage.getItem('token');
+		if (token) {
+			config.headers.Authorization = `Bearer ${token}`;
+		}
+	}
+
+	return config;
+});
+
 export default api;
