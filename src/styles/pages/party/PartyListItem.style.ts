@@ -23,12 +23,8 @@ export const ChipContainer = styled(Stack)(({ theme }) => ({
 	justifyContent: 'left',
 	height: '40px',
 }));
-export const OptionChip = styled(Chip)(({ theme }) => ({
-	marginRight: theme.spacing(1),
-	height: '16px',
-}));
 
-export const PartyListItemDetails = styled(AccordionDetails)(({ theme }) => ({
+export const PartyListItemDetailsWrapper = styled(AccordionDetails)(({ theme }) => ({
 	display: 'flex',
 	width: '100%',
 	flexDirection: 'column',
@@ -36,9 +32,20 @@ export const PartyListItemDetails = styled(AccordionDetails)(({ theme }) => ({
 	justifyContent: 'left',
 }));
 
-export const PartyListItemTitleContainer = styled(Stack)(({ theme }) => ({
+export const PartyListItemTitleWrapper = styled(Stack)(({ theme }) => ({
+	display: 'flex',
+	flexDirection: 'row',
+	alignItems: 'flex-end',
+	justifyContent: 'left',
+	gap: theme.spacing(1),
 	fontSize: '16px',
 	height: '40px',
+}));
+export const PartyListItemButtonWrapper = styled(Box)(({ theme }) => ({
+	display: 'flex',
+	flexDirection: 'row',
+	alignItems: 'flex-end',
+	justifyContent: 'right',
 }));
 export const GameImageBox = styled(Box)(({ theme }) => ({
 	height: '87px',
@@ -46,4 +53,27 @@ export const GameImageBox = styled(Box)(({ theme }) => ({
 	backgroundColor: 'darkcyan',
 	textAlign: 'center',
 	margin: '10px',
+}));
+
+// 파티 멤버 관련 스타일
+export const PartyMemberListWrapper = styled(Stack)(({ theme }) => ({
+	display: 'flex',
+	flexDirection: 'row',
+	alignItems: 'center',
+	justifyContent: 'center',
+	gap: theme.spacing(1),
+	width: '100%',
+}));
+
+export const PartyMemberListItemWrapper = styled(Box)(({ theme }) => ({
+	border: `1px solid ${theme.palette.grey[300]}`,
+	height: '60px',
+	borderRadius: '10px',
+	padding: '10px',
+	display: 'flex',
+	flexDirection: 'row',
+	alignItems: 'center',
+	justifyContent: 'center',
+	gap: theme.spacing(1),
+	width: '100%',
 }));

@@ -13,7 +13,7 @@ export const PartyFilterContainer = styled(Box)(({ theme }) => ({
 	borderRadius: theme.shape.borderRadius,
 }));
 
-export const PartyFilterOptionsContainer = styled(Stack)(({ theme }) => ({
+export const PartyFilterOptionsWrapper = styled(Stack)(({ theme }) => ({
 	display: 'flex',
 	flexDirection: 'row',
 	alignItems: 'center',
@@ -40,7 +40,7 @@ export const PartyFilterButton = styled(Button)(({ theme }) => ({
 	color: theme.palette.primary.contrastText,
 	gap: theme.spacing(2),
 }));
-export const PartyFilterChipContainer = styled(Box)(({ theme }) => ({
+export const PartyFilterChipWrapper = styled(Box)(({ theme }) => ({
 	display: 'flex',
 	flexDirection: 'row',
 	alignItems: 'center',

@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState, useEffect } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { TextField, Autocomplete, CircularProgress } from '@mui/material';
 import { IGame } from '../../types/response';
 import { useGameList } from '../../hooks/useGames';

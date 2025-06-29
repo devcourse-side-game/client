@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { BOARD_PARTY } from '../../constants/Party';
 import PartyFilter from './PartyFilter';
 import PartyList from './PartyList';
@@ -9,11 +9,8 @@ import { useParties } from '../../hooks/useParties';
 import { useModal } from '../../hooks/useModal';
 import {
 	PartyBoardContainer,
-	PartyBoardHeader,
-	PartyBoardTitle,
-	CreatePartyButton,
-	PartyButtonContainer,
-	PartyRefreshButton,
+	PartyBoardHeaderWrapper,
+	PartyButtonWrapper,
 } from '../../styles/pages/party/PartyBoard.styles';
 
 function PartyBoard() {
@@ -31,22 +28,24 @@ function PartyBoard() {
 	};
 
 	return (
-		<PartyBoardContainer className='PartyBoardContainer'>
-			<PartyBoardHeader>
-				<PartyBoardTitle>{BOARD_PARTY.PARTY_BOARD_TITLE}</PartyBoardTitle>
-				<Typography>{BOARD_PARTY.PARTY_BOARD_SUBTITLE}</Typography>
-			</PartyBoardHeader>
+		<PartyBoardContainer>
+			<PartyBoardHeaderWrapper>
+				<Typography variant='h2'>{BOARD_PARTY.PARTY_BOARD_TITLE}</Typography>
+				<Typography variant='h6'>{BOARD_PARTY.PARTY_BOARD_SUBTITLE}</Typography>
+			</PartyBoardHeaderWrapper>
 			<PartyFilter
 				filterOptions={filterOptions}
 				setFilterOptions={setFilterOptions}
 			></PartyFilter>
-			<PartyButtonContainer>
+			<PartyButtonWrapper>
 				<Box sx={{ width: '100px' }}></Box>
-				<PartyRefreshButton onClick={handleRefreshClick}>
+				<Button variant='text' onClick={handleRefreshClick}>
 					새로운 게시글 불러오기
-				</PartyRefreshButton>
-				<CreatePartyButton onClick={handleOpenCreateModal}>파티 생성</CreatePartyButton>
-			</PartyButtonContainer>
+				</Button>
+				<Button variant='contained' onClick={handleOpenCreateModal}>
+					파티 생성
+				</Button>
+			</PartyButtonWrapper>
 
 			<PartyList
 				data={data}

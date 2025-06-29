@@ -16,6 +16,7 @@ import SearchableGameSelect from '../../SearchableGameSelect';
 import { TPartyFormFlow, TPartyCreateRequest } from '../../../../types/Party';
 import { useCreateParty } from '../../../../hooks/useParties';
 import { IGame } from '../../../../types/response';
+import { PartyCreateContainer } from '../../../../styles/pages/party/forms/PartyCreate.styles';
 
 type TPartyCreateFormProps = {
 	onFlowComplete: () => void;
@@ -78,7 +79,7 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 	}
 
 	return (
-		<>
+		<PartyCreateContainer>
 			<DialogTitle>새로운 파티 생성</DialogTitle>
 			<DialogContent>
 				<Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -172,7 +173,7 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 					{isPending ? '생성 중...' : '파티 생성'}
 				</Button>
 			</DialogActions>
-		</>
+		</PartyCreateContainer>
 	);
 }
 export default PartyCreateFlow;

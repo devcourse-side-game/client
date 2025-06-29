@@ -1,5 +1,3 @@
-import { TParty } from './Party';
-
 export interface Response {
 	message: string;
 	statusCode?: string;

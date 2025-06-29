@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { Stack, Button } from '@mui/material';
+import { Stack, Button, Chip, Typography } from '@mui/material';
 import { getTimeAgo } from '../../utils/formatters/date';
 import { TParty } from '../../types/Party';
 import PartyListItemDetail from './PartyListItemDetail';
@@ -9,10 +9,10 @@ import {
 	PartyListItemContainer,
 	PartyListItemAccordion,
 	PartyListItemSummary,
-	PartyListItemDetails,
+	PartyListItemDetailsWrapper,
 	ChipContainer,
-	OptionChip,
-	PartyListItemTitleContainer,
+	PartyListItemTitleWrapper,
+	PartyListItemButtonWrapper,
 } from '../../styles/pages/party/PartyListItem.style';
 import GameImage from '../../assets/gameImage.png';
 // 임시 데이터 타입 및 더미데이터
@@ -45,32 +45,38 @@ function PartyListItem({ party, expandedPartyId, setExpandedPartyId }: TPartyLis
 					</GameImageBox>
 					<Stack direction='column'>
 						<ChipContainer direction='row' spacing={1}>
-							<OptionChip label={party.game_name} />
-							<OptionChip label={party.is_completed ? '모집완료' : '모집중'} />
-							<div>{getTimeAgo(party.created_at)}</div>
+							<Chip size='small' label={party.game_name} />
+							<Chip
+								size='small'
+								label={party.is_completed ? '모집완료' : '모집중'}
+								color={party.is_completed ? 'success' : 'secondary'}
+							/>
+							<Typography variant='body2'>{getTimeAgo(party.created_at)}</Typography>
 						</ChipContainer>
-						<PartyListItemTitleContainer direction='row' spacing={0.5}>
-							<b>{party.title}</b>
-							<div>
-								{party.current_participants} / {party.max_participants}
-							</div>
-						</PartyListItemTitleContainer>
-						<div>{party.creator_name}</div>
+						<PartyListItemTitleWrapper>
+							<Typography variant='h6'>{party.title}</Typography>
+							<Typography variant='body2'>
+								{`(${party.current_participants} / ${party.max_participants})`}
+							</Typography>
+						</PartyListItemTitleWrapper>
+						<Typography variant='body2'>{party.creator_name}</Typography>
 					</Stack>
 				</PartyListItemSummary>
-				<PartyListItemDetails>
+				<PartyListItemDetailsWrapper>
 					<PartyListItemDetail partyId={party.id} />
 					{}
-					<Button
-						onClick={() => {
-							console.log(`참가버튼 클릭 : ${party.id}`);
-							openModal('join', { partyId: party.id });
-							//onModalOpne({ type: 'join', payload: { partyId: party.id } });
-						}}
-					>
-						파티 참가
-					</Button>
-				</PartyListItemDetails>
+					<PartyListItemButtonWrapper>
+						<Button
+							variant='contained'
+							onClick={() => {
+								openModal('join', { partyId: party.id });
+								//onModalOpne({ type: 'join', payload: { partyId: party.id } });
+							}}
+						>
+							파티 참가
+						</Button>
+					</PartyListItemButtonWrapper>
+				</PartyListItemDetailsWrapper>
 			</PartyListItemAccordion>
 		</PartyListItemContainer>
 	);

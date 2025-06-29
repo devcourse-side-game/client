@@ -1,5 +1,7 @@
 import { styled } from '@mui/material/styles';
-import { Box, Button, Typography } from '@mui/material';
+import { Box } from '@mui/material';
+
+//container wrapper grid
 
 export const PartyBoardContainer = styled(Box)(({ theme }) => ({
 	width: '60%',
@@ -13,7 +15,7 @@ export const PartyBoardContainer = styled(Box)(({ theme }) => ({
 	border: `1px solid ${theme.palette.divider}`,
 	borderRadius: theme.shape.borderRadius,
 }));
-export const PartyBoardHeader = styled(Box)(({ theme }) => ({
+export const PartyBoardHeaderWrapper = styled(Box)(({ theme }) => ({
 	width: '100%',
 	display: 'flex',
 	flexDirection: 'column',
@@ -21,36 +23,11 @@ export const PartyBoardHeader = styled(Box)(({ theme }) => ({
 	justifyContent: 'left',
 	gap: theme.spacing(2),
 }));
-
-export const PartyBoardTitle = styled(Typography)({
-	fontSize: '1.25rem',
-	fontWeight: 600,
-});
-
-export const CreatePartyButton = styled(Button)(({ theme }) => ({
-	width: '100px',
-	display: 'flex',
-	flexDirection: 'row',
-	alignItems: 'right',
-	justifyContent: 'center',
-	borderRadius: theme.shape.borderRadius,
-	backgroundColor: theme.palette.primary.main,
-	color: theme.palette.primary.contrastText,
-	gap: theme.spacing(2),
-}));
-export const PartyButtonContainer = styled(Box)(({ theme }) => ({
+export const PartyButtonWrapper = styled(Box)(({ theme }) => ({
 	width: '100%',
 	display: 'flex',
 	flexDirection: 'row',
 	alignItems: 'left',
-	justifyContent: 'center',
+	justifyContent: 'space-between',
 	gap: theme.spacing(2),
-}));
-
-export const PartyRefreshButton = styled(Button)(({ theme }) => ({
-	width: '100%',
-	display: 'flex',
-	flexDirection: 'row',
-	alignItems: 'left',
-	justifyContent: 'center',
 }));

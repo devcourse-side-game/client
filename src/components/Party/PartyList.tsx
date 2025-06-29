@@ -28,7 +28,7 @@ function PartyList({ data, isLoading, isFetching, isSuccess, isError, error }: T
 		return <div> 에러가 발생했습니다 : {error ? error.message : '알 수 없는 에러'} </div>;
 	return (
 		<PartyListContainer>
-			<Stack sx={{ gap: 3, padding: 0 }}>
+			<Stack>
 				{data?.parties.map((party: TParty) =>
 					party ? (
 						<PartyListItem

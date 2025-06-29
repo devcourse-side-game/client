@@ -1,13 +1,12 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
-import { Typography, TextField, Chip } from '@mui/material';
+import { Typography, TextField, Chip, Button } from '@mui/material';
 import SearchableGameSelect from './SearchableGameSelect';
 import { TFilterOptions } from '../../types/Party';
 import {
 	PartyFilterContainer,
-	PartyFilterOptionsContainer,
-	PartyFilterButton,
+	PartyFilterOptionsWrapper,
 	PartyFilterButtonContainer,
-	PartyFilterChipContainer,
+	PartyFilterChipWrapper,
 } from '../../styles/pages/party/PartyFilter.styles';
 import { IGame } from '../../types/response';
 
@@ -56,23 +55,25 @@ function PartyFilter({ filterOptions, setFilterOptions }: TPartyFilterProps) {
 	};
 	return (
 		<PartyFilterContainer>
-			<Typography>필터 옵션</Typography>
-			<PartyFilterOptionsContainer direction='row'>
+			<Typography variant='h6'>필터 옵션</Typography>
+			<PartyFilterOptionsWrapper direction='row'>
 				<SearchableGameSelect setOptionGame={setOptionGame}></SearchableGameSelect>
 				<TextField
+					variant='outlined'
 					value={filterPartyOwnerNicknameText}
 					type='Text'
 					label='파티장 이름 입력'
 					onChange={(e) => setFilterPartyOwnerNicknameText(e.target.value)}
 				></TextField>
 				<TextField
+					variant='outlined'
 					value={filterPartyTitleText}
 					type='Text'
 					label='파티 이름 입력'
 					onChange={(e) => setFilterPartyTitleText(e.target.value)}
 				></TextField>
-			</PartyFilterOptionsContainer>
-			<PartyFilterChipContainer>
+			</PartyFilterOptionsWrapper>
+			<PartyFilterChipWrapper>
 				{filterOptions.map((option) =>
 					option ? (
 						<Chip
@@ -82,11 +83,15 @@ function PartyFilter({ filterOptions, setFilterOptions }: TPartyFilterProps) {
 						/>
 					) : null
 				)}
-			</PartyFilterChipContainer>
+			</PartyFilterChipWrapper>
 
 			<PartyFilterButtonContainer>
-				<PartyFilterButton onClick={handleFilterReset}>필터 초기화</PartyFilterButton>
-				<PartyFilterButton onClick={handleFilterChange}>필터 적용</PartyFilterButton>
+				<Button variant='text' onClick={handleFilterReset}>
+					필터 초기화
+				</Button>
+				<Button variant='contained' onClick={handleFilterChange}>
+					필터 적용
+				</Button>
 			</PartyFilterButtonContainer>
 		</PartyFilterContainer>
 	);
