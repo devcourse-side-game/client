@@ -64,6 +64,15 @@ export default tseslint.config(
 					},
 					format: ['PascalCase'],
 				},
+				{
+					selector: 'variable',
+					modifiers: ['const'],
+					filter: {
+						regex: '^[A-Z][a-zA-Z]*(Accordion|Container|Button|Title|Header|Modal|Form|List|Item|Select|Input|Box|Card|Panel|Section|Wrapper|Component|Styled|Style)$', // 스타일 컴포넌트 일반 패턴
+						match: true,
+					},
+					format: ['PascalCase'],
+				},
 			],
 			'prettier/prettier': [
 				'error',

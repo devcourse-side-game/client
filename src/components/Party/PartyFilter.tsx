@@ -1,7 +1,14 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
-import { Box, Stack, Typography, TextField, Button, Chip } from '@mui/material';
+import { Typography, TextField, Chip } from '@mui/material';
 import SearchableGameSelect from './SearchableGameSelect';
 import { TFilterOptions, TOptionGame } from '../../types/Party';
+import {
+	PartyFilterContainer,
+	PartyFilterOptionsContainer,
+	PartyFilterButton,
+	PartyFilterButtonContainer,
+	PartyFilterChipContainer,
+} from '../../styles/pages/party/PartyFilter.styles';
 
 type TPartyFilterProps = {
 	filterOptions: TFilterOptions[];
@@ -32,6 +39,14 @@ function PartyFilter({ filterOptions, setFilterOptions }: TPartyFilterProps) {
 			});
 		setFilterOptions(newOptions);
 	};
+
+	const handleFilterReset = () => {
+		setOptionGame(null);
+		setFilterPartyOwnerNicknameText('');
+		setFilterPartyTitleText('');
+		setFilterOptions([]);
+	};
+
 	const handleOnChipDelete = (key: string) => {
 		const newFilterOption = filterOptions.filter(
 			(option) => `${option.label}_${option.type}` !== key
@@ -39,9 +54,9 @@ function PartyFilter({ filterOptions, setFilterOptions }: TPartyFilterProps) {
 		setFilterOptions(newFilterOption);
 	};
 	return (
-		<Box bgcolor='greenyellow'>
+		<PartyFilterContainer>
 			<Typography>필터 옵션</Typography>
-			<Stack direction='row'>
+			<PartyFilterOptionsContainer direction='row'>
 				<SearchableGameSelect setOptionGame={setOptionGame}></SearchableGameSelect>
 				<TextField
 					value={filterPartyOwnerNicknameText}
@@ -55,18 +70,24 @@ function PartyFilter({ filterOptions, setFilterOptions }: TPartyFilterProps) {
 					label='파티 이름 입력'
 					onChange={(e) => setFilterPartyTitleText(e.target.value)}
 				></TextField>
-			</Stack>
-			{filterOptions.map((option) =>
-				option ? (
-					<Chip
-						key={`${option.label}_${option.type}`}
-						label={option.label}
-						onDelete={() => handleOnChipDelete(`${option.label}_${option.type}`)}
-					/>
-				) : null
-			)}
-			<Button onClick={handleFilterChange}>필터 적용</Button>
-		</Box>
+			</PartyFilterOptionsContainer>
+			<PartyFilterChipContainer>
+				{filterOptions.map((option) =>
+					option ? (
+						<Chip
+							key={`${option.label}_${option.type}`}
+							label={option.label}
+							onDelete={() => handleOnChipDelete(`${option.label}_${option.type}`)}
+						/>
+					) : null
+				)}
+			</PartyFilterChipContainer>
+
+			<PartyFilterButtonContainer>
+				<PartyFilterButton onClick={handleFilterReset}>필터 초기화</PartyFilterButton>
+				<PartyFilterButton onClick={handleFilterChange}>필터 적용</PartyFilterButton>
+			</PartyFilterButtonContainer>
+		</PartyFilterContainer>
 	);
 }
 export default PartyFilter;
