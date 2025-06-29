@@ -3,7 +3,7 @@ import { GetGameListResponse } from '../types/response';
 import { GetGameListRequest } from '../types/request';
 
 const API_BASE_URL_MOCK = 'http://localhost:3001';
-const API_BASE_URL_PROTO = 'http://localhost:3002';
+//const API_BASE_URL_PROTO = 'http://localhost:3002';
 
 const API_TESTBASE_URL = API_BASE_URL_MOCK;
 

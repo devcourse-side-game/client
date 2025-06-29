@@ -1,22 +1,22 @@
 import { styled } from '@mui/material/styles';
-import { Accordion, AccordionDetails, AccordionSummary, Box, Chip, Stack } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Box, Stack } from '@mui/material';
 
-export const PartyListItemContainer = styled(Box)(({ theme }) => ({
+export const PartyListItemContainer = styled(Box)(() => ({
 	display: 'flex',
 	flexDirection: 'row',
 	alignItems: 'center',
 	justifyContent: 'left',
 }));
-export const PartyListItemAccordion = styled(Accordion)(({ theme }) => ({
+export const PartyListItemAccordion = styled(Accordion)(() => ({
 	width: '100%',
 }));
-export const PartyListItemSummary = styled(AccordionSummary)(({ theme }) => ({
+export const PartyListItemSummaryWrapper = styled(AccordionSummary)(() => ({
 	display: 'flex',
 	flexDirection: 'row',
 	alignItems: 'center',
 	justifyContent: 'left',
 }));
-export const ChipContainer = styled(Stack)(({ theme }) => ({
+export const ChipContainer = styled(Stack)(() => ({
 	display: 'flex',
 	flexDirection: 'row',
 	alignItems: 'center',
@@ -24,7 +24,7 @@ export const ChipContainer = styled(Stack)(({ theme }) => ({
 	height: '40px',
 }));
 
-export const PartyListItemDetailsWrapper = styled(AccordionDetails)(({ theme }) => ({
+export const PartyListItemDetailsWrapper = styled(AccordionDetails)(() => ({
 	display: 'flex',
 	width: '100%',
 	flexDirection: 'column',
@@ -41,13 +41,13 @@ export const PartyListItemTitleWrapper = styled(Stack)(({ theme }) => ({
 	fontSize: '16px',
 	height: '40px',
 }));
-export const PartyListItemButtonWrapper = styled(Box)(({ theme }) => ({
+export const PartyListItemButtonWrapper = styled(Box)(() => ({
 	display: 'flex',
 	flexDirection: 'row',
 	alignItems: 'flex-end',
 	justifyContent: 'right',
 }));
-export const GameImageBox = styled(Box)(({ theme }) => ({
+export const GameImageBox = styled(Box)(() => ({
 	height: '87px',
 	width: '231px',
 	backgroundColor: 'darkcyan',

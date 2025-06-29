@@ -7,7 +7,7 @@ import {
 	PartyMemberListItemWrapper,
 	PartyMemberListWrapper,
 } from '../../styles/pages/party/PartyListItem.style';
-import { Star, StarBorderRounded, StarRounded } from '@mui/icons-material';
+import { StarBorderRounded, StarRounded } from '@mui/icons-material';
 
 type TPartyMemberListItemProps = {
 	member: TPartyMember;

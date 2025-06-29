@@ -8,7 +8,7 @@ import {
 	GameImageBox,
 	PartyListItemContainer,
 	PartyListItemAccordion,
-	PartyListItemSummary,
+	PartyListItemSummaryWrapper,
 	PartyListItemDetailsWrapper,
 	ChipContainer,
 	PartyListItemTitleWrapper,
@@ -39,7 +39,7 @@ function PartyListItem({ party, expandedPartyId, setExpandedPartyId }: TPartyLis
 				expanded={expandedPartyId === party.id}
 				onChange={handleOnAccordionChange}
 			>
-				<PartyListItemSummary>
+				<PartyListItemSummaryWrapper>
 					<GameImageBox>
 						<img src={GameImage} alt='game-image' width='100%' height='100%' />
 					</GameImageBox>
@@ -61,7 +61,7 @@ function PartyListItem({ party, expandedPartyId, setExpandedPartyId }: TPartyLis
 						</PartyListItemTitleWrapper>
 						<Typography variant='body2'>{party.creator_name}</Typography>
 					</Stack>
-				</PartyListItemSummary>
+				</PartyListItemSummaryWrapper>
 				<PartyListItemDetailsWrapper>
 					<PartyListItemDetail partyId={party.id} />
 					{}

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import api from './axios';
+//import api from './axios';
 import { QueryFunctionContext } from '@tanstack/react-query';
 import {
 	TFilterOptions,
@@ -10,7 +10,7 @@ import {
 } from '../types/Party';
 
 const API_BASE_URL_MOCK = 'http://localhost:3001';
-const API_BASE_URL_PROTO = 'http://localhost:3002';
+//const API_BASE_URL_PROTO = 'http://localhost:3002';
 
 const API_TESTBASE_URL = API_BASE_URL_MOCK;
 /** 기능 : 파티 목록 조회 */
