@@ -7,19 +7,18 @@ import {
 	TPartyListItemDetailResponse,
 } from '../types/Party';
 import { createParty, fetchParties, fetchPartyDetail } from '../api/parties';
+import { IPartiesResponse } from '../types/response';
 // import { createParty, fetchParties, fetchPartyDetail } from '../api/parties';
 
 export const useParties = (partyListFilterOptions: TFilterOptions[]) => {
-	return useQuery<TGetPartiesResponse, Error, TGetPartiesResponse, ['parties', TFilterOptions[]]>(
-		{
-			queryKey: ['parties', partyListFilterOptions],
-			queryFn: fetchParties,
-			refetchOnWindowFocus: false,
-			refetchOnMount: false,
-			refetchOnReconnect: false,
-			//refetchInterval: 1000 * 10,
-		}
-	);
+	return useQuery<IPartiesResponse, Error, IPartiesResponse, ['parties', TFilterOptions[]]>({
+		queryKey: ['parties', partyListFilterOptions],
+		queryFn: fetchParties,
+		refetchOnWindowFocus: false,
+		refetchOnMount: false,
+		refetchOnReconnect: false,
+		//refetchInterval: 1000 * 10,
+	});
 };
 
 export const useSelectedPartyDetail = (partyId: number) => {

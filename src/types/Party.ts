@@ -3,31 +3,66 @@ export type TParty = {
 	id: number;
 	title: string;
 	game_id: number;
-	game_name: string;
-	purpose_tag: string;
-	max_participants: number;
-	current_participants: number;
-	start_time: string;
-	end_time: string;
-	is_completed: boolean;
-	is_private: boolean;
-	creator_id: number;
-	creator_name: string;
-	created_at: string;
-	updated_at: string;
+	//game_name: string;
+	purposeTag: string;
+	maxParticipants: number;
+	//current_participants: number;
+	//start_time: string;
+	//end_time: string;
+	isCompleted: boolean;
+	isPrivate: boolean;
+	creatorId: number;
+	//creator_name: string;
+	createdAt: string;
+	updatedAt: string;
+	description: string;
+	accessCode: string | null;
+};
+// "id": 10,
+//         "title": "파티 생성 테스트5",
+//         "gameId": 5553,
+//         "creatorId": 8,
+//         "purposeTag": "친선전",
+//         "maxParticipants": 5,
+//         "description": "설명입니다",
+//         "isPrivate": false,
+//         "accessCode": null,
+//         "isCompleted": false,
+//         "createdAt": "2025-06-29T01:05:13.327Z",
+//         "updatedAt": "2025-06-29T01:05:13.327Z"
+export type TGame = {
+	id: number;
+	name: string;
+	platform: string;
+	steamAppId: number;
+	bannerUrl: string;
+	isActive: boolean;
+	createdAt: string;
+	updatedAt: string;
+	slug: string;
+};
+export type TUser = {
+	id: number;
+	username: string;
+	password: string;
+	email: string;
+	profileImage: string | null;
+	createdAt: string;
+	updatedAt: string;
 };
 export type TPartyListItemDetailResponse = {
 	id: number;
 	title: string;
-	game_id: number;
-	game_name: string;
-	purpose_tag: string;
-	max_participants: number;
-	current_participants: number;
-	start_time: string;
-	end_time: string;
-	is_completed: boolean;
-	is_private: boolean;
+	gameId: number;
+	game: TGame;
+	creator: TUser;
+	purposeTag: string;
+	maxParticipants: number;
+	//currentParticipants: number;
+	startTime: string;
+	//endTime: string;
+	isCompleted: boolean;
+	isPrivate: boolean;
 	creator_id: number;
 	creator_name: string;
 	created_at: string;
@@ -35,13 +70,69 @@ export type TPartyListItemDetailResponse = {
 	description: string;
 	members: TPartyMember[];
 };
+// {
+//     "id": 10,
+//     "title": "파티 생성 테스트5",
+//     "gameId": 5553,
+//     "creatorId": 8,
+//     "purposeTag": "친선전",
+//     "maxParticipants": 5,
+//     "description": "설명입니다",
+//     "isPrivate": false,
+//     "accessCode": null,
+//     "isCompleted": false,
+//     "createdAt": "2025-06-29T01:05:13.327Z",
+//     "updatedAt": "2025-06-29T01:05:13.327Z",
+//     "game": {
+//         "id": 5553,
+//         "name": "Iron Grip Warlord Scorched Earth Trailer",
+//         "platforms": "steam",
+//         "steamAppId": 81712,
+//         "bannerUrl": "https://cdn.cloudflare.steamstatic.com/steam/apps/81712/header.jpg",
+//         "isActive": 1,
+//         "createdAt": "2025-06-24T17:44:29.856Z",
+//         "updatedAt": "2025-06-24T17:44:29.856Z",
+//         "slug": "iron-grip-warlord-scorched-earth-trailer"
+//     },
+//     "creator": {
+//         "id": 8,
+//         "username": "testuser2",
+//         "password": "$2b$10$Ifh7fAFU6A/Qm0bjTXrgFu5H5/d90U6NTF/PjZunbRS/cy38cT3ji",
+//         "email": "testuser2@example.com",
+//         "profileImage": null,
+//         "createdAt": "2025-06-26T14:29:15.774Z",
+//         "updatedAt": "2025-06-26T14:29:15.774Z"
+//     },
+//     "members": [
+//         {
+//             "id": 12,
+//             "partyId": 10,
+//             "userId": 8,
+//             "user": {
+//                 "id": 8,
+//                 "username": "testuser2",
+//                 "password": "$2b$10$Ifh7fAFU6A/Qm0bjTXrgFu5H5/d90U6NTF/PjZunbRS/cy38cT3ji",
+//                 "email": "testuser2@example.com",
+//                 "profileImage": null,
+//                 "createdAt": "2025-06-26T14:29:15.774Z",
+//                 "updatedAt": "2025-06-26T14:29:15.774Z"
+//             },
+//             "isLeader": true,
+//             "joinedAt": "2025-06-29T01:05:13.334Z",
+//             "leftAt": null
+//         }
+//     ]
+// }
 
 // 파티게시판 멤버관련
 export type TPartyMember = {
 	id: number;
-	username: string;
-	is_leader: boolean;
-	joined_at: string;
+	partyId: number;
+	userId: number;
+	user: TUser;
+	isLeader: boolean;
+	joinedAt: string;
+	leftAt: string | null;
 };
 
 export type TGetPartiesResponse = {

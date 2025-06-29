@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Stack } from '@mui/material';
 import PartyListItem from './PartyListItem';
-import { TGetPartiesResponse, TParty } from '../../types/Party';
+import { TParty } from '../../types/Party';
 import { PartyListContainer } from '../../styles/pages/party/PartyList.styles';
+import { IPartiesResponse } from '../../types/response';
 
 type TPartyListProps = {
-	data: TGetPartiesResponse | undefined;
+	data: IPartiesResponse | undefined;
 	isLoading: boolean;
 	isFetching: boolean;
 	isSuccess: boolean;
@@ -13,8 +14,11 @@ type TPartyListProps = {
 	error: Error | null;
 };
 
+)
+
 function PartyList({ data, isLoading, isFetching, isSuccess, isError, error }: TPartyListProps) {
 	const [expandedPartyId, setExpandedPartyId] = useState<number | null>(null);
+
 
 	// parties의 값이 성공적으로 변경됬을 경우 현재 열려야 하는 아코디언 정보를 초기화
 	useEffect(() => {
@@ -29,7 +33,7 @@ function PartyList({ data, isLoading, isFetching, isSuccess, isError, error }: T
 	return (
 		<PartyListContainer>
 			<Stack>
-				{data?.parties.map((party: TParty) =>
+				{data?.map((party: TParty) =>
 					party ? (
 						<PartyListItem
 							key={party.id}
