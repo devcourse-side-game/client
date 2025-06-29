@@ -14,11 +14,8 @@ type TPartyListProps = {
 	error: Error | null;
 };
 
-)
-
 function PartyList({ data, isLoading, isFetching, isSuccess, isError, error }: TPartyListProps) {
 	const [expandedPartyId, setExpandedPartyId] = useState<number | null>(null);
-
 
 	// parties의 값이 성공적으로 변경됬을 경우 현재 열려야 하는 아코디언 정보를 초기화
 	useEffect(() => {

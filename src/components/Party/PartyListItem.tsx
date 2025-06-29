@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { Stack, Button, Chip, Typography } from '@mui/material';
+import { Stack, Chip, Typography } from '@mui/material';
 import { getTimeAgo } from '../../utils/formatters/date';
 import { TParty } from '../../types/Party';
 import PartyListItemDetail from './PartyListItemDetail';
