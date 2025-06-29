@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { Typography, TextField, Chip } from '@mui/material';
 import SearchableGameSelect from './SearchableGameSelect';
-import { TFilterOptions, TOptionGame } from '../../types/Party';
+import { TFilterOptions } from '../../types/Party';
 import {
 	PartyFilterContainer,
 	PartyFilterOptionsContainer,
@@ -9,6 +9,7 @@ import {
 	PartyFilterButtonContainer,
 	PartyFilterChipContainer,
 } from '../../styles/pages/party/PartyFilter.styles';
+import { IGame } from '../../types/response';
 
 type TPartyFilterProps = {
 	filterOptions: TFilterOptions[];
@@ -16,7 +17,7 @@ type TPartyFilterProps = {
 };
 
 function PartyFilter({ filterOptions, setFilterOptions }: TPartyFilterProps) {
-	const [optionGame, setOptionGame] = useState<TOptionGame | null>(null);
+	const [optionGame, setOptionGame] = useState<IGame | null>(null);
 	const [filterPartyOwnerNicknameText, setFilterPartyOwnerNicknameText] = useState<string>('');
 	const [filterPartyTitleText, setFilterPartyTitleText] = useState<string>('');
 
@@ -24,7 +25,7 @@ function PartyFilter({ filterOptions, setFilterOptions }: TPartyFilterProps) {
 		const newOptions: TFilterOptions[] = [];
 		// type을 Enum 또는 상수화 필요
 		if (optionGame)
-			newOptions.push({ type: 'gameId', value: optionGame.id, label: optionGame.title });
+			newOptions.push({ type: 'gameId', value: optionGame.id, label: optionGame.name });
 		if (filterPartyOwnerNicknameText)
 			newOptions.push({
 				type: 'partyOwnerName',

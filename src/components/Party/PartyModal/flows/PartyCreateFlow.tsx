@@ -13,8 +13,9 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import SearchableGameSelect from '../../SearchableGameSelect';
-import { TOptionGame, TPartyFormFlow, TPartyCreateRequest } from '../../../../types/Party';
+import { TPartyFormFlow, TPartyCreateRequest } from '../../../../types/Party';
 import { useCreateParty } from '../../../../hooks/useParties';
+import { IGame } from '../../../../types/response';
 
 type TPartyCreateFormProps = {
 	onFlowComplete: () => void;
@@ -22,7 +23,7 @@ type TPartyCreateFormProps = {
 
 function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 	const [formTitle, setFormTitle] = useState('');
-	const [optionGame, setOptionGame] = useState<TOptionGame | null>(null);
+	const [optionGame, setOptionGame] = useState<IGame | null>(null);
 	const [purposeTag, setPurposeTag] = useState<string>('');
 	const [formDescription, setFormDescription] = useState<string>('');
 	const [formMaxNum, setFormMaxNum] = useState<number>(4);

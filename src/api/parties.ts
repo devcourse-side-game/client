@@ -10,11 +10,15 @@ import {
 } from '../types/Party';
 
 const API_BASE_URL_MOCK = 'http://localhost:3001';
+const API_BASE_URL_PROTO = 'http://localhost:3002';
+
+const API_TESTBASE_URL = API_BASE_URL_MOCK;
 /** 기능 : 파티 목록 조회 */
 export const fetchParties = async ({
 	queryKey,
 }: QueryFunctionContext<['parties', TFilterOptions[]]>): Promise<TGetPartiesResponse> => {
 	const [_queryName, filterOptions] = queryKey;
+	console.log(_queryName);
 
 	let optionGameParam = '';
 	// let optionPartyOwnerNameParam = '';
@@ -36,7 +40,7 @@ export const fetchParties = async ({
 		// optionPartyTitleParam = optionPartyTitle?.value ? '' : '';
 	}
 	const apiURLParams = `?${optionGameParam}`;
-	const url = `${API_BASE_URL_MOCK}/api/parties${apiURLParams}`;
+	const url = `${API_TESTBASE_URL}/api/parties${apiURLParams}`;
 	// const response = await api.get<TGetPartiesResponse>(url);
 	const response = await axios.get<TGetPartiesResponse>(url);
 	return response.data;
@@ -44,7 +48,7 @@ export const fetchParties = async ({
 /** 기능 : 파티 세부 정보 조회 */
 export const fetchPartyDetail = async (payload: number): Promise<TPartyListItemDetailResponse> => {
 	const response = await axios.get<TPartyListItemDetailResponse>(
-		`${API_BASE_URL_MOCK}/api/parties/${payload}`
+		`${API_TESTBASE_URL}/api/parties/${payload}`
 	);
 	return response.data;
 };
@@ -55,7 +59,7 @@ export const createParty = async (
 ): Promise<TPartyCreateSuccessResponse> => {
 	try {
 		const response = await axios.post<TPartyCreateSuccessResponse>(
-			`${API_BASE_URL_MOCK}/api/parties`,
+			`${API_TESTBASE_URL}/api/parties`,
 			payload
 		);
 		return response.data;
