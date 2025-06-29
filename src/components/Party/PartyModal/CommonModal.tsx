@@ -1,5 +1,6 @@
 import React from 'react';
 import { Dialog } from '@mui/material';
+import { CommonModalContainer } from '../../../styles/modal/CommonModal.styles';
 //import CloseIcon from '@mui/icons-material/Close';
 
 type TCommonModalProps = {
@@ -13,9 +14,11 @@ type TCommonModalProps = {
 
 function CommonModal({ open, onClose, children }: TCommonModalProps) {
 	return (
-		<Dialog open={open} onClose={onClose} fullWidth maxWidth='sm'>
-			{children}
-		</Dialog>
+		<CommonModalContainer>
+			<Dialog open={open} onClose={onClose} fullWidth maxWidth='sm'>
+				{children}
+			</Dialog>
+		</CommonModalContainer>
 	);
 }
 

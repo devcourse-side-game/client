@@ -13,8 +13,10 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import SearchableGameSelect from '../../SearchableGameSelect';
-import { TOptionGame, TPartyFormFlow, TPartyCreateRequest } from '../../../../types/Party';
+import { TPartyFormFlow, TPartyCreateRequest } from '../../../../types/Party';
 import { useCreateParty } from '../../../../hooks/useParties';
+import { IGame } from '../../../../types/response';
+import { PartyCreateContainer } from '../../../../styles/pages/party/forms/PartyCreate.styles';
 
 type TPartyCreateFormProps = {
 	onFlowComplete: () => void;
@@ -22,7 +24,7 @@ type TPartyCreateFormProps = {
 
 function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 	const [formTitle, setFormTitle] = useState('');
-	const [optionGame, setOptionGame] = useState<TOptionGame | null>(null);
+	const [optionGame, setOptionGame] = useState<IGame | null>(null);
 	const [purposeTag, setPurposeTag] = useState<string>('');
 	const [formDescription, setFormDescription] = useState<string>('');
 	const [formMaxNum, setFormMaxNum] = useState<number>(4);
@@ -77,7 +79,7 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 	}
 
 	return (
-		<>
+		<PartyCreateContainer>
 			<DialogTitle>새로운 파티 생성</DialogTitle>
 			<DialogContent>
 				<Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -171,7 +173,7 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 					{isPending ? '생성 중...' : '파티 생성'}
 				</Button>
 			</DialogActions>
-		</>
+		</PartyCreateContainer>
 	);
 }
 export default PartyCreateFlow;

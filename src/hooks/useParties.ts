@@ -6,7 +6,8 @@ import {
 	TPartyCreateSuccessResponse,
 	TPartyListItemDetailResponse,
 } from '../types/Party';
-import { createParty, fetchParties, fetchPartyDetail } from '../apis/parties';
+import { createParty, fetchParties, fetchPartyDetail } from '../api/parties';
+// import { createParty, fetchParties, fetchPartyDetail } from '../api/parties';
 
 export const useParties = (partyListFilterOptions: TFilterOptions[]) => {
 	return useQuery<TGetPartiesResponse, Error, TGetPartiesResponse, ['parties', TFilterOptions[]]>(

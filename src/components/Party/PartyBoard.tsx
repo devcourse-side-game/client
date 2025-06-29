@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { BOARD_PARTY } from '../../constants/Party';
 import PartyFilter from './PartyFilter';
 import PartyList from './PartyList';
@@ -7,6 +7,11 @@ import { useQueryClient } from '@tanstack/react-query';
 import { TFilterOptions } from '../../types/Party';
 import { useParties } from '../../hooks/useParties';
 import { useModal } from '../../hooks/useModal';
+import {
+	PartyBoardContainer,
+	PartyBoardHeaderWrapper,
+	PartyButtonWrapper,
+} from '../../styles/pages/party/PartyBoard.styles';
 
 function PartyBoard() {
 	const queryClient = useQueryClient();
@@ -23,15 +28,24 @@ function PartyBoard() {
 	};
 
 	return (
-		<div className='BoardParty'>
-			<Typography>{BOARD_PARTY.PARTY_BOARD_TITLE}</Typography>
-			<Typography>{BOARD_PARTY.PARTY_BOARD_SUBTITLE}</Typography>
+		<PartyBoardContainer>
+			<PartyBoardHeaderWrapper>
+				<Typography variant='h2'>{BOARD_PARTY.PARTY_BOARD_TITLE}</Typography>
+				<Typography variant='h6'>{BOARD_PARTY.PARTY_BOARD_SUBTITLE}</Typography>
+			</PartyBoardHeaderWrapper>
 			<PartyFilter
 				filterOptions={filterOptions}
 				setFilterOptions={setFilterOptions}
 			></PartyFilter>
-			<Button onClick={handleRefreshClick}>새로운 게시글 불러오기</Button>
-			<Button onClick={handleOpenCreateModal}>파티 생성</Button>
+			<PartyButtonWrapper>
+				<Box sx={{ width: '100px' }}></Box>
+				<Button variant='text' onClick={handleRefreshClick}>
+					새로운 게시글 불러오기
+				</Button>
+				<Button variant='contained' onClick={handleOpenCreateModal}>
+					파티 생성
+				</Button>
+			</PartyButtonWrapper>
 
 			<PartyList
 				data={data}
@@ -41,7 +55,7 @@ function PartyBoard() {
 				isError={isError}
 				error={error}
 			></PartyList>
-		</div>
+		</PartyBoardContainer>
 	);
 }
 

@@ -49,19 +49,29 @@ export default tseslint.config(
 				{
 					selector: 'variable',
 					modifiers: ['const'],
-<<<<<<< dev/hyerin
 					format: ['UPPER_CASE'],
 					filter: {
 						regex: '^[A-Z0-9_]+$',
 						match: true,
 					},
-=======
+				},
+				{
+					selector: 'variable',
+					modifiers: ['const'],
 					filter: {
 						regex: 'Context$', // 정규식: 이름이 Context로 끝나는 경우 - 함수형 컨텍스트
 						match: true,
 					},
 					format: ['PascalCase'],
->>>>>>> test
+				},
+				{
+					selector: 'variable',
+					modifiers: ['const'],
+					filter: {
+						regex: '^[A-Z][a-zA-Z]*(Accordion|Container|Button|Title|Header|Modal|Form|List|Item|Select|Input|Box|Card|Panel|Section|Wrapper|Component|Styled|Style)$', // 스타일 컴포넌트 일반 패턴
+						match: true,
+					},
+					format: ['PascalCase'],
 				},
 			],
 			'prettier/prettier': [
