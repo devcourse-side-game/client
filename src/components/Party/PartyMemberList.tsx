@@ -9,7 +9,6 @@ export type TPartyMemberListProps = {
 };
 
 function PartyMemberList({ members, partyId }: TPartyMemberListProps) {
-	console.log(`partyId : ${partyId}`);
 	if (members === null) return <div>멤버가 없습니다</div>;
 	return (
 		<List>

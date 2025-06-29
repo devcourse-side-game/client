@@ -13,7 +13,6 @@ function PartyListItemDetail({ partyId }: TPartyListItemDetailProps) {
 
 	if (isLoading) return <div>파티세부 정보 로딩중...</div>;
 	if (isError) return <div> 에러가 발생했습니다 : {error.message} </div>;
-	console.log(data);
 	return (
 		<Stack direction='column' spacing={2}>
 			<Typography variant='h6' align='left'>
