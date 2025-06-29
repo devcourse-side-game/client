@@ -1,7 +1,6 @@
 import { QueryFunctionContext, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
 	TFilterOptions,
-	TGetPartiesResponse,
 	TPartyCreateRequest,
 	TPartyCreateSuccessResponse,
 	TPartyListItemDetailResponse,
