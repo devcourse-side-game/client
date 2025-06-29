@@ -25,7 +25,7 @@ function PartyMemberListItem({ member, partyId }: TPartyMemberListItemProps) {
 			openModal('memberBan', {
 				partyId: partyId,
 				userId: member.id,
-				userName: member.username,
+				userName: member.user.username,
 			});
 	};
 	const handleOnLeaderChangeButtonClick = () => {
@@ -33,7 +33,7 @@ function PartyMemberListItem({ member, partyId }: TPartyMemberListItemProps) {
 			openModal('leaderChange', {
 				partyId: partyId,
 				userId: member.id,
-				userName: member.username,
+				userName: member.user.username,
 			});
 	};
 	return (
@@ -42,17 +42,22 @@ function PartyMemberListItem({ member, partyId }: TPartyMemberListItemProps) {
 				<Avatar alt='tester'></Avatar>
 				<Box>
 					<Stack direction='row' alignItems='center' spacing={0.5}>
-						<Typography variant='h6'>{member.username}</Typography>
-						{member.is_leader ? (
+						<Typography variant='h6'>{member.user.username}</Typography>
+						{member.isLeader ? (
 							<Chip size='small' variant='filled' color='info' label='파티장' />
 						) : (
+							<></>
+						)}
+						{isLeader && !member.isLeader ? (
 							<Button onClick={handleOnLeaderChangeButtonClick}>파티장 넘기기</Button>
+						) : (
+							<></>
 						)}
 					</Stack>
 					<Typography variant='body2'>닉네임이!</Typography>
 				</Box>
 				<Box sx={{ flexGrow: 1 }}></Box>
-				{isLeader && !member.is_leader ? (
+				{isLeader && !member.isLeader ? (
 					<Button variant='contained' color='warning' onClick={handleOnBanButtonClick}>
 						{PARTY_LIST_ITEM.BTN_MEMBER_BAN_TEXT}
 					</Button>

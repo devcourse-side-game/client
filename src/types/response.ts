@@ -1,3 +1,5 @@
+import { TParty } from './Party';
+
 export interface Response {
 	message: string;
 	statusCode?: string;
@@ -26,3 +28,5 @@ export interface IGame {
 export interface GetGameListResponse extends Response {
 	games: IGame[];
 }
+
+export type IPartiesResponse = TParty[];

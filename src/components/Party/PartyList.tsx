@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Stack } from '@mui/material';
 import PartyListItem from './PartyListItem';
-import { TGetPartiesResponse, TParty } from '../../types/Party';
+import { TParty } from '../../types/Party';
 import { PartyListContainer } from '../../styles/pages/party/PartyList.styles';
+import { IPartiesResponse } from '../../types/response';
 
 type TPartyListProps = {
-	data: TGetPartiesResponse | undefined;
+	data: IPartiesResponse | undefined;
 	isLoading: boolean;
 	isFetching: boolean;
 	isSuccess: boolean;
@@ -29,7 +30,7 @@ function PartyList({ data, isLoading, isFetching, isSuccess, isError, error }: T
 	return (
 		<PartyListContainer>
 			<Stack>
-				{data?.parties.map((party: TParty) =>
+				{data?.map((party: TParty) =>
 					party ? (
 						<PartyListItem
 							key={party.id}

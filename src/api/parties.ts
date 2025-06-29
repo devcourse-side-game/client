@@ -3,20 +3,22 @@ import axios from 'axios';
 import { QueryFunctionContext } from '@tanstack/react-query';
 import {
 	TFilterOptions,
-	TGetPartiesResponse,
 	TPartyCreateRequest,
 	TPartyCreateSuccessResponse,
 	TPartyListItemDetailResponse,
 } from '../types/Party';
+import { IPartiesResponse } from '../types/response';
 
-const API_BASE_URL_MOCK = 'http://localhost:3001';
-//const API_BASE_URL_PROTO = 'http://localhost:3002';
+// const API_BASE_URL_MOCK = 'http://localhost:3001';
+const API_BASE_URL_PROTO = 'http://localhost:3002';
+const TEST_TOKEN =
+	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoic29yaTEyMyIsImVtYWlsIjoidGVzdHNvcmkxMjNAZ21haWwuY29tIiwiaWF0IjoxNzUxMjEzNzUzLCJleHAiOjE3NTEyMTQzNTMsImF1ZCI6InRlc3Rzb3JpMTIzQGdtYWlsLmNvbSIsImlzcyI6ImdhbWUtcGFydHkifQ.ljVzBnUr_SrY5lQ-EeigSptGKUQeYUtmmhTP848SzpI';
 
-const API_TESTBASE_URL = API_BASE_URL_MOCK;
+const API_TESTBASE_URL = API_BASE_URL_PROTO;
 /** 기능 : 파티 목록 조회 */
 export const fetchParties = async ({
 	queryKey,
-}: QueryFunctionContext<['parties', TFilterOptions[]]>): Promise<TGetPartiesResponse> => {
+}: QueryFunctionContext<['parties', TFilterOptions[]]>): Promise<IPartiesResponse> => {
 	const [_queryName, filterOptions] = queryKey;
 	console.log(_queryName);
 
@@ -42,13 +44,23 @@ export const fetchParties = async ({
 	const apiURLParams = `?${optionGameParam}`;
 	const url = `${API_TESTBASE_URL}/api/parties${apiURLParams}`;
 	// const response = await api.get<TGetPartiesResponse>(url);
-	const response = await axios.get<TGetPartiesResponse>(url);
+	const response = await axios.get<IPartiesResponse>(url, {
+		headers: {
+			Authorization: `Bearer ${TEST_TOKEN}`,
+		},
+	});
 	return response.data;
 };
 /** 기능 : 파티 세부 정보 조회 */
 export const fetchPartyDetail = async (payload: number): Promise<TPartyListItemDetailResponse> => {
+	console.log(payload);
 	const response = await axios.get<TPartyListItemDetailResponse>(
-		`${API_TESTBASE_URL}/api/parties/${payload}`
+		`${API_TESTBASE_URL}/api/parties/${payload}`,
+		{
+			headers: {
+				Authorization: `Bearer ${TEST_TOKEN}`,
+			},
+		}
 	);
 	return response.data;
 };
