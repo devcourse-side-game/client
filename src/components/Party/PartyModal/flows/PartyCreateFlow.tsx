@@ -16,7 +16,12 @@ import SearchableGameSelect from '../../SearchableGameSelect';
 import { TPartyFormFlow, TPartyCreateRequest } from '../../../../types/Party';
 import { useCreateParty } from '../../../../hooks/useParties';
 import { IGame } from '../../../../types/response';
-import { PartyCreateContainer } from '../../../../styles/pages/party/forms/PartyCreate.styles';
+import {
+	FormContainer,
+	FormDialogActions,
+	FormDialogContent,
+	FormDialogTitle,
+} from '../../../../styles/pages/party/forms/Form.styles';
 
 type TPartyCreateFormProps = {
 	onFlowComplete: () => void;
@@ -61,119 +66,97 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 	};
 	if (view === 'success') {
 		return (
-			<>
-				<DialogTitle>성공</DialogTitle>
-				<DialogContent>
+			<FormContainer>
+				<FormDialogTitle>성공</FormDialogTitle>
+				<FormDialogContent>
 					<Typography sx={{ py: 4, textAlign: 'center' }}>
 						파티가 성공적으로 생성되었습니다!
 					</Typography>
-				</DialogContent>
-				<DialogActions>
+				</FormDialogContent>
+				<FormDialogActions>
 					{/* 확인 버튼을 누르면 전체 흐름이 완료되었음을 부모에게 알립니다. */}
 					<Button onClick={onFlowComplete} variant='contained' autoFocus>
 						확인
 					</Button>
-				</DialogActions>
-			</>
+				</FormDialogActions>
+			</FormContainer>
 		);
 	}
 
 	return (
-		<PartyCreateContainer>
-			<DialogTitle>새로운 파티 생성</DialogTitle>
-			<DialogContent>
-				<Box sx={{ display: 'flex', flexDirection: 'column' }}>
-					<Box>
-						<div>파티 이름</div>
-						<TextField
-							value={formTitle}
-							type='text'
-							label='모집할 파티 제목을 입력하세요'
-							onChange={(e) => setFormTitle(e.target.value)}
-						/>
-					</Box>
-					<Box>
-						<div>게임 선택</div>
-						<SearchableGameSelect setOptionGame={setOptionGame} />
-					</Box>
-					<FormGroup>
-						<FormControlLabel
-							control={
-								<Switch
-									checked={isPrivateChecked}
-									onChange={() => setIsPrivateChecked(!isPrivateChecked)}
-									inputProps={{ 'aria-label': 'Basic switch' }}
-								/>
-							}
-							label={isPrivateChecked ? '비공개 파티' : '공개 파티'}
-						/>
-					</FormGroup>
-					{isPrivateChecked ? (
-						<Box>
-							<div>비밀번호</div>
-							<TextField
-								value={formTitle}
-								type='text'
-								label='참가 비밀번호를 설정하세요'
-								onChange={(e) => setAccessCode(e.target.value)}
+		<FormContainer>
+			<FormDialogTitle>새로운 파티 생성</FormDialogTitle>
+			<FormDialogContent>
+				<TextField
+					value={formTitle}
+					type='text'
+					label='파티 이름'
+					onChange={(e) => setFormTitle(e.target.value)}
+				/>
+				<SearchableGameSelect setOptionGame={setOptionGame} />
+				<FormGroup>
+					<FormControlLabel
+						control={
+							<Switch
+								checked={isPrivateChecked}
+								onChange={() => setIsPrivateChecked(!isPrivateChecked)}
+								inputProps={{ 'aria-label': 'Basic switch' }}
 							/>
-						</Box>
-					) : null}
-					<Box>
-						<div>파티 목적</div>
-						<TextField
-							value={purposeTag}
-							type='text'
-							label='파티의 목적을 나타낼 태그를 입력하세요'
-							onChange={(e) => setPurposeTag(e.target.value)}
-						/>
-					</Box>
-					<Box>
-						<div>파티 세부 정보</div>
-						<TextField
-							value={formDescription}
-							type='text'
-							multiline
-							minRows={1}
-							label='파티 모집에 필요한 세부 내용을 입력하세요'
-							onChange={(e) => setFormDescription(e.target.value)}
-						/>
-					</Box>
-					<Box>
-						<div>최대 인원</div>
-						<TextField
-							value={formMaxNum}
-							type='number'
-							label='최대 파티원 수를 정하세요'
-							slotProps={{
-								input: {
-									endAdornment: (
-										<InputAdornment position='end'>명</InputAdornment>
-									),
-								},
-							}}
-							inputProps={{ min: 1, max: 16 }}
-							onChange={(e) => setFormMaxNum(parseInt(e.target.value))}
-						/>
-					</Box>
-					<Box>
-						<div>게임 닉네임</div>
-						<TextField
-							value={formOwnerNickname}
-							type='text'
-							label='인게임 닉네임을 입력해주세요'
-							onChange={(e) => setFormOwnerNickname(e.target.value)}
-						/>
-					</Box>
-				</Box>
-			</DialogContent>
-			<DialogActions>
+						}
+						label={isPrivateChecked ? '비공개 파티' : '공개 파티'}
+					/>
+				</FormGroup>
+				{isPrivateChecked ? (
+					<TextField
+						value={accessCode}
+						type='text'
+						label='방 비밀번호'
+						onChange={(e) => setAccessCode(e.target.value)}
+					/>
+				) : null}
+				<TextField
+					value={purposeTag}
+					type='text'
+					label='파티 목적 태그'
+					placeholder='ex) 레이드, 랭크게임 등'
+					onChange={(e) => setPurposeTag(e.target.value)}
+				/>
+				<TextField
+					value={formDescription}
+					type='text'
+					multiline
+					minRows={1}
+					label='파티 정보 입력'
+					placeholder='ex) 파티 목적, 파티 규칙 등'
+					onChange={(e) => setFormDescription(e.target.value)}
+				/>
+				<TextField
+					value={formMaxNum}
+					type='number'
+					label='파티 인원 수'
+					slotProps={{
+						input: {
+							endAdornment: <InputAdornment position='end'>명</InputAdornment>,
+						},
+					}}
+					inputProps={{ min: 1, max: 16 }}
+					onChange={(e) => setFormMaxNum(parseInt(e.target.value))}
+				/>
+				<TextField
+					value={formOwnerNickname}
+					type='text'
+					label='인게임 닉네임'
+					placeholder='파티 주최자 닉네임'
+					onChange={(e) => setFormOwnerNickname(e.target.value)}
+				/>
+			</FormDialogContent>
+			<FormDialogActions>
 				<Button onClick={onFlowComplete}>취소</Button>
 				<Button onClick={handleOnCreateClick} variant='contained' disabled={isPending}>
 					{isPending ? '생성 중...' : '파티 생성'}
 				</Button>
-			</DialogActions>
-		</PartyCreateContainer>
+			</FormDialogActions>
+		</FormContainer>
 	);
 }
 export default PartyCreateFlow;
