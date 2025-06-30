@@ -1,15 +1,7 @@
 import React, { useState } from 'react';
 import { useSelectedPartyDetail } from '../../../../hooks/useParties';
 import { TPartyFormFlow } from '../../../../types/Party';
-import {
-	Box,
-	Button,
-	DialogActions,
-	DialogContent,
-	DialogTitle,
-	TextField,
-	Typography,
-} from '@mui/material';
+import { Button, TextField, Typography } from '@mui/material';
 import {
 	FormContainer,
 	FormDialogActions,

@@ -24,7 +24,7 @@ export const FormDialogContent = styled(DialogContent)(({ theme }) => ({
 	width: '100%',
 	display: 'flex',
 	flexDirection: 'column',
-	gap: '10px',
+	gap: theme.spacing(1),
 	'& .MuiTextField-root:first-of-type': {
 		marginTop: '10px',
 	},
@@ -34,6 +34,6 @@ export const FormDialogActions = styled(DialogActions)(({ theme }) => ({
 	width: '100%',
 	display: 'flex',
 	justifyContent: 'flex-end',
-	gap: '10px',
+	gap: theme.spacing(1),
 	padding: '10px',
 }));

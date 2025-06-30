@@ -1,9 +1,5 @@
 import {
-	Box,
 	Button,
-	DialogActions,
-	DialogContent,
-	DialogTitle,
 	FormControlLabel,
 	FormGroup,
 	InputAdornment,
