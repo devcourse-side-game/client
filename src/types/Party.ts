@@ -148,8 +148,24 @@ export type TFilterOptions = {
 	value: string | number | null;
 	label: string;
 };
-export type TPartyListFilterOptions = {
-	options: TFilterOptions[];
+
+// 새로운 페이로드 타입 추가
+export type TPartiesPayload = {
+	filterOptions: TFilterOptions[];
+	pagination: {
+		page: number;
+		limit: number;
+	};
+};
+
+// API 응답 타입 수정
+export type IPartiesResponse = {
+	parties: TParty[];
+	total: number;
+	page: number;
+	limit: number;
+	hasNext: boolean;
+	hasPrev: boolean;
 };
 
 // gameOptions 배열에 있는 객체의 타입 정의

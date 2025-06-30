@@ -30,3 +30,8 @@ export interface GetGameListResponse extends Response {
 }
 
 export type IPartiesResponse = TParty[];
+
+export interface IJoinPartyResponse extends Response {
+	message: string;
+	partyId: number;
+}

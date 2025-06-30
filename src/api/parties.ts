@@ -1,47 +1,40 @@
 import axios from 'axios';
 //import api from './axios';
-import { QueryFunctionContext } from '@tanstack/react-query';
 import {
-	TFilterOptions,
 	TPartyCreateRequest,
 	TPartyCreateSuccessResponse,
 	TPartyListItemDetailResponse,
+	TPartiesPayload,
 } from '../types/Party';
-import { IPartiesResponse } from '../types/response';
+import { IJoinPartyResponse, IPartiesResponse } from '../types/response';
+import { IJoinPartyRequest } from '../types/request';
 
 // const API_BASE_URL_MOCK = 'http://localhost:3001';
 const API_BASE_URL_PROTO = 'http://localhost:3002';
 const TEST_TOKEN =
-	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoic29yaTEyMyIsImVtYWlsIjoidGVzdHNvcmkxMjNAZ21haWwuY29tIiwiaWF0IjoxNzUxMjQzMTU1LCJleHAiOjE3NTEyNDM3NTUsImF1ZCI6InRlc3Rzb3JpMTIzQGdtYWlsLmNvbSIsImlzcyI6ImdhbWUtcGFydHkifQ.07Iw-u-C3UvL7Tp75QOuaKZSYP8Dyumf6rp7wQn37K8';
+	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoic29yaTEyMyIsImVtYWlsIjoidGVzdHNvcmkxMjNAZ21haWwuY29tIiwiaWF0IjoxNzUxMjQ5MjUwLCJleHAiOjE3NTEyNDk4NTAsImF1ZCI6InRlc3Rzb3JpMTIzQGdtYWlsLmNvbSIsImlzcyI6ImdhbWUtcGFydHkifQ.lrVUbh1oRJXRQw6Zj2G3op-zFU9SYj_YDX31LG3km3k';
 
 const API_TESTBASE_URL = API_BASE_URL_PROTO;
 /** 기능 : 파티 목록 조회 */
-export const fetchParties = async ({
-	queryKey,
-}: QueryFunctionContext<['parties', TFilterOptions[]]>): Promise<IPartiesResponse> => {
-	const [_queryName, filterOptions] = queryKey;
+export const fetchParties = async (payload: TPartiesPayload): Promise<IPartiesResponse> => {
+	const { filterOptions, pagination } = payload;
 
-	let optionGameParam = '';
-	// let optionPartyOwnerNameParam = '';
-	// let optionPartyTitleParam = '';
+	const queryParams = new URLSearchParams();
 
-	// 필터 옵션에 따라 URL 변경
+	// 페이지네이션 파라미터
+	queryParams.append('page', pagination.page.toString());
+	queryParams.append('limit', pagination.limit.toString());
+
+	// 필터 옵션 파라미터
 	if (filterOptions.length) {
-		// 필터 옵션 적용type을 Enum 또는 상수화 필요
 		const optionGameId = filterOptions.find((option) => option.type === 'gameId');
-		optionGameParam = optionGameId?.value ? `game_id=${optionGameId.value}` : '';
-
-		// optionPartyOwnerName 와 optionPartyTitle 은 백엔드와 회의 후 추후 옵션 추가 필요
-		// const optionPartyOwnerName = filterOptions.find(
-		// 	(option) => option.type === 'partyOwnerName'
-		// );
-		// optionPartyOwnerNameParam = optionPartyOwnerName?.value ? '' : '';
-		// const optionPartyTitle = filterOptions.find((option) => option.type === 'partyTitle');
-		// optionPartyTitleParam = optionPartyTitle?.value ? '' : '';
+		if (optionGameId?.value) {
+			queryParams.append('game_id', optionGameId.value.toString());
+		}
+		// 다른 필터들도 추가...
 	}
-	const apiURLParams = `?${optionGameParam}`;
-	const url = `${API_TESTBASE_URL}/api/parties${apiURLParams}`;
-	// const response = await api.get<TGetPartiesResponse>(url);
+
+	const url = `${API_TESTBASE_URL}/api/parties?${queryParams.toString()}`;
 	const response = await axios.get<IPartiesResponse>(url, {
 		headers: {
 			Authorization: `Bearer ${TEST_TOKEN}`,
@@ -81,4 +74,17 @@ export const createParty = async (
 		console.error('API Error: Failed to create party', error);
 		throw error;
 	}
+};
+
+export const fetchJoinParty = async (payload: IJoinPartyRequest): Promise<IJoinPartyResponse> => {
+	const response = await axios.post<IJoinPartyResponse>(
+		`${API_TESTBASE_URL}/api/parties/join`,
+		payload,
+		{
+			headers: {
+				Authorization: `Bearer ${TEST_TOKEN}`,
+			},
+		}
+	);
+	return response.data;
 };

@@ -25,3 +25,7 @@ export interface PagenationRequest {
 	limit: number;
 	page: number;
 }
+
+export interface IJoinPartyRequest {
+	partyId: number;
+}

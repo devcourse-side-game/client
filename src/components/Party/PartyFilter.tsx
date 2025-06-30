@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { useState } from 'react';
 import { Typography, TextField, Chip, Button } from '@mui/material';
 import SearchableGameSelect from './SearchableGameSelect';
 import { TFilterOptions } from '../../types/Party';
@@ -12,7 +12,7 @@ import { IGame } from '../../types/response';
 
 type TPartyFilterProps = {
 	filterOptions: TFilterOptions[];
-	setFilterOptions: Dispatch<SetStateAction<TFilterOptions[]>>;
+	setFilterOptions: (filterOptions: TFilterOptions[]) => void;
 };
 
 function PartyFilter({ filterOptions, setFilterOptions }: TPartyFilterProps) {
