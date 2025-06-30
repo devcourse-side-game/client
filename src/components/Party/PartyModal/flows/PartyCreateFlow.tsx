@@ -123,11 +123,13 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 				/>
 				<TextField
 					value={formDescription}
-					type='text'
 					multiline
 					minRows={1}
 					label='파티 정보 입력'
 					placeholder='ex) 파티 목적, 파티 규칙 등'
+					inputProps={{
+						pattern: '.*',
+					}}
 					onChange={(e) => setFormDescription(e.target.value)}
 				/>
 				<TextField

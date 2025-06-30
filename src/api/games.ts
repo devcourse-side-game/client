@@ -11,6 +11,5 @@ export const fetchGameList = async (payload: GetGameListRequest): Promise<GetGam
 	const response = await axios.get<GetGameListResponse>(`${API_TESTBASE_URL}/api/games`, {
 		params: payload,
 	});
-	console.log(`fetchGameList : ${response.data}`);
 	return response.data;
 };

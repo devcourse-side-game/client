@@ -12,7 +12,7 @@ import { IPartiesResponse } from '../types/response';
 // const API_BASE_URL_MOCK = 'http://localhost:3001';
 const API_BASE_URL_PROTO = 'http://localhost:3002';
 const TEST_TOKEN =
-	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoic29yaTEyMyIsImVtYWlsIjoidGVzdHNvcmkxMjNAZ21haWwuY29tIiwiaWF0IjoxNzUxMjM5NzE4LCJleHAiOjE3NTEyNDAzMTgsImF1ZCI6InRlc3Rzb3JpMTIzQGdtYWlsLmNvbSIsImlzcyI6ImdhbWUtcGFydHkifQ.vnxcqmHAJj7eJdAKRMDQ2FDSKxvdU7ZhPWhWtUpBGZA';
+	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoic29yaTEyMyIsImVtYWlsIjoidGVzdHNvcmkxMjNAZ21haWwuY29tIiwiaWF0IjoxNzUxMjQzMTU1LCJleHAiOjE3NTEyNDM3NTUsImF1ZCI6InRlc3Rzb3JpMTIzQGdtYWlsLmNvbSIsImlzcyI6ImdhbWUtcGFydHkifQ.07Iw-u-C3UvL7Tp75QOuaKZSYP8Dyumf6rp7wQn37K8';
 
 const API_TESTBASE_URL = API_BASE_URL_PROTO;
 /** 기능 : 파티 목록 조회 */
@@ -20,7 +20,6 @@ export const fetchParties = async ({
 	queryKey,
 }: QueryFunctionContext<['parties', TFilterOptions[]]>): Promise<IPartiesResponse> => {
 	const [_queryName, filterOptions] = queryKey;
-	console.log(_queryName);
 
 	let optionGameParam = '';
 	// let optionPartyOwnerNameParam = '';
@@ -30,7 +29,6 @@ export const fetchParties = async ({
 	if (filterOptions.length) {
 		// 필터 옵션 적용type을 Enum 또는 상수화 필요
 		const optionGameId = filterOptions.find((option) => option.type === 'gameId');
-		console.log('test : ' + optionGameId?.label);
 		optionGameParam = optionGameId?.value ? `game_id=${optionGameId.value}` : '';
 
 		// optionPartyOwnerName 와 optionPartyTitle 은 백엔드와 회의 후 추후 옵션 추가 필요
@@ -53,7 +51,6 @@ export const fetchParties = async ({
 };
 /** 기능 : 파티 세부 정보 조회 */
 export const fetchPartyDetail = async (payload: number): Promise<TPartyListItemDetailResponse> => {
-	console.log(payload);
 	const response = await axios.get<TPartyListItemDetailResponse>(
 		`${API_TESTBASE_URL}/api/parties/${payload}`,
 		{
@@ -72,7 +69,12 @@ export const createParty = async (
 	try {
 		const response = await axios.post<TPartyCreateSuccessResponse>(
 			`${API_TESTBASE_URL}/api/parties`,
-			payload
+			payload,
+			{
+				headers: {
+					Authorization: `Bearer ${TEST_TOKEN}`,
+				},
+			}
 		);
 		return response.data;
 	} catch (error) {
