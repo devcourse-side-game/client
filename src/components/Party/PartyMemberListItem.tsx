@@ -25,7 +25,7 @@ function PartyMemberListItem({ member, partyId }: TPartyMemberListItemProps) {
 			openModal('memberBan', {
 				partyId: partyId,
 				userId: member.id,
-				userName: member.user.username,
+				userName: member.username,
 			});
 	};
 	const handleOnLeaderChangeButtonClick = () => {
@@ -33,7 +33,7 @@ function PartyMemberListItem({ member, partyId }: TPartyMemberListItemProps) {
 			openModal('leaderChange', {
 				partyId: partyId,
 				userId: member.id,
-				userName: member.user.username,
+				userName: member.username,
 			});
 	};
 	return (
@@ -42,7 +42,7 @@ function PartyMemberListItem({ member, partyId }: TPartyMemberListItemProps) {
 				<Avatar alt='tester'></Avatar>
 				<Box>
 					<Stack direction='row' alignItems='center' spacing={0.5}>
-						<Typography variant='h6'>{member.user.username}</Typography>
+						<Typography variant='h6'>{member.username}</Typography>
 						{member.isLeader ? (
 							<Chip size='small' variant='filled' color='info' label='파티장' />
 						) : (

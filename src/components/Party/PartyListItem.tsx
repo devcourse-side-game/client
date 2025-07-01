@@ -23,9 +23,10 @@ export type TPartyListItemProps = {
 };
 
 function PartyListItem({ party, expandedPartyId, setExpandedPartyId }: TPartyListItemProps) {
+	const isExpanded = expandedPartyId === party.id;
 	// 아코디언 확장시 파티 세부 정보 api 호출
 	const handleOnAccordionChange = () => {
-		if (expandedPartyId === party.id) setExpandedPartyId(null);
+		if (isExpanded) setExpandedPartyId(null);
 		else setExpandedPartyId(party.id);
 	};
 
@@ -42,7 +43,7 @@ function PartyListItem({ party, expandedPartyId, setExpandedPartyId }: TPartyLis
 					</GameImageBox>
 					<Stack direction='column'>
 						<ChipContainer direction='row' spacing={1}>
-							<Chip size='small' label={'게임 이름'} />
+							<Chip size='small' label={party.gameId} />
 							<Chip
 								size='small'
 								label={party.isCompleted ? '모집완료' : '모집중'}
@@ -56,11 +57,12 @@ function PartyListItem({ party, expandedPartyId, setExpandedPartyId }: TPartyLis
 								{`(${8} / ${party.maxParticipants})`}
 							</Typography>
 						</PartyListItemTitleWrapper>
-						<Typography variant='body2'>{'생성인'}</Typography>
+						<Typography variant='body2'>{party.leader.username}</Typography>
+						<Typography variant='body2'>{party.leader.gameUsername}</Typography>
 					</Stack>
 				</PartyListItemSummaryWrapper>
 				<PartyListItemDetailsWrapper>
-					<PartyListItemDetail partyId={party.id} />
+					{isExpanded && <PartyListItemDetail partyId={party.id} />}
 				</PartyListItemDetailsWrapper>
 			</PartyListItemAccordion>
 		</PartyListItemContainer>

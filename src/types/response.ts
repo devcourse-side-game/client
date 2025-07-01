@@ -1,4 +1,4 @@
-import { TParty } from './Party';
+import { TGame, TParty } from './Party';
 
 export interface Response {
 	message: string;
@@ -14,20 +14,7 @@ export interface LoginResponse extends Response {
 
 // export interface NicknameResponse extends Response {}
 
-export interface IGame {
-	id: number;
-	name: string;
-	platform: string;
-	steamAppId: number;
-	bannerUrl: string;
-	isActive: boolean;
-	createdAt: string;
-	updatedAt: string;
-	slug: string;
-}
-export interface GetGameListResponse extends Response {
-	games: IGame[];
-}
+export type TGetGameListResponse = TGame[];
 
 export type IPartiesResponse = TParty[];
 

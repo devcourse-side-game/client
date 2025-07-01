@@ -12,7 +12,7 @@ import { IJoinPartyRequest } from '../types/request';
 // const API_BASE_URL_MOCK = 'http://localhost:3001';
 const API_BASE_URL_PROTO = 'http://localhost:3002';
 const TEST_TOKEN =
-	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoic29yaTEyMyIsImVtYWlsIjoidGVzdHNvcmkxMjNAZ21haWwuY29tIiwiaWF0IjoxNzUxMjQ5MjUwLCJleHAiOjE3NTEyNDk4NTAsImF1ZCI6InRlc3Rzb3JpMTIzQGdtYWlsLmNvbSIsImlzcyI6ImdhbWUtcGFydHkifQ.lrVUbh1oRJXRQw6Zj2G3op-zFU9SYj_YDX31LG3km3k';
+	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoic29yaTEyMyIsImVtYWlsIjoidGVzdHNvcmkxMjNAZ21haWwuY29tIiwiaWF0IjoxNzUxMzUyMTI4LCJleHAiOjE3NTEzNjI5MjgsImF1ZCI6InRlc3Rzb3JpMTIzQGdtYWlsLmNvbSIsImlzcyI6ImdhbWUtcGFydHkifQ.QCym55F5rlhJmhz9ail4_EWqcFnRcvDkc4587rDVaGA';
 
 const API_TESTBASE_URL = API_BASE_URL_PROTO;
 /** 기능 : 파티 목록 조회 */

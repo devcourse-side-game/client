@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Divider } from '@mui/material';
+import { Stack } from '@mui/material';
 import PartyMemberListItem from './PartyMemberListItem';
 import { TPartyMember } from '../../types/Party';
 
@@ -11,14 +11,13 @@ export type TPartyMemberListProps = {
 function PartyMemberList({ members, partyId }: TPartyMemberListProps) {
 	if (members === null) return <div>멤버가 없습니다</div>;
 	return (
-		<List>
+		<Stack>
 			{members.map((member) => (
 				<>
 					<PartyMemberListItem member={member} partyId={partyId} />
-					<Divider component='li' sx={{ borderColor: 'black' }} />
 				</>
 			))}
-		</List>
+		</Stack>
 	);
 }
 

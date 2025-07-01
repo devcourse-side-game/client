@@ -14,16 +14,11 @@ export interface NicknameCheckRequest {
 }
 
 export interface GetGameListRequest {
-	platform: string;
-	isActive: boolean;
 	limit: number;
 	page: number;
-	search: string;
-}
-
-export interface PagenationRequest {
-	limit: number;
-	page: number;
+	isactive?: boolean;
+	platform?: string;
+	search?: string;
 }
 
 export interface IJoinPartyRequest {

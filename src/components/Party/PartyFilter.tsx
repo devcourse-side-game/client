@@ -8,7 +8,7 @@ import {
 	PartyFilterButtonContainer,
 	PartyFilterChipWrapper,
 } from '../../styles/pages/party/PartyFilter.styles';
-import { IGame } from '../../types/response';
+import { TGame } from '../../types/Party';
 
 type TPartyFilterProps = {
 	filterOptions: TFilterOptions[];
@@ -16,7 +16,7 @@ type TPartyFilterProps = {
 };
 
 function PartyFilter({ filterOptions, setFilterOptions }: TPartyFilterProps) {
-	const [optionGame, setOptionGame] = useState<IGame | null>(null);
+	const [optionGame, setOptionGame] = useState<TGame | null>(null);
 	const [filterPartyOwnerNicknameText, setFilterPartyOwnerNicknameText] = useState<string>('');
 	const [filterPartyTitleText, setFilterPartyTitleText] = useState<string>('');
 

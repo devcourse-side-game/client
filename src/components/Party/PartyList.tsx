@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import PartyListItem from './PartyListItem';
 import { TParty } from '../../types/Party';
 import { PartyListContainer } from '../../styles/pages/party/PartyList.styles';
@@ -26,7 +26,12 @@ function PartyList({ data, isLoading, isFetching, isSuccess, isError, error }: T
 
 	if (isLoading) return <div>파티 목록 로딩중...</div>;
 	if (isError)
-		return <div> 에러가 발생했습니다 : {error ? error.message : '알 수 없는 에러'} </div>;
+		return (
+			<Typography variant='body1'>
+				{' '}
+				파티 목록 로딩중 에러가 발생했습니다. 로그인 하시거나 다시 시도해주세요{' '}
+			</Typography>
+		);
 	return (
 		<PartyListContainer>
 			<Stack>

@@ -11,7 +11,7 @@ import React, { useState } from 'react';
 import SearchableGameSelect from '../../SearchableGameSelect';
 import { TPartyFormFlow, TPartyCreateRequest } from '../../../../types/Party';
 import { useCreateParty } from '../../../../hooks/useParties';
-import { IGame } from '../../../../types/response';
+import { TGame } from '../../../../types/Party';
 import {
 	FormContainer,
 	FormDialogActions,
@@ -25,7 +25,7 @@ type TPartyCreateFormProps = {
 
 function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 	const [formTitle, setFormTitle] = useState('');
-	const [optionGame, setOptionGame] = useState<IGame | null>(null);
+	const [optionGame, setOptionGame] = useState<TGame | null>(null);
 	const [purposeTag, setPurposeTag] = useState<string>('');
 	const [formDescription, setFormDescription] = useState<string>('');
 	const [formMaxNum, setFormMaxNum] = useState<number>(4);

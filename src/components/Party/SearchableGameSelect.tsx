@@ -1,29 +1,30 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { TextField, Autocomplete, CircularProgress } from '@mui/material';
-import { IGame } from '../../types/response';
+import { TGame } from '../../types/Party';
 import { useGameList } from '../../hooks/useGames';
 import GameImage from '../../assets/gameImage.png';
 type TSearchableGameSelectProps = {
-	setOptionGame: Dispatch<SetStateAction<IGame | null>>;
+	setOptionGame: Dispatch<SetStateAction<TGame | null>>;
 };
 
 function SearchableGameSelect({ setOptionGame }: TSearchableGameSelectProps) {
 	// 선택된 게임 객체를 저장하기 위한 state
-	const [selectedGame, setSelectedGame] = useState<IGame | null>(null);
-
+	const [selectedGame, setSelectedGame] = useState<TGame | null>(null);
+	const [searchValue, setSearchValue] = useState('');
 	const { data, isLoading, isError, isSuccess } = useGameList({
 		limit: 50, // 더 많은 게임을 가져오기 위해 limit 증가
 		page: 1,
+		search: searchValue,
 	});
 
-	const { games }: { games: IGame[] } = isSuccess ? data : { games: [] };
+	const games = isSuccess ? data : [];
 
 	return (
 		<Autocomplete
 			// 선택된 값 (제어 컴포넌트)
 			value={selectedGame}
 			// 사용자가 항목을 선택했을 때 호출되는 함수
-			onChange={(event, newValue: IGame | null) => {
+			onChange={(event, newValue: TGame | null) => {
 				setSelectedGame(newValue);
 				setOptionGame(newValue);
 			}}
@@ -65,6 +66,9 @@ function SearchableGameSelect({ setOptionGame }: TSearchableGameSelectProps) {
 					}}
 				/>
 			)}
+			onInputChange={(event, newInputValue) => {
+				setSearchValue(newInputValue);
+			}}
 			// 로딩 중일 때 옵션 비활성화
 			loading={isLoading}
 			// API 에러 시 비활성화
