@@ -29,7 +29,7 @@ export const fetchParties = async (payload: TPartiesPayload): Promise<IPartiesRe
 	if (filterOptions.length) {
 		const optionGameId = filterOptions.find((option) => option.type === 'gameId');
 		if (optionGameId?.value) {
-			queryParams.append('game_id', optionGameId.value.toString());
+			queryParams.append('gameId', optionGameId.value.toString());
 		}
 		// 다른 필터들도 추가...
 	}
