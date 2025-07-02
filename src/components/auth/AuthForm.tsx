@@ -18,13 +18,16 @@ import {
 	SIGNUP_TITLE,
 } from '../../constants/auth';
 import { validatePassword } from '../../utils/passwordValidation';
-// import CommonModal from '../common/commonMadal';
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
+import { nicknameCheckApi } from '../../api/auth';
+import { useDialog } from '../../contexts/AuthModalContext';
 
 function AuthForm({ formType }: FormTypeProps) {
-	const { control, handleSubmit, errors, watch, getValues, setError } = useAuthForm({ formType });
+	const { control, handleSubmit, errors, watch, getValues, setError, clearErrors } = useAuthForm({
+		formType,
+	});
 	const passwordValue = watch('password');
-
+	const { show } = useDialog();
 	const { isLengthValid, isComplexValid } = useMemo(() => {
 		return validatePassword(passwordValue);
 	}, [passwordValue]);
@@ -38,15 +41,19 @@ function AuthForm({ formType }: FormTypeProps) {
 
 	async function confirmUsername() {
 		const usernameValue = getValues('username');
+		clearErrors();
 		if (!usernameValue) {
 			setError('username', { message: ENTER_USERNAME });
 		} else {
 			try {
-				const res = await axios.post('/auth/nicknameCheck', {
-					nickname: usernameValue,
+				const res = await nicknameCheckApi({
+					username: usernameValue,
 				});
 
-				console.log('닉네임 중복 확인: ', res);
+				console.log('닉네임 중복 확인: ' + res.message);
+				show(res.message, () => {
+					console.log('사용');
+				});
 			} catch (error: unknown) {
 				const axiosError = error as AxiosError;
 				if (axiosError.response) {
@@ -64,7 +71,6 @@ function AuthForm({ formType }: FormTypeProps) {
 
 	return (
 		<>
-			{/* <CommonModal /> */}
 			<form onSubmit={handleSubmit}>
 				<FormControl fullWidth error={errorMessage !== ''} margin='normal'>
 					{FormType.SIGNUP === formType && (
@@ -81,6 +87,7 @@ function AuthForm({ formType }: FormTypeProps) {
 										<Grid size={10}>
 											<TextField
 												{...field}
+												inputRef={field.ref}
 												error={!!errors.username}
 												fullWidth
 												label='닉네임'
@@ -105,7 +112,7 @@ function AuthForm({ formType }: FormTypeProps) {
 					<Controller
 						name='email'
 						control={control}
-						defaultValue='test@example.com'
+						defaultValue='test@mail.com'
 						rules={{
 							required: ENTER_EMAIL,
 						}}
@@ -123,7 +130,7 @@ function AuthForm({ formType }: FormTypeProps) {
 						<Controller
 							name='password'
 							control={control}
-							defaultValue='Test1234!'
+							defaultValue='!1234567'
 							rules={{
 								required: ENTER_PASSWORD,
 								validate: (value) => value.length > 0 || ENTER_PASSWORD,

@@ -15,14 +15,26 @@ function ThemeMangement() {
 
 			<Grid container spacing={1}>
 				<Grid size={4}>
-					<Button variant='outlined' fullWidth sx={{ height: '45px' }}>
-						<DarkModeIcon />
+					<Button
+						variant='outlined'
+						startIcon={<DarkModeIcon />}
+						fullWidth
+						sx={{
+							backgroundColor: 'primary.main',
+							color: 'white',
+							height: '45px',
+						}}
+					>
 						다크 모드
 					</Button>
 				</Grid>
 				<Grid size={4}>
-					<Button variant='outlined' fullWidth sx={{ height: '45px' }}>
-						<LightModeIcon />
+					<Button
+						variant='outlined'
+						startIcon={<LightModeIcon />}
+						fullWidth
+						sx={{ height: '45px' }}
+					>
 						라이트 모드
 					</Button>
 				</Grid>
