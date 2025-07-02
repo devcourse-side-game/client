@@ -22,3 +22,5 @@ export interface IJoinPartyResponse extends Response {
 	message: string;
 	partyId: number;
 }
+
+export type TGameDetailResponse = TGame;

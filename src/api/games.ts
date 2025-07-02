@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { TGetGameListResponse } from '../types/response';
+import { TGameDetailResponse, TGetGameListResponse } from '../types/response';
 import { GetGameListRequest } from '../types/request';
 
 const API_BASE_URL_MOCK = 'http://localhost:3001';
@@ -7,7 +7,7 @@ const API_BASE_URL_PROTO = 'http://localhost:3002';
 
 const API_TESTBASE_URL = API_BASE_URL_PROTO;
 const TEST_TOKEN =
-	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoic29yaTEyMyIsImVtYWlsIjoidGVzdHNvcmkxMjNAZ21haWwuY29tIiwiaWF0IjoxNzUxMzUyMTI4LCJleHAiOjE3NTEzNjI5MjgsImF1ZCI6InRlc3Rzb3JpMTIzQGdtYWlsLmNvbSIsImlzcyI6ImdhbWUtcGFydHkifQ.QCym55F5rlhJmhz9ail4_EWqcFnRcvDkc4587rDVaGA';
+	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoic29yaTEyMyIsImVtYWlsIjoidGVzdHNvcmkxMjNAZ21haWwuY29tIiwiaWF0IjoxNzUxNDM1MjQ4LCJleHAiOjE3NTE0NDYwNDgsImF1ZCI6InRlc3Rzb3JpMTIzQGdtYWlsLmNvbSIsImlzcyI6ImdhbWUtcGFydHkifQ.6W_uF5664OadoQ43Fc3_WV2n_HB9bS57hBERrnozsKI';
 
 export const fetchGameList = async (payload: GetGameListRequest): Promise<TGetGameListResponse> => {
 	const queryParams = new URLSearchParams();
@@ -26,6 +26,18 @@ export const fetchGameList = async (payload: GetGameListRequest): Promise<TGetGa
 
 	const response = await axios.get<TGetGameListResponse>(
 		`${API_TESTBASE_URL}/api/games?${queryParams.toString()}`,
+		{
+			headers: {
+				Authorization: `Bearer ${TEST_TOKEN}`,
+			},
+		}
+	);
+	return response.data;
+};
+
+export const fetchGameDetail = async (payload: number): Promise<TGameDetailResponse> => {
+	const response = await axios.get<TGameDetailResponse>(
+		`${API_TESTBASE_URL}/api/games/${payload}`,
 		{
 			headers: {
 				Authorization: `Bearer ${TEST_TOKEN}`,

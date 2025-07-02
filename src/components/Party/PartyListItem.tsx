@@ -13,6 +13,7 @@ import {
 	PartyListItemTitleWrapper,
 } from '../../styles/pages/party/PartyListItem.style';
 import GameImage from '../../assets/gameImage.png';
+import { useGameDetail } from '../../hooks/useGames';
 // 임시 데이터 타입 및 더미데이터
 
 export type TPartyListItemProps = {
@@ -24,6 +25,7 @@ export type TPartyListItemProps = {
 
 function PartyListItem({ party, expandedPartyId, setExpandedPartyId }: TPartyListItemProps) {
 	const isExpanded = expandedPartyId === party.id;
+	const { data: gameDetail } = useGameDetail(party.gameId);
 	// 아코디언 확장시 파티 세부 정보 api 호출
 	const handleOnAccordionChange = () => {
 		if (isExpanded) setExpandedPartyId(null);
@@ -39,11 +41,20 @@ function PartyListItem({ party, expandedPartyId, setExpandedPartyId }: TPartyLis
 			>
 				<PartyListItemSummaryWrapper>
 					<GameImageBox>
-						<img src={GameImage} alt='game-image' width='100%' height='100%' />
+						<img
+							src={party.gameBannerUrl ? party.gameBannerUrl : GameImage}
+							loading='lazy'
+							onError={(e) => {
+								e.currentTarget.src = GameImage;
+							}}
+							alt='game-image'
+							width='100%'
+							height='100%'
+						/>
 					</GameImageBox>
 					<Stack direction='column'>
 						<ChipContainer direction='row' spacing={1}>
-							<Chip size='small' label={party.gameId} />
+							<Chip size='small' label={gameDetail?.name} />
 							<Chip
 								size='small'
 								label={party.isCompleted ? '모집완료' : '모집중'}

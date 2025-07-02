@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import { TGetGameListResponse } from '../types/response';
+import { TGameDetailResponse, TGetGameListResponse } from '../types/response';
 import { GetGameListRequest } from '../types/request';
-import { fetchGameList } from '../api/games';
+import { fetchGameDetail, fetchGameList } from '../api/games';
 
 export const useGameList = (payload: GetGameListRequest) => {
 	payload = {
@@ -18,6 +18,16 @@ export const useGameList = (payload: GetGameListRequest) => {
 		queryFn: async () => {
 			const response = await fetchGameList(payload);
 
+			return response;
+		},
+	});
+};
+
+export const useGameDetail = (payload: number) => {
+	return useQuery<TGameDetailResponse, Error, TGameDetailResponse, ['games', number]>({
+		queryKey: ['games', payload],
+		queryFn: async () => {
+			const response = await fetchGameDetail(payload);
 			return response;
 		},
 	});
