@@ -54,7 +54,7 @@ function PartyMemberListItem({ member, partyId }: TPartyMemberListItemProps) {
 							<></>
 						)}
 					</Stack>
-					<Typography variant='body2'>닉네임이!</Typography>
+					<Typography variant='body2'>{member.gameUsername}</Typography>
 				</Box>
 				<Box sx={{ flexGrow: 1 }}></Box>
 				{isLeader && !member.isLeader ? (

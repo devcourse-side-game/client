@@ -7,7 +7,7 @@ const API_BASE_URL_PROTO = 'http://localhost:3002';
 
 const API_TESTBASE_URL = API_BASE_URL_PROTO;
 const TEST_TOKEN =
-	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoic29yaTEyMyIsImVtYWlsIjoidGVzdHNvcmkxMjNAZ21haWwuY29tIiwiaWF0IjoxNzUxNDM1MjQ4LCJleHAiOjE3NTE0NDYwNDgsImF1ZCI6InRlc3Rzb3JpMTIzQGdtYWlsLmNvbSIsImlzcyI6ImdhbWUtcGFydHkifQ.6W_uF5664OadoQ43Fc3_WV2n_HB9bS57hBERrnozsKI';
+	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoic29yaTEyMyIsImVtYWlsIjoidGVzdHNvcmkxMjNAZ21haWwuY29tIiwiaWF0IjoxNzUxNDQxNjUwLCJleHAiOjE3NTE0NTI0NTAsImF1ZCI6InRlc3Rzb3JpMTIzQGdtYWlsLmNvbSIsImlzcyI6ImdhbWUtcGFydHkifQ.-CUptawFPUPzvnL_c2txGhJ3McvDEh7ziX1Cdovtrnk';
 
 export const fetchGameList = async (payload: GetGameListRequest): Promise<TGetGameListResponse> => {
 	const queryParams = new URLSearchParams();

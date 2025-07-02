@@ -64,12 +64,25 @@ function PartyListItem({ party, expandedPartyId, setExpandedPartyId }: TPartyLis
 						</ChipContainer>
 						<PartyListItemTitleWrapper>
 							<Typography variant='h6'>{party.title}</Typography>
-							<Typography variant='body2'>
-								{`(${8} / ${party.maxParticipants})`}
+							<Typography
+								variant='body2'
+								color={
+									party.currentMemberCount === party.maxParticipants
+										? 'error'
+										: 'text.secondary'
+								}
+							>
+								{`(${party.currentMemberCount} / ${party.maxParticipants})`}
 							</Typography>
 						</PartyListItemTitleWrapper>
-						<Typography variant='body2'>{party.leader.username}</Typography>
-						<Typography variant='body2'>{party.leader.gameUsername}</Typography>
+						{party.leader && (
+							<>
+								<Typography variant='subtitle1'>{party.leader.username}</Typography>
+								<Typography variant='subtitle2'>
+									{party.leader.gameUsername}
+								</Typography>
+							</>
+						)}
 					</Stack>
 				</PartyListItemSummaryWrapper>
 				<PartyListItemDetailsWrapper>

@@ -4,8 +4,15 @@ import {
 	TPartyCreateSuccessResponse,
 	TPartyListItemDetailResponse,
 	TPartiesPayload,
+	TBanPartyMemberParams,
 } from '../types/Party';
-import { createParty, fetchJoinParty, fetchParties, fetchPartyDetail } from '../api/parties';
+import {
+	banPartyMember,
+	createParty,
+	fetchJoinParty,
+	fetchParties,
+	fetchPartyDetail,
+} from '../api/parties';
 import { IJoinPartyResponse, IPartiesResponse } from '../types/response';
 import { IJoinPartyRequest } from '../types/request';
 // import { createParty, fetchParties, fetchPartyDetail } from '../api/parties';
@@ -77,6 +84,19 @@ export const useJoinParty = () => {
 		},
 		onError: (error) => {
 			console.error('파티 참가 실패', error);
+		},
+	});
+};
+
+export const useBanPartyMember = (params: TBanPartyMemberParams) => {
+	return useMutation<void, Error, TBanPartyMemberParams, unknown>({
+		mutationFn: () => banPartyMember(params),
+		onSuccess: (data) => {
+			console.log('파티 멤버 추방 성공');
+			console.dir(data);
+		},
+		onError: (error) => {
+			console.error('파티 멤버 추방 실패', error);
 		},
 	});
 };

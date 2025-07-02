@@ -16,29 +16,6 @@ export type TParty = {
 	leader: TLeader;
 	currentMemberCount: number;
 };
-// [
-//   {
-//     "id": 1,
-//     "title": "같이 즐겁게 게임해요",
-//     "gameId": 1,
-//     "gameBannerUrl": "https://cdn.cloudflare.steamstatic.com/steam/apps/570/header.jpg",
-//     "creatorId": 1,
-//     "purposeTag": "레이드",
-//     "maxParticipants": 8,
-//     "description": "파티 설명",
-//     "isPrivate": false,
-//     "accessCode": "1234",
-//     "isCompleted": false,
-//     "createdAt": "2025-06-10T18:00:00",
-//     "updatedAt": "2025-06-10T18:00:00",
-//     "leader": {
-//       "userId": 1,
-//       "username": "user1",
-//       "gameUsername": "pro_gamer123"
-//     },
-//     "currentMemberCount": 3
-//   }
-// ]
 export type TLeader = {
 	userId: number;
 	username: string;
@@ -80,59 +57,6 @@ export type TPartyListItemDetailResponse = {
 
 	members: TPartyMember[];
 };
-// {
-//     "id": 10,
-//     "title": "파티 생성 테스트5",
-//     "gameId": 5553,
-//     "creatorId": 8,
-//     "purposeTag": "친선전",
-//     "maxParticipants": 5,
-//     "description": "설명입니다",
-//     "isPrivate": false,
-//     "accessCode": null,
-//     "isCompleted": false,
-//     "createdAt": "2025-06-29T01:05:13.327Z",
-//     "updatedAt": "2025-06-29T01:05:13.327Z",
-//     "game": {
-//         "id": 5553,
-//         "name": "Iron Grip Warlord Scorched Earth Trailer",
-//         "platforms": "steam",
-//         "steamAppId": 81712,
-//         "bannerUrl": "https://cdn.cloudflare.steamstatic.com/steam/apps/81712/header.jpg",
-//         "isActive": 1,
-//         "createdAt": "2025-06-24T17:44:29.856Z",
-//         "updatedAt": "2025-06-24T17:44:29.856Z",
-//         "slug": "iron-grip-warlord-scorched-earth-trailer"
-//     },
-//     "creator": {
-//         "id": 8,
-//         "username": "testuser2",
-//         "password": "$2b$10$Ifh7fAFU6A/Qm0bjTXrgFu5H5/d90U6NTF/PjZunbRS/cy38cT3ji",
-//         "email": "testuser2@example.com",
-//         "profileImage": null,
-//         "createdAt": "2025-06-26T14:29:15.774Z",
-//         "updatedAt": "2025-06-26T14:29:15.774Z"
-//     },
-//     "members": [
-//         {
-//             "id": 12,
-//             "partyId": 10,
-//             "userId": 8,
-//             "user": {
-//                 "id": 8,
-//                 "username": "testuser2",
-//                 "password": "$2b$10$Ifh7fAFU6A/Qm0bjTXrgFu5H5/d90U6NTF/PjZunbRS/cy38cT3ji",
-//                 "email": "testuser2@example.com",
-//                 "profileImage": null,
-//                 "createdAt": "2025-06-26T14:29:15.774Z",
-//                 "updatedAt": "2025-06-26T14:29:15.774Z"
-//             },
-//             "isLeader": true,
-//             "joinedAt": "2025-06-29T01:05:13.334Z",
-//             "leftAt": null
-//         }
-//     ]
-// }
 
 // 파티게시판 멤버관련
 export type TPartyMember = {
@@ -142,6 +66,7 @@ export type TPartyMember = {
 	isLeader: boolean;
 	joinedAt: string;
 	leftAt: string | null;
+	gameUsername: string;
 };
 
 export type TGetPartiesResponse = {
@@ -218,7 +143,7 @@ export type TBadAuthResponse = {
 };
 
 /**  */
-export type TPartyFormFlow = 'form' | 'success';
+export type TPartyFormFlow = 'form' | 'success' | 'failed';
 
 export type TPartyModalType = 'create' | 'join' | 'leaderChange' | 'memberBan' | 'memberLike' | '';
 
@@ -246,3 +171,8 @@ export type TModalState = {
 		payload: ModalPayloadMap[K]; // payload는 K에 해당하는 값이어야 한다는 규칙 생성
 	};
 }[keyof ModalPayloadMap]; // 모든 생성된 객체 타입을 OR(|)로 묶음
+
+export type TBanPartyMemberParams = {
+	partyId: number;
+	userId: number;
+};

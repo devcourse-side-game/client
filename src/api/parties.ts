@@ -5,6 +5,7 @@ import {
 	TPartyCreateSuccessResponse,
 	TPartyListItemDetailResponse,
 	TPartiesPayload,
+	TBanPartyMemberParams,
 } from '../types/Party';
 import { IJoinPartyResponse, IPartiesResponse } from '../types/response';
 import { IJoinPartyRequest } from '../types/request';
@@ -12,7 +13,7 @@ import { IJoinPartyRequest } from '../types/request';
 // const API_BASE_URL_MOCK = 'http://localhost:3001';
 const API_BASE_URL_PROTO = 'http://localhost:3002';
 const TEST_TOKEN =
-	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoic29yaTEyMyIsImVtYWlsIjoidGVzdHNvcmkxMjNAZ21haWwuY29tIiwiaWF0IjoxNzUxNDM1MjQ4LCJleHAiOjE3NTE0NDYwNDgsImF1ZCI6InRlc3Rzb3JpMTIzQGdtYWlsLmNvbSIsImlzcyI6ImdhbWUtcGFydHkifQ.6W_uF5664OadoQ43Fc3_WV2n_HB9bS57hBERrnozsKI';
+	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoic29yaTEyMyIsImVtYWlsIjoidGVzdHNvcmkxMjNAZ21haWwuY29tIiwiaWF0IjoxNzUxNDQxNjUwLCJleHAiOjE3NTE0NTI0NTAsImF1ZCI6InRlc3Rzb3JpMTIzQGdtYWlsLmNvbSIsImlzcyI6ImdhbWUtcGFydHkifQ.-CUptawFPUPzvnL_c2txGhJ3McvDEh7ziX1Cdovtrnk';
 
 const API_TESTBASE_URL = API_BASE_URL_PROTO;
 /** 기능 : 파티 목록 조회 */
@@ -80,6 +81,20 @@ export const fetchJoinParty = async (payload: IJoinPartyRequest): Promise<IJoinP
 	const response = await axios.post<IJoinPartyResponse>(
 		`${API_TESTBASE_URL}/api/parties/join`,
 		payload,
+		{
+			headers: {
+				Authorization: `Bearer ${TEST_TOKEN}`,
+			},
+		}
+	);
+	return response.data;
+};
+
+export const banPartyMember = async (params: TBanPartyMemberParams): Promise<void> => {
+	const { partyId, userId } = params;
+	const response = await axios.post<void>(
+		`${API_TESTBASE_URL}/api/parties/${partyId}/members/${userId}`,
+		{},
 		{
 			headers: {
 				Authorization: `Bearer ${TEST_TOKEN}`,
