@@ -5,9 +5,10 @@ import { useGameList } from '../../hooks/useGames';
 import GameImage from '../../assets/gameImage.png';
 type TSearchableGameSelectProps = {
 	setOptionGame: Dispatch<SetStateAction<TGame | null>>;
+	validate?: string;
 };
 
-function SearchableGameSelect({ setOptionGame }: TSearchableGameSelectProps) {
+function SearchableGameSelect({ setOptionGame, validate }: TSearchableGameSelectProps) {
 	// 선택된 게임 객체를 저장하기 위한 state
 	const [selectedGame, setSelectedGame] = useState<TGame | null>(null);
 	const [searchValue, setSearchValue] = useState('');
@@ -62,6 +63,8 @@ function SearchableGameSelect({ setOptionGame }: TSearchableGameSelectProps) {
 							</>
 						),
 					}}
+					error={!!validate}
+					helperText={validate}
 				/>
 			)}
 			onInputChange={(event, newInputValue) => {

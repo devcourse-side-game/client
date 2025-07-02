@@ -7,13 +7,13 @@ const API_BASE_URL_PROTO = 'http://localhost:3002';
 
 const API_TESTBASE_URL = API_BASE_URL_PROTO;
 const TEST_TOKEN =
-	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoic29yaTEyMyIsImVtYWlsIjoidGVzdHNvcmkxMjNAZ21haWwuY29tIiwiaWF0IjoxNzUxNDQxNjUwLCJleHAiOjE3NTE0NTI0NTAsImF1ZCI6InRlc3Rzb3JpMTIzQGdtYWlsLmNvbSIsImlzcyI6ImdhbWUtcGFydHkifQ.-CUptawFPUPzvnL_c2txGhJ3McvDEh7ziX1Cdovtrnk';
+	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoic29yaTEyMyIsImVtYWlsIjoidGVzdHNvcmkxMjNAZ21haWwuY29tIiwiaWF0IjoxNzUxNDQ0MzUzLCJleHAiOjE3NTE0NTUxNTMsImF1ZCI6InRlc3Rzb3JpMTIzQGdtYWlsLmNvbSIsImlzcyI6ImdhbWUtcGFydHkifQ.bn9GVXa21o1xLXpGFRjAHwgBHIUxdS3Uz4okg2A-GjI';
 
 export const fetchGameList = async (payload: GetGameListRequest): Promise<TGetGameListResponse> => {
 	const queryParams = new URLSearchParams();
 	// isActive, page,limit
 	if (payload.isactive) {
-		queryParams.append('isactive', payload.isactive.toString());
+		queryParams.append('isActive', payload.isactive.toString());
 	}
 	if (payload.platform) {
 		queryParams.append('platform', payload.platform);

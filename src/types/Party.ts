@@ -115,11 +115,10 @@ export type TPartyCreateRequest = {
 	gameId: number | undefined;
 	purposeTag: string;
 	maxParticipants: number;
-	startTime: string;
-	endTime: string;
 	description: string;
 	isPrivate: boolean;
 	accessCode: string;
+	GameUsername: string;
 };
 
 // 파티 생성 실패 응답
@@ -133,6 +132,11 @@ export type TBadRequestResponse = {
 	statusCode: number;
 	message: string;
 	error: string;
+};
+
+export type TChangePartyLeaderParams = {
+	partyId: number;
+	userId: number;
 };
 
 //인증 실패 응답
@@ -175,4 +179,14 @@ export type TModalState = {
 export type TBanPartyMemberParams = {
 	partyId: number;
 	userId: number;
+};
+
+// validation 에러 타입
+export type TPartyCreateFormErrors = {
+	title: string;
+	ownerNickname: string;
+	gameId: string;
+	accessCode: string;
+	description: string;
+	maxParticipants: string;
 };

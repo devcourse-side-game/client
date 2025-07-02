@@ -5,9 +5,11 @@ import {
 	TPartyListItemDetailResponse,
 	TPartiesPayload,
 	TBanPartyMemberParams,
+	TChangePartyLeaderParams,
 } from '../types/Party';
 import {
 	banPartyMember,
+	changePartyLeader,
 	createParty,
 	fetchJoinParty,
 	fetchParties,
@@ -97,6 +99,19 @@ export const useBanPartyMember = (params: TBanPartyMemberParams) => {
 		},
 		onError: (error) => {
 			console.error('파티 멤버 추방 실패', error);
+		},
+	});
+};
+
+export const useChangePartyLeader = (params: TChangePartyLeaderParams) => {
+	return useMutation<void, Error, TChangePartyLeaderParams, unknown>({
+		mutationFn: () => changePartyLeader(params),
+		onSuccess: (data) => {
+			console.log('파티 리더 변경 성공');
+			console.dir(data);
+		},
+		onError: (error) => {
+			console.error('파티 리더 변경 실패', error);
 		},
 	});
 };

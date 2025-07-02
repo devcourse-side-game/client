@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Typography, TextField, Chip, Button } from '@mui/material';
+import { Typography, Chip, Button } from '@mui/material';
 import SearchableGameSelect from './SearchableGameSelect';
 import { TFilterOptions } from '../../types/Party';
 import {
@@ -58,7 +58,7 @@ function PartyFilter({ filterOptions, setFilterOptions }: TPartyFilterProps) {
 			<Typography variant='h6'>필터 옵션</Typography>
 			<PartyFilterOptionsWrapper direction='row'>
 				<SearchableGameSelect setOptionGame={setOptionGame}></SearchableGameSelect>
-				<TextField
+				{/* <TextField
 					variant='outlined'
 					value={filterPartyOwnerNicknameText}
 					type='Text'
@@ -71,7 +71,7 @@ function PartyFilter({ filterOptions, setFilterOptions }: TPartyFilterProps) {
 					type='Text'
 					label='파티 이름 입력'
 					onChange={(e) => setFilterPartyTitleText(e.target.value)}
-				></TextField>
+				></TextField> */}
 			</PartyFilterOptionsWrapper>
 			<PartyFilterChipWrapper>
 				{filterOptions.map((option) =>
