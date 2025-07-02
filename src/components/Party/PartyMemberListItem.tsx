@@ -12,9 +12,10 @@ import { StarBorderRounded, StarRounded } from '@mui/icons-material';
 type TPartyMemberListItemProps = {
 	member: TPartyMember;
 	partyId: number | null;
+	isCompleted: boolean;
 };
 
-function PartyMemberListItem({ member, partyId }: TPartyMemberListItemProps) {
+function PartyMemberListItem({ member, partyId, isCompleted }: TPartyMemberListItemProps) {
 	const { openModal } = useModal();
 	const [isLeader, setIsLeader] = useState<boolean>(true);
 	// 파티장 여부 확인
@@ -48,8 +49,15 @@ function PartyMemberListItem({ member, partyId }: TPartyMemberListItemProps) {
 						) : (
 							<></>
 						)}
-						{isLeader && !member.isLeader ? (
-							<Button onClick={handleOnLeaderChangeButtonClick}>파티장 넘기기</Button>
+						{isLeader && !member.isLeader && !isCompleted ? (
+							<>
+								<Button
+									onClick={handleOnLeaderChangeButtonClick}
+									disabled={isCompleted}
+								>
+									파티장 넘기기
+								</Button>
+							</>
 						) : (
 							<></>
 						)}
@@ -57,14 +65,15 @@ function PartyMemberListItem({ member, partyId }: TPartyMemberListItemProps) {
 					<Typography variant='body2'>{member.gameUsername}</Typography>
 				</Box>
 				<Box sx={{ flexGrow: 1 }}></Box>
-				{isLeader && !member.isLeader ? (
-					<Button variant='contained' color='warning' onClick={handleOnBanButtonClick}>
-						{PARTY_LIST_ITEM.BTN_MEMBER_BAN_TEXT}
-					</Button>
-				) : (
-					<></>
-				)}
-				<Button>좋아요</Button>
+				<Button
+					variant='contained'
+					color='warning'
+					onClick={handleOnBanButtonClick}
+					disabled={isCompleted || member.isLeader || !isLeader}
+				>
+					{PARTY_LIST_ITEM.BTN_MEMBER_BAN_TEXT}
+				</Button>
+				<Button disabled={isCompleted}>좋아요</Button>
 				<StarRounded color='primary' />
 				<StarBorderRounded color='primary' />
 			</PartyMemberListItemWrapper>

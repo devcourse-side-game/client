@@ -8,9 +8,10 @@ import { useModal } from '../../hooks/useModal';
 
 type TPartyListItemDetailProps = {
 	partyId: number;
+	isCompleted: boolean;
 };
 
-function PartyListItemDetail({ partyId }: TPartyListItemDetailProps) {
+function PartyListItemDetail({ partyId, isCompleted }: TPartyListItemDetailProps) {
 	const { data, isLoading, isError, error } = useSelectedPartyDetail(partyId);
 	const { openModal } = useModal();
 	const [isPartyMember, setIsPartyMember] = useState<boolean>(false);
@@ -39,15 +40,29 @@ function PartyListItemDetail({ partyId }: TPartyListItemDetailProps) {
 					data ? data.maxParticipants : null
 				)}
 			</Typography>
-			<PartyMemberList members={data ? data.members : null} partyId={data ? data.id : null} />
+			<PartyMemberList
+				members={data ? data.members : null}
+				partyId={data ? data.id : null}
+				isCompleted={isCompleted}
+			/>
 			<PartyListItemButtonWrapper>
+				{isCompleted && (
+					<Typography
+						variant='body2'
+						color='text.secondary'
+						sx={{ mb: 1, textAlign: 'center' }}
+					>
+						모집이 완료되어 새로운 멤버를 받지 않습니다
+					</Typography>
+				)}
 				<Button
 					variant='contained'
+					disabled={isCompleted}
 					onClick={() => {
 						openModal('join', { partyId: partyId });
 					}}
 				>
-					파티 참가
+					{isCompleted ? '모집 완료' : '파티 참가'}
 				</Button>
 			</PartyListItemButtonWrapper>
 		</Stack>

@@ -6,9 +6,10 @@ import { TPartyMember } from '../../types/Party';
 export type TPartyMemberListProps = {
 	members: TPartyMember[] | null;
 	partyId: number | null;
+	isCompleted: boolean;
 };
 
-function PartyMemberList({ members, partyId }: TPartyMemberListProps) {
+function PartyMemberList({ members, partyId, isCompleted }: TPartyMemberListProps) {
 	if (members === null) return <div>멤버가 없습니다</div>;
 	return (
 		<Stack>
@@ -18,9 +19,12 @@ function PartyMemberList({ members, partyId }: TPartyMemberListProps) {
 					return new Date(a.joinedAt).getTime() - new Date(b.joinedAt).getTime();
 				})
 				.map((member) => (
-					<>
-						<PartyMemberListItem member={member} partyId={partyId} />
-					</>
+					<PartyMemberListItem
+						key={member.id}
+						member={member}
+						partyId={partyId}
+						isCompleted={isCompleted}
+					/>
 				))}
 		</Stack>
 	);

@@ -86,7 +86,9 @@ function PartyListItem({ party, expandedPartyId, setExpandedPartyId }: TPartyLis
 					</Stack>
 				</PartyListItemSummaryWrapper>
 				<PartyListItemDetailsWrapper>
-					{isExpanded && <PartyListItemDetail partyId={party.id} />}
+					{isExpanded && (
+						<PartyListItemDetail partyId={party.id} isCompleted={party.isCompleted} />
+					)}
 				</PartyListItemDetailsWrapper>
 			</PartyListItemAccordion>
 		</PartyListItemContainer>
