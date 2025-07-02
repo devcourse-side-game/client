@@ -1,18 +1,18 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import {
-	Accordion,
-	AccordionSummary,
-	AccordionDetails,
-	Box,
-	Chip,
-	Stack,
-	Button,
-} from '@mui/material';
+import { Stack, Chip, Typography } from '@mui/material';
 import { getTimeAgo } from '../../utils/formatters/date';
 import { TParty } from '../../types/Party';
 import PartyListItemDetail from './PartyListItemDetail';
-import { useModal } from '../../hooks/useModal';
-
+import {
+	GameImageBox,
+	PartyListItemContainer,
+	PartyListItemAccordion,
+	PartyListItemSummaryWrapper,
+	PartyListItemDetailsWrapper,
+	ChipContainer,
+	PartyListItemTitleWrapper,
+} from '../../styles/pages/party/PartyListItem.style';
+import GameImage from '../../assets/gameImage.png';
 // 임시 데이터 타입 및 더미데이터
 
 export type TPartyListItemProps = {
@@ -23,7 +23,6 @@ export type TPartyListItemProps = {
 };
 
 function PartyListItem({ party, expandedPartyId, setExpandedPartyId }: TPartyListItemProps) {
-	const { openModal } = useModal();
 	// 아코디언 확장시 파티 세부 정보 api 호출
 	const handleOnAccordionChange = () => {
 		if (expandedPartyId === party.id) setExpandedPartyId(null);
@@ -32,47 +31,39 @@ function PartyListItem({ party, expandedPartyId, setExpandedPartyId }: TPartyLis
 
 	// 리스트 아이템 클릭 시
 	return (
-		<Accordion expanded={expandedPartyId === party.id} onChange={handleOnAccordionChange}>
-			<AccordionSummary>
-				<Box
-					sx={{
-						height: '50px',
-						width: '150px',
-						backgroundColor: 'darkcyan',
-						textAlign: 'center',
-						margin: '10px',
-					}}
-				>
-					이미지
-				</Box>
-				<Stack direction='column'>
-					<Stack direction='row' spacing={1}>
-						<Chip label={party.game_name} />
-						<Chip label={party.is_completed ? '모집완료' : '모집중'} />
-						<div>{getTimeAgo(party.created_at)}</div>
+		<PartyListItemContainer>
+			<PartyListItemAccordion
+				expanded={expandedPartyId === party.id}
+				onChange={handleOnAccordionChange}
+			>
+				<PartyListItemSummaryWrapper>
+					<GameImageBox>
+						<img src={GameImage} alt='game-image' width='100%' height='100%' />
+					</GameImageBox>
+					<Stack direction='column'>
+						<ChipContainer direction='row' spacing={1}>
+							<Chip size='small' label={'게임 이름'} />
+							<Chip
+								size='small'
+								label={party.isCompleted ? '모집완료' : '모집중'}
+								color={party.isCompleted ? 'success' : 'secondary'}
+							/>
+							<Typography variant='body2'>{getTimeAgo(party.createdAt)}</Typography>
+						</ChipContainer>
+						<PartyListItemTitleWrapper>
+							<Typography variant='h6'>{party.title}</Typography>
+							<Typography variant='body2'>
+								{`(${8} / ${party.maxParticipants})`}
+							</Typography>
+						</PartyListItemTitleWrapper>
+						<Typography variant='body2'>{'생성인'}</Typography>
 					</Stack>
-					<Stack direction='row' spacing={0.5}>
-						<b>{party.title}</b>
-						<div>
-							{party.current_participants} / {party.max_participants}
-						</div>
-					</Stack>
-					<div>{party.creator_name}</div>
-				</Stack>
-			</AccordionSummary>
-			<AccordionDetails>
-				<PartyListItemDetail partyId={party.id} />
-				<Button
-					onClick={() => {
-						console.log(`참가버튼 클릭 : ${party.id}`);
-						openModal('join', { partyId: party.id });
-						//onModalOpne({ type: 'join', payload: { partyId: party.id } });
-					}}
-				>
-					파티 참가
-				</Button>
-			</AccordionDetails>
-		</Accordion>
+				</PartyListItemSummaryWrapper>
+				<PartyListItemDetailsWrapper>
+					<PartyListItemDetail partyId={party.id} />
+				</PartyListItemDetailsWrapper>
+			</PartyListItemAccordion>
+		</PartyListItemContainer>
 	);
 }
 
