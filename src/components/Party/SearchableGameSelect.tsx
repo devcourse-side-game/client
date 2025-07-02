@@ -34,19 +34,17 @@ function SearchableGameSelect({ setOptionGame }: TSearchableGameSelectProps) {
 			getOptionLabel={(option) => option.name}
 			renderOption={(props, option) => (
 				<li {...props}>
-					{option.bannerUrl ? (
+					{
 						<img
 							src={option.bannerUrl}
 							alt={option.name}
+							loading='lazy'
+							onError={(e) => {
+								e.currentTarget.src = GameImage;
+							}}
 							style={{ width: 120, height: 60, padding: 10 }}
 						/>
-					) : (
-						<img
-							src={GameImage}
-							alt='default-img'
-							style={{ width: 120, height: 60, padding: 10 }}
-						/>
-					)}
+					}
 					{option.name}
 				</li>
 			)}
