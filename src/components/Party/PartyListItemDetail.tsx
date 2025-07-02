@@ -55,15 +55,19 @@ function PartyListItemDetail({ partyId, isCompleted }: TPartyListItemDetailProps
 						모집이 완료되어 새로운 멤버를 받지 않습니다
 					</Typography>
 				)}
-				<Button
-					variant='contained'
-					disabled={isCompleted}
-					onClick={() => {
-						openModal('join', { partyId: partyId });
-					}}
-				>
-					{isCompleted ? '모집 완료' : '파티 참가'}
-				</Button>
+				{!isPartyMember ? (
+					<Button
+						variant='contained'
+						disabled={isCompleted}
+						onClick={() => {
+							openModal('join', { partyId: partyId });
+						}}
+					>
+						{isCompleted ? '모집 완료' : '파티 참가'}
+					</Button>
+				) : (
+					<></>
+				)}
 			</PartyListItemButtonWrapper>
 		</Stack>
 	);

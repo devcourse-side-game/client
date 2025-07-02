@@ -13,6 +13,7 @@ import {
 	TPartyFormFlow,
 	TPartyCreateRequest,
 	TPartyCreateFormErrors,
+	TUserGameProfile,
 } from '../../../../types/Party';
 import { useCreateParty } from '../../../../hooks/useParties';
 import { TGame } from '../../../../types/Party';
@@ -22,8 +23,8 @@ import {
 	FormDialogContent,
 	FormDialogTitle,
 } from '../../../../styles/pages/party/forms/Form.styles';
-import { MESSAGE_ERROR } from '../../../../constants/error';
 import craetePratyFormValidation from '../../../../utils/partyValidation';
+import UserGameProfileSelect from '../../UserGameProfileSelect';
 
 type TPartyCreateFormProps = {
 	onFlowComplete: () => void;
@@ -35,12 +36,12 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 	const [purposeTag, setPurposeTag] = useState<string>('');
 	const [formDescription, setFormDescription] = useState<string>('');
 	const [formMaxNum, setFormMaxNum] = useState<number>(4);
-	const [formOwnerNickname, setFormOwnerNickname] = useState<string>('');
 	const [accessCode, setAccessCode] = useState<string>('');
 	const [isPrivateChecked, setIsPrivateChecked] = useState(false);
+	const [gameProfile, setGameProfile] = useState<TUserGameProfile | null>(null);
 	const [errors, setErrors] = useState<TPartyCreateFormErrors>({
 		title: '',
-		ownerNickname: '',
+		gameUsername: '',
 		accessCode: '',
 		description: '',
 		maxParticipants: '',
@@ -51,6 +52,9 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 	const [view, setView] = useState<TPartyFormFlow>('form');
 	const { mutate, isPending } = useCreateParty();
 
+	const onFlowFailed = () => {
+		setView('form');
+	};
 	const handleOnCreateClick = () => {
 		const newParty: TPartyCreateRequest = {
 			title: formTitle,
@@ -60,11 +64,14 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 			description: formDescription ? formDescription : '',
 			isPrivate: isPrivateChecked,
 			accessCode: accessCode,
-			GameUsername: formOwnerNickname,
+			gameUsername: gameProfile?.gameUsername ?? '',
+			profileId: gameProfile?.id ?? null,
 		};
+		console.log(`gameUsername: ${gameProfile?.gameUsername}`);
+		console.log(`profileId: ${gameProfile?.id}`);
 		const errors = craetePratyFormValidation(newParty);
 		setErrors(errors);
-		if (errors.title || errors.ownerNickname || (errors.accessCode && isPrivateChecked)) {
+		if (errors.title || errors.gameUsername || (errors.accessCode && isPrivateChecked)) {
 			return;
 		}
 		mutate(newParty, {
@@ -151,12 +158,11 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 							onChange={(e) => setFormMaxNum(parseInt(e.target.value))}
 						/>
 						{/* 변경 필요 : 파티장의 유저프로필 선택 or 닉네임 입력 중 하나 선택 */}
-						<TextField
-							value={formOwnerNickname}
-							type='text'
-							label='인게임 닉네임'
-							placeholder='파티 주최자 닉네임'
-							onChange={(e) => setFormOwnerNickname(e.target.value)}
+						<UserGameProfileSelect
+							userId={12}
+							gameId={optionGame?.id}
+							setGameProfile={setGameProfile}
+							validate={errors.gameUsername}
 						/>
 					</FormDialogContent>
 					<FormDialogActions>
@@ -198,7 +204,7 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 						</Typography>
 					</FormDialogContent>
 					<FormDialogActions>
-						<Button onClick={onFlowComplete} variant='contained' autoFocus>
+						<Button onClick={onFlowFailed} variant='contained' autoFocus>
 							확인
 						</Button>
 					</FormDialogActions>

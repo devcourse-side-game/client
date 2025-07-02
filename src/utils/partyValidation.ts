@@ -3,11 +3,13 @@ import { TPartyCreateFormErrors, TPartyCreateRequest } from '../types/Party';
 
 export default function craetePratyFormValidation(party: TPartyCreateRequest) {
 	try {
+		console.log(party.profileId);
+		console.log(party.gameUsername);
 		const errors: TPartyCreateFormErrors = {
 			title: checkPartyTitle(party.title),
-			ownerNickname: checkPartyOwnerNickname(party.GameUsername),
+			gameUsername: !party.profileId ? checkPartyGameUsername(party.gameUsername) : '',
 			accessCode: checkPartyAccessCode(party.accessCode),
-			gameId: '',
+			gameId: checkPartyGameId(party.gameId),
 			description: '',
 			maxParticipants: '',
 		};
@@ -16,7 +18,7 @@ export default function craetePratyFormValidation(party: TPartyCreateRequest) {
 		console.error('파티 생성 유효성 검사 오류', error);
 		const errors: TPartyCreateFormErrors = {
 			title: '',
-			ownerNickname: '',
+			gameUsername: '',
 			accessCode: '',
 			gameId: '',
 			description: '',
@@ -35,12 +37,12 @@ function checkPartyTitle(title: string) {
 	}
 	return '';
 }
-function checkPartyOwnerNickname(ownerNickname: string) {
-	if (!ownerNickname) {
-		return MESSAGE_ERROR.OWNER_NICKNAME.REQUIRED;
+function checkPartyGameUsername(gameUsername: string) {
+	if (!gameUsername) {
+		return MESSAGE_ERROR.GAME_USERNAME.REQUIRED;
 	}
-	if (ownerNickname.trim() === '') {
-		return MESSAGE_ERROR.OWNER_NICKNAME.REQUIRED;
+	if (gameUsername.trim() === '') {
+		return MESSAGE_ERROR.GAME_USERNAME.REQUIRED;
 	}
 	return '';
 }
@@ -53,7 +55,7 @@ function checkPartyAccessCode(accessCode: string) {
 	}
 	return '';
 }
-function checkPartyGameId(gameId: string) {
+function checkPartyGameId(gameId: number | undefined) {
 	if (!gameId) {
 		return MESSAGE_ERROR.GAME_ID.REQUIRED;
 	}

@@ -1,13 +1,17 @@
 import axios from 'axios';
-import { TGameDetailResponse, TGetGameListResponse } from '../types/response';
+import {
+	TGameDetailResponse,
+	TGetGameListResponse,
+	TGetUserGameProfilesResponse,
+} from '../types/response';
 import { GetGameListRequest } from '../types/request';
+import { TGetUserGameProfilesQuery } from '../types/Party';
 
-const API_BASE_URL_MOCK = 'http://localhost:3001';
 const API_BASE_URL_PROTO = 'http://localhost:3002';
 
 const API_TESTBASE_URL = API_BASE_URL_PROTO;
 const TEST_TOKEN =
-	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoic29yaTEyMyIsImVtYWlsIjoidGVzdHNvcmkxMjNAZ21haWwuY29tIiwiaWF0IjoxNzUxNDQ0MzUzLCJleHAiOjE3NTE0NTUxNTMsImF1ZCI6InRlc3Rzb3JpMTIzQGdtYWlsLmNvbSIsImlzcyI6ImdhbWUtcGFydHkifQ.bn9GVXa21o1xLXpGFRjAHwgBHIUxdS3Uz4okg2A-GjI';
+	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoic29yaTEyMyIsImVtYWlsIjoidGVzdHNvcmkxMjNAZ21haWwuY29tIiwiaWF0IjoxNzUxNDcxMzc4LCJleHAiOjE3NTE0ODIxNzgsImF1ZCI6InRlc3Rzb3JpMTIzQGdtYWlsLmNvbSIsImlzcyI6ImdhbWUtcGFydHkifQ.SdFaXPqoq_x0j5A_SLXFuczRHunQd6kVKR-YxDvBqKk';
 
 export const fetchGameList = async (payload: GetGameListRequest): Promise<TGetGameListResponse> => {
 	const queryParams = new URLSearchParams();
@@ -38,6 +42,21 @@ export const fetchGameList = async (payload: GetGameListRequest): Promise<TGetGa
 export const fetchGameDetail = async (payload: number): Promise<TGameDetailResponse> => {
 	const response = await axios.get<TGameDetailResponse>(
 		`${API_TESTBASE_URL}/api/games/${payload}`,
+		{
+			headers: {
+				Authorization: `Bearer ${TEST_TOKEN}`,
+			},
+		}
+	);
+	return response.data;
+};
+
+export const fetchUserGameProfiles = async (
+	payload: TGetUserGameProfilesQuery
+): Promise<TGetUserGameProfilesResponse> => {
+	const { userId, gameId } = payload;
+	const response = await axios.get<TGetUserGameProfilesResponse>(
+		`${API_TESTBASE_URL}/api/users/${userId}/game-profiles/${gameId}`,
 		{
 			headers: {
 				Authorization: `Bearer ${TEST_TOKEN}`,

@@ -1,8 +1,9 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
-import { TextField, Autocomplete, CircularProgress } from '@mui/material';
+import { TextField, Autocomplete, CircularProgress, Box, Typography } from '@mui/material';
 import { TGame } from '../../types/Party';
 import { useGameList } from '../../hooks/useGames';
 import GameImage from '../../assets/gameImage.png';
+
 type TSearchableGameSelectProps = {
 	setOptionGame: Dispatch<SetStateAction<TGame | null>>;
 	validate?: string;
@@ -33,21 +34,28 @@ function SearchableGameSelect({ setOptionGame, validate }: TSearchableGameSelect
 			options={games || []}
 			// 각 옵션 객체에서 화면에 표시할 라벨을 추출하는 방법 정의
 			getOptionLabel={(option) => option.name}
+			// key prop을 명시적으로 제공
+			getOptionKey={(option) => option.id.toString()}
 			renderOption={(props, option) => (
-				<li {...props}>
-					{
+				<Box component='li' {...props} key={option.id}>
+					<Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%' }}>
 						<img
-							src={option.bannerUrl}
+							src={option.bannerUrl || GameImage}
 							alt={option.name}
 							loading='lazy'
 							onError={(e) => {
 								e.currentTarget.src = GameImage;
 							}}
-							style={{ width: 120, height: 60, padding: 10 }}
+							style={{
+								width: 120,
+								height: 60,
+								objectFit: 'cover',
+								borderRadius: 4,
+							}}
 						/>
-					}
-					{option.name}
-				</li>
+						<Typography variant='body1'>{option.name}</Typography>
+					</Box>
+				</Box>
 			)}
 			// 화면에 렌더링될 입력창(TextField)의 형태 정의
 			renderInput={(params) => (

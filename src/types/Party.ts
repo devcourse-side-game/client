@@ -118,7 +118,8 @@ export type TPartyCreateRequest = {
 	description: string;
 	isPrivate: boolean;
 	accessCode: string;
-	GameUsername: string;
+	gameUsername: string;
+	profileId: number | null;
 };
 
 // 파티 생성 실패 응답
@@ -184,9 +185,25 @@ export type TBanPartyMemberParams = {
 // validation 에러 타입
 export type TPartyCreateFormErrors = {
 	title: string;
-	ownerNickname: string;
+	gameUsername: string;
 	gameId: string;
 	accessCode: string;
 	description: string;
 	maxParticipants: string;
+};
+
+// params 타입
+
+export type TGetUserGameProfilesQuery = {
+	userId: number;
+	gameId?: number;
+};
+
+//
+export type TUserGameProfile = {
+	id: number | null;
+	userId: number;
+	gameId: number | null;
+	gameUsername: string;
+	game: TGame | null;
 };

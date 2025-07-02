@@ -17,7 +17,7 @@ export const MESSAGE_ERROR = {
 	TITLE: {
 		REQUIRED: '파티 이름을 입력해주세요.',
 	},
-	OWNER_NICKNAME: {
+	GAME_USERNAME: {
 		REQUIRED: '파티장 닉네임을 입력해주세요.',
 	},
 	ACCESS_CODE: {

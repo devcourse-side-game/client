@@ -22,5 +22,7 @@ export interface GetGameListRequest {
 }
 
 export interface IJoinPartyRequest {
-	partyId: number;
+	accessCode: string;
+	gameUsername: string;
+	profileId?: number;
 }

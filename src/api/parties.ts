@@ -14,7 +14,7 @@ import { IJoinPartyRequest } from '../types/request';
 // const API_BASE_URL_MOCK = 'http://localhost:3001';
 const API_BASE_URL_PROTO = 'http://localhost:3002';
 const TEST_TOKEN =
-	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoic29yaTEyMyIsImVtYWlsIjoidGVzdHNvcmkxMjNAZ21haWwuY29tIiwiaWF0IjoxNzUxNDQ0MzUzLCJleHAiOjE3NTE0NTUxNTMsImF1ZCI6InRlc3Rzb3JpMTIzQGdtYWlsLmNvbSIsImlzcyI6ImdhbWUtcGFydHkifQ.bn9GVXa21o1xLXpGFRjAHwgBHIUxdS3Uz4okg2A-GjI';
+	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoic29yaTEyMyIsImVtYWlsIjoidGVzdHNvcmkxMjNAZ21haWwuY29tIiwiaWF0IjoxNzUxNDcxMzc4LCJleHAiOjE3NTE0ODIxNzgsImF1ZCI6InRlc3Rzb3JpMTIzQGdtYWlsLmNvbSIsImlzcyI6ImdhbWUtcGFydHkifQ.SdFaXPqoq_x0j5A_SLXFuczRHunQd6kVKR-YxDvBqKk';
 
 const API_TESTBASE_URL = API_BASE_URL_PROTO;
 /** 기능 : 파티 목록 조회 */
@@ -61,6 +61,7 @@ export const fetchPartyDetail = async (payload: number): Promise<TPartyListItemD
 export const createParty = async (
 	payload: TPartyCreateRequest
 ): Promise<TPartyCreateSuccessResponse> => {
+	console.log(payload);
 	try {
 		const response = await axios.post<TPartyCreateSuccessResponse>(
 			`${API_TESTBASE_URL}/api/parties`,

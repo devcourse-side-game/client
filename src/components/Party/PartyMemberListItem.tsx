@@ -65,14 +65,18 @@ function PartyMemberListItem({ member, partyId, isCompleted }: TPartyMemberListI
 					<Typography variant='body2'>{member.gameUsername}</Typography>
 				</Box>
 				<Box sx={{ flexGrow: 1 }}></Box>
-				<Button
-					variant='contained'
-					color='warning'
-					onClick={handleOnBanButtonClick}
-					disabled={isCompleted || member.isLeader || !isLeader}
-				>
-					{PARTY_LIST_ITEM.BTN_MEMBER_BAN_TEXT}
-				</Button>
+				{isLeader ? (
+					<Button
+						variant='contained'
+						color='warning'
+						onClick={handleOnBanButtonClick}
+						disabled={isCompleted || member.isLeader || !isLeader}
+					>
+						{PARTY_LIST_ITEM.BTN_MEMBER_BAN_TEXT}
+					</Button>
+				) : (
+					<></>
+				)}
 				<Button disabled={isCompleted}>좋아요</Button>
 				<StarRounded color='primary' />
 				<StarBorderRounded color='primary' />
