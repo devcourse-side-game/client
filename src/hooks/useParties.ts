@@ -13,12 +13,13 @@ import {
 	TGetPartiesPayload,
 	TBanPartyMemberParams,
 	TChangePartyLeaderParams,
+	TParty,
 } from '../types/Party';
 import {
 	banPartyMember,
 	changePartyLeader,
 	createParty,
-	fetchJoinParty,
+	joinParty,
 	fetchParties,
 	fetchPartyDetail,
 } from '../api/parties';
@@ -113,11 +114,33 @@ export const useCreateParty = () => {
 };
 
 export const useJoinParty = () => {
+	const queryClient = useQueryClient();
+
 	return useMutation<IJoinPartyResponse, Error, IJoinPartyRequest, unknown>({
-		mutationFn: fetchJoinParty,
-		onSuccess: (data) => {
+		mutationFn: joinParty,
+		onSuccess: (data, variables) => {
 			console.log('파티 참가 성공');
-			console.dir(data);
+
+			// 1. 특정 파티의 상세 정보만 갱신
+			queryClient.invalidateQueries({
+				queryKey: ['selectedPartyDetail', variables.partyId],
+			});
+
+			// 2. 파티 목록의 특정 파티만 업데이트 (Optimistic Update)
+			queryClient.setQueryData(['parties'], (oldData: InfiniteData<TParty[]> | undefined) => {
+				if (!oldData) return oldData;
+
+				return {
+					...oldData,
+					pages: oldData.pages.map((page) =>
+						page.map((party) =>
+							party.id === variables.partyId
+								? { ...party, currentMemberCount: party.currentMemberCount + 1 }
+								: party
+						)
+					),
+				};
+			});
 		},
 		onError: (error) => {
 			console.error('파티 참가 실패', error);

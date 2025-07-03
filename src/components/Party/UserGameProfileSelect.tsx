@@ -43,10 +43,9 @@ export default function UserGameProfileSelect({
 	useEffect(() => {
 		if (isSuccess && userGameProfiles) {
 			if (userGameProfiles.length > 0) {
-				// 첫 번째 프로필을 선택
 				const firstProfile = userGameProfiles[0];
 				setSelectedValue(firstProfile.gameUsername);
-
+				setFormGameUsername('');
 				const gameProfile: TUserGameProfile = {
 					id: firstProfile.id,
 					userId: firstProfile.userId,
@@ -56,12 +55,25 @@ export default function UserGameProfileSelect({
 				};
 				setGameProfile(gameProfile);
 			} else {
-				// 프로필이 없으면 '프로필 추가' 선택
 				setSelectedValue('addProfile');
+				setFormGameUsername('');
 				setGameProfile(null);
 			}
 		}
-	}, [isSuccess, userGameProfiles, setGameProfile]);
+	}, [isSuccess, userGameProfiles]);
+
+	useEffect(() => {
+		if (selectedValue === 'addProfile') {
+			const newProfile: TUserGameProfile = {
+				id: null,
+				userId: userId,
+				gameId: gameId ?? null,
+				gameUsername: formGameUsername,
+				game: null,
+			};
+			setGameProfile(newProfile);
+		}
+	}, [selectedValue, formGameUsername, userId, gameId, setGameProfile]);
 
 	const handleChange = (event: SelectChangeEvent<string>) => {
 		const value = event.target.value;

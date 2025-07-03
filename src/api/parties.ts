@@ -77,11 +77,18 @@ export const createParty = async (
 	}
 };
 
-export const fetchJoinParty = async (payload: IJoinPartyRequest): Promise<IJoinPartyResponse> => {
+export const joinParty = async (payload: IJoinPartyRequest): Promise<IJoinPartyResponse> => {
 	const accessToken = localStorage.getItem('accessToken');
+	const { partyId } = payload;
+	const body = {
+		gameUsername: payload.gameUsername,
+		profileId: payload.profileId,
+		accessCode: payload.accessCode,
+	};
+	console.log('요청 보내짐');
 	const response = await axios.post<IJoinPartyResponse>(
-		`${API_TESTBASE_URL}/api/parties/join`,
-		payload,
+		`${API_TESTBASE_URL}/api/parties/${partyId}/members`,
+		body,
 		{
 			headers: {
 				Authorization: `Bearer ${accessToken}`,

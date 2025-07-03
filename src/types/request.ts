@@ -25,4 +25,5 @@ export interface IJoinPartyRequest {
 	accessCode: string;
 	gameUsername: string;
 	profileId?: number;
+	partyId: number;
 }

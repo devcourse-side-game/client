@@ -42,6 +42,7 @@ export const useUserGameProfiles = (payload: TGetUserGameProfilesQuery) => {
 	if (payload.userId === undefined) {
 		throw new Error('userId is required');
 	}
+	const isEnabled = !!payload.userId && !!payload.gameId;
 	return useQuery<
 		TGetUserGameProfilesResponse,
 		Error,
@@ -53,5 +54,6 @@ export const useUserGameProfiles = (payload: TGetUserGameProfilesQuery) => {
 			const response = await fetchUserGameProfiles(payload);
 			return response;
 		},
+		enabled: isEnabled,
 	});
 };

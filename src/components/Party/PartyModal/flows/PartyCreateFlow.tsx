@@ -25,6 +25,7 @@ import {
 } from '../../../../styles/pages/party/forms/Form.styles';
 import craetePratyFormValidation from '../../../../utils/partyValidation';
 import UserGameProfileSelect from '../../UserGameProfileSelect';
+import { useUser } from '../../../../hooks/useUsers';
 
 type TPartyCreateFormProps = {
 	onFlowComplete: () => void;
@@ -47,6 +48,9 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 		maxParticipants: '',
 		gameId: '',
 	});
+
+	//유저 정보 가져오기
+	const { data: user } = useUser();
 
 	// 모달 내 흐름 제어
 	const [view, setView] = useState<TPartyFormFlow>('form');
@@ -159,7 +163,7 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 						/>
 						{/* 변경 필요 : 파티장의 유저프로필 선택 or 닉네임 입력 중 하나 선택 */}
 						<UserGameProfileSelect
-							userId={12}
+							userId={user?.id ?? null}
 							gameId={optionGame?.id}
 							setGameProfile={setGameProfile}
 							validate={errors.gameUsername}

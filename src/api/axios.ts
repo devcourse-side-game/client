@@ -14,7 +14,7 @@ api.interceptors.request.use((config) => {
 	const isPublic = noAuthPaths.some((path) => config.url?.includes(path));
 
 	if (!isPublic) {
-		const token = localStorage.getItem('token');
+		const token = localStorage.getItem('accessToken');
 		if (token) {
 			config.headers.Authorization = `Bearer ${token}`;
 		}
