@@ -5,6 +5,7 @@ import { PARTY_LIST_ITEM } from '../../constants/Party';
 import PartyMemberList from './PartyMemberList';
 import { PartyListItemButtonWrapper } from '../../styles/pages/party/PartyListItem.style';
 import { useModal } from '../../hooks/useModal';
+import { useUser } from '../../hooks/useUsers';
 
 type TPartyListItemDetailProps = {
 	partyId: number;
@@ -15,14 +16,15 @@ function PartyListItemDetail({ partyId, isCompleted }: TPartyListItemDetailProps
 	const { data, isLoading, isError, error } = useSelectedPartyDetail(partyId);
 	const { openModal } = useModal();
 	const [isPartyMember, setIsPartyMember] = useState<boolean>(false);
+	const { data: user } = useUser();
 	useEffect(() => {
 		if (data) {
 			setIsPartyMember(
-				data?.members.some((member) => member.userId === member.userId) || false
+				data?.members.some((member) => member.userId === user?.id) || false
 				// 사용자의 id를 member.userId로 넣어야 함
 			);
 		}
-	}, [data]);
+	}, [data, user]);
 	if (isLoading) return <div>파티세부 정보 로딩중...</div>;
 	if (isError) return <div> 에러가 발생했습니다 : {error.message} </div>;
 

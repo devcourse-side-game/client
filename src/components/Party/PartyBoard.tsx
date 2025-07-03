@@ -14,10 +14,14 @@ import {
 	InfiniteScrollContainer,
 } from '../../styles/pages/party/PartyBoard.styles';
 import { useInView } from 'react-intersection-observer';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../stores';
+import { useNavigate } from 'react-router-dom';
 
 const LIMIT = 8;
 function PartyBoard() {
 	const queryClient = useQueryClient();
+	const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
 	const [filterOptions, setFilterOptions] = useState<TFilterOptions[]>([]);
 	const [pagination, setPagination] = useState({
 		page: 1,
@@ -38,8 +42,10 @@ function PartyBoard() {
 		isFetchingNextPage,
 		error,
 	} = useInfiniteParties(payload);
-
+	// 모달 컴포넌트 사용
 	const { openModal } = useModal();
+	//네비게이션 사용
+	const navigate = useNavigate();
 
 	/* 무한 스크롤 처리 */
 	const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -58,7 +64,11 @@ function PartyBoard() {
 		queryClient.invalidateQueries({ queryKey: ['parties'] });
 	};
 	const handleOpenCreateModal = () => {
-		openModal('create', null);
+		if (isLoggedIn) {
+			openModal('create', null);
+		} else {
+			navigate('/login');
+		}
 	};
 
 	// 필터 변경 시 페이지 초기화

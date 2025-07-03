@@ -15,7 +15,7 @@ function PartyMemberList({ members, partyId, isCompleted }: TPartyMemberListProp
 		<Stack>
 			{members
 				.sort((a, b) => {
-					if (a.isLeader && !b.isLeader) return -1;
+					if (a.isLeader && !b.isLeader) return 1;
 					return new Date(a.joinedAt).getTime() - new Date(b.joinedAt).getTime();
 				})
 				.map((member) => (
