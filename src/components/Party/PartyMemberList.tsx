@@ -7,9 +7,10 @@ export type TPartyMemberListProps = {
 	members: TPartyMember[] | null;
 	partyId: number | null;
 	isCompleted: boolean;
+	partyLeaderId: number | null;
 };
 
-function PartyMemberList({ members, partyId, isCompleted }: TPartyMemberListProps) {
+function PartyMemberList({ members, partyId, isCompleted, partyLeaderId }: TPartyMemberListProps) {
 	if (members === null) return <div>멤버가 없습니다</div>;
 	return (
 		<Stack>
@@ -24,6 +25,7 @@ function PartyMemberList({ members, partyId, isCompleted }: TPartyMemberListProp
 						member={member}
 						partyId={partyId}
 						isCompleted={isCompleted}
+						partyLeaderId={partyLeaderId}
 					/>
 				))}
 		</Stack>

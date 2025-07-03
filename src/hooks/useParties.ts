@@ -1,4 +1,11 @@
-import { InfiniteData, QueryFunctionContext, useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+	InfiniteData,
+	QueryFunctionContext,
+	useInfiniteQuery,
+	useMutation,
+	useQuery,
+	useQueryClient,
+} from '@tanstack/react-query';
 import {
 	TPartyCreateRequest,
 	TPartyCreateSuccessResponse,
@@ -32,11 +39,20 @@ export const useParties = (payload: TGetPartiesPayload) => {
 	});
 };
 export const useInfiniteParties = (payload: TGetPartiesPayload) => {
-	const {limit} = payload.pagination;
-	return useInfiniteQuery<IPartiesResponse, Error, InfiniteData<IPartiesResponse>, ['parties', TGetPartiesPayload],number>({
+	const { limit } = payload.pagination;
+	return useInfiniteQuery<
+		IPartiesResponse,
+		Error,
+		InfiniteData<IPartiesResponse>,
+		['parties', TGetPartiesPayload],
+		number
+	>({
 		queryKey: ['parties', payload],
-		queryFn: ({ pageParam=1 }) => {
-			return fetchParties({...payload, pagination: {...payload.pagination, page: pageParam}});
+		queryFn: ({ pageParam = 1 }) => {
+			return fetchParties({
+				...payload,
+				pagination: { ...payload.pagination, page: pageParam },
+			});
 		},
 		refetchOnWindowFocus: false,
 		refetchOnMount: false,

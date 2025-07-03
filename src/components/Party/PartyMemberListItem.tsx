@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Stack, Avatar, Typography, Chip, Button, Box } from '@mui/material';
 import { TPartyMember } from '../../types/Party';
 import { PARTY_LIST_ITEM } from '../../constants/Party';
@@ -8,17 +8,30 @@ import {
 	PartyMemberListWrapper,
 } from '../../styles/pages/party/PartyListItem.style';
 import { StarBorderRounded, StarRounded } from '@mui/icons-material';
+import { useUser } from '../../hooks/useUsers';
 
 type TPartyMemberListItemProps = {
 	member: TPartyMember;
 	partyId: number | null;
 	isCompleted: boolean;
+	partyLeaderId: number | null;
 };
 
-function PartyMemberListItem({ member, partyId, isCompleted }: TPartyMemberListItemProps) {
+function PartyMemberListItem({
+	member,
+	partyId,
+	isCompleted,
+	partyLeaderId,
+}: TPartyMemberListItemProps) {
 	const { openModal } = useModal();
-	const [isLeader, setIsLeader] = useState<boolean>(true);
+	const [isLeader, setIsLeader] = useState<boolean>(false);
 	// 파티장 여부 확인
+	const { data: user } = useUser();
+	useEffect(() => {
+		if (user) {
+			setIsLeader(user.id === partyLeaderId);
+		}
+	}, [user, partyLeaderId]);
 
 	const handleOnBanButtonClick = () => {
 		console.log(`ban in party id : ${partyId}`);

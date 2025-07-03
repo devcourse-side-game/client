@@ -46,6 +46,7 @@ function PartyListItemDetail({ partyId, isCompleted }: TPartyListItemDetailProps
 				members={data ? data.members : null}
 				partyId={data ? data.id : null}
 				isCompleted={isCompleted}
+				partyLeaderId={data ? data.creatorId : null}
 			/>
 			<PartyListItemButtonWrapper>
 				{isCompleted && (
