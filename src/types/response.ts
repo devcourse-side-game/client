@@ -4,6 +4,7 @@ export interface Response {
 	message: string;
 	statusCode?: string;
 	error?: string;
+	errorCode: string;
 }
 
 export interface LoginResponse extends Response {

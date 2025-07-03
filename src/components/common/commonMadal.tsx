@@ -4,8 +4,6 @@ import { useDialog } from '../../contexts/AuthModalContext';
 function CommonModal() {
 	const { isOpen, message, hide, onConfirm } = useDialog();
 
-	console.log(isOpen);
-
 	const handleConfirm = () => {
 		if (onConfirm) onConfirm();
 
