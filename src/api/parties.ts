@@ -14,7 +14,7 @@ import { IJoinPartyRequest } from '../types/request';
 // const API_BASE_URL_MOCK = 'http://localhost:3001';
 const API_BASE_URL_PROTO = 'http://localhost:3002';
 const TEST_TOKEN =
-	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoic29yaTEyMyIsImVtYWlsIjoidGVzdHNvcmkxMjNAZ21haWwuY29tIiwiaWF0IjoxNzUxNDcxMzc4LCJleHAiOjE3NTE0ODIxNzgsImF1ZCI6InRlc3Rzb3JpMTIzQGdtYWlsLmNvbSIsImlzcyI6ImdhbWUtcGFydHkifQ.SdFaXPqoq_x0j5A_SLXFuczRHunQd6kVKR-YxDvBqKk';
+	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoic29yaTEyMyIsImVtYWlsIjoidGVzdHNvcmkxMjNAZ21haWwuY29tIiwiaWF0IjoxNzUxNTEyNzk3LCJleHAiOjE3NTE1MjM1OTcsImF1ZCI6InRlc3Rzb3JpMTIzQGdtYWlsLmNvbSIsImlzcyI6ImdhbWUtcGFydHkifQ.M15K13doS-5UzvjeDPZxtKRyqAdZcfkyZT4UbnC2CLU';
 
 const API_TESTBASE_URL = API_BASE_URL_PROTO;
 /** 기능 : 파티 목록 조회 */
