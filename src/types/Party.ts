@@ -114,7 +114,7 @@ export type TFilterOptions = {
 	label: string;
 };
 
-export type TPartiesPayload = {
+export type TGetPartiesPayload = {
 	filterOptions: TFilterOptions[];
 	pagination: {
 		page: number;

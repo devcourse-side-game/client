@@ -9,7 +9,6 @@ function Home() {
 		<HomeContainer className='Home'>
 			<ModalProvider>
 				<PartyBoard></PartyBoard>
-
 				<PartyGlobalModal />
 			</ModalProvider>
 		</HomeContainer>

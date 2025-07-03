@@ -4,7 +4,7 @@ import {
 	TPartyCreateRequest,
 	TPartyCreateSuccessResponse,
 	TPartyListItemDetailResponse,
-	TPartiesPayload,
+	TGetPartiesPayload,
 	TBanPartyMemberParams,
 	TChangePartyLeaderParams,
 } from '../types/Party';
@@ -13,14 +13,12 @@ import { IJoinPartyRequest } from '../types/request';
 
 // const API_BASE_URL_MOCK = 'http://localhost:3001';
 const API_BASE_URL_PROTO = 'http://localhost:3002';
-const TEST_TOKEN =
-	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoic29yaTEyMyIsImVtYWlsIjoidGVzdHNvcmkxMjNAZ21haWwuY29tIiwiaWF0IjoxNzUxNTEyNzk3LCJleHAiOjE3NTE1MjM1OTcsImF1ZCI6InRlc3Rzb3JpMTIzQGdtYWlsLmNvbSIsImlzcyI6ImdhbWUtcGFydHkifQ.M15K13doS-5UzvjeDPZxtKRyqAdZcfkyZT4UbnC2CLU';
 
 const API_TESTBASE_URL = API_BASE_URL_PROTO;
 /** 기능 : 파티 목록 조회 */
-export const fetchParties = async (payload: TPartiesPayload): Promise<IPartiesResponse> => {
+export const fetchParties = async (payload: TGetPartiesPayload): Promise<IPartiesResponse> => {
 	const { filterOptions, pagination } = payload;
-
+	const accessToken = localStorage.getItem('accessToken');
 	const queryParams = new URLSearchParams();
 
 	// 페이지네이션 파라미터
@@ -39,18 +37,20 @@ export const fetchParties = async (payload: TPartiesPayload): Promise<IPartiesRe
 	const url = `${API_TESTBASE_URL}/api/parties?${queryParams.toString()}`;
 	const response = await axios.get<IPartiesResponse>(url, {
 		headers: {
-			Authorization: `Bearer ${TEST_TOKEN}`,
+			Authorization: `Bearer ${accessToken}`,
 		},
 	});
 	return response.data;
 };
+
 /** 기능 : 파티 세부 정보 조회 */
 export const fetchPartyDetail = async (payload: number): Promise<TPartyListItemDetailResponse> => {
+	const accessToken = localStorage.getItem('accessToken');
 	const response = await axios.get<TPartyListItemDetailResponse>(
 		`${API_TESTBASE_URL}/api/parties/${payload}`,
 		{
 			headers: {
-				Authorization: `Bearer ${TEST_TOKEN}`,
+				Authorization: `Bearer ${accessToken}`,
 			},
 		}
 	);
@@ -61,14 +61,14 @@ export const fetchPartyDetail = async (payload: number): Promise<TPartyListItemD
 export const createParty = async (
 	payload: TPartyCreateRequest
 ): Promise<TPartyCreateSuccessResponse> => {
-	console.log(payload);
+	const accessToken = localStorage.getItem('accessToken');
 	try {
 		const response = await axios.post<TPartyCreateSuccessResponse>(
 			`${API_TESTBASE_URL}/api/parties`,
 			payload,
 			{
 				headers: {
-					Authorization: `Bearer ${TEST_TOKEN}`,
+					Authorization: `Bearer ${accessToken}`,
 				},
 			}
 		);
@@ -80,12 +80,13 @@ export const createParty = async (
 };
 
 export const fetchJoinParty = async (payload: IJoinPartyRequest): Promise<IJoinPartyResponse> => {
+	const accessToken = localStorage.getItem('accessToken');
 	const response = await axios.post<IJoinPartyResponse>(
 		`${API_TESTBASE_URL}/api/parties/join`,
 		payload,
 		{
 			headers: {
-				Authorization: `Bearer ${TEST_TOKEN}`,
+				Authorization: `Bearer ${accessToken}`,
 			},
 		}
 	);
@@ -93,13 +94,14 @@ export const fetchJoinParty = async (payload: IJoinPartyRequest): Promise<IJoinP
 };
 
 export const banPartyMember = async (params: TBanPartyMemberParams): Promise<void> => {
+	const accessToken = localStorage.getItem('accessToken');
 	const { partyId, userId } = params;
 	const response = await axios.post<void>(
 		`${API_TESTBASE_URL}/api/parties/${partyId}/members/${userId}`,
 		{},
 		{
 			headers: {
-				Authorization: `Bearer ${TEST_TOKEN}`,
+				Authorization: `Bearer ${accessToken}`,
 			},
 		}
 	);
@@ -107,13 +109,14 @@ export const banPartyMember = async (params: TBanPartyMemberParams): Promise<voi
 };
 
 export const changePartyLeader = async (params: TChangePartyLeaderParams): Promise<void> => {
+	const accessToken = localStorage.getItem('accessToken');
 	const { partyId, userId } = params;
 	const response = await axios.post<void>(
 		`${API_TESTBASE_URL}/api/parties/${partyId}/members/leader/${userId}`,
 		{},
 		{
 			headers: {
-				Authorization: `Bearer ${TEST_TOKEN}`,
+				Authorization: `Bearer ${accessToken}`,
 			},
 		}
 	);

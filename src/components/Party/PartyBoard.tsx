@@ -4,7 +4,7 @@ import { BOARD_PARTY } from '../../constants/Party';
 import PartyFilter from './PartyFilter';
 import PartyList from './PartyList';
 import { useQueryClient } from '@tanstack/react-query';
-import { TFilterOptions, TPartiesPayload } from '../../types/Party';
+import { TFilterOptions, TGetPartiesPayload } from '../../types/Party';
 import { useParties } from '../../hooks/useParties';
 import { useModal } from '../../hooks/useModal';
 import {
@@ -21,7 +21,7 @@ function PartyBoard() {
 		limit: 8,
 	});
 
-	const payload: TPartiesPayload = {
+	const payload: TGetPartiesPayload = {
 		filterOptions,
 		pagination,
 	};

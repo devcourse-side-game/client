@@ -3,7 +3,7 @@ import {
 	TPartyCreateRequest,
 	TPartyCreateSuccessResponse,
 	TPartyListItemDetailResponse,
-	TPartiesPayload,
+	TGetPartiesPayload,
 	TBanPartyMemberParams,
 	TChangePartyLeaderParams,
 } from '../types/Party';
@@ -19,8 +19,8 @@ import { IJoinPartyResponse, IPartiesResponse } from '../types/response';
 import { IJoinPartyRequest } from '../types/request';
 // import { createParty, fetchParties, fetchPartyDetail } from '../api/parties';
 
-export const useParties = (payload: TPartiesPayload) => {
-	return useQuery<IPartiesResponse, Error, IPartiesResponse, ['parties', TPartiesPayload]>({
+export const useParties = (payload: TGetPartiesPayload) => {
+	return useQuery<IPartiesResponse, Error, IPartiesResponse, ['parties', TGetPartiesPayload]>({
 		queryKey: ['parties', payload],
 		queryFn: ({ queryKey }) => {
 			const [_queryName, payload] = queryKey;
