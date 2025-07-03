@@ -1,4 +1,4 @@
-import { QueryFunctionContext, useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { InfiniteData, QueryFunctionContext, useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
 	TPartyCreateRequest,
 	TPartyCreateSuccessResponse,
@@ -32,22 +32,20 @@ export const useParties = (payload: TGetPartiesPayload) => {
 	});
 };
 export const useInfiniteParties = (payload: TGetPartiesPayload) => {
-	return useInfiniteQuery<IPartiesResponse, Error, IPartiesResponse, ['parties', TGetPartiesPayload]>({
+	const {limit} = payload.pagination;
+	return useInfiniteQuery<IPartiesResponse, Error, InfiniteData<IPartiesResponse>, ['parties', TGetPartiesPayload],number>({
 		queryKey: ['parties', payload],
-		queryFn: ({ queryKey }) => {
-			const [_queryName, payload] = queryKey;
-			return fetchParties(payload);
+		queryFn: ({ pageParam=1 }) => {
+			return fetchParties({...payload, pagination: {...payload.pagination, page: pageParam}});
 		},
 		refetchOnWindowFocus: false,
 		refetchOnMount: false,
 		refetchOnReconnect: false,
-		getNextPageParam: (lastPage, pages) => {
-			// limit, page 만으로 hasNext 확인하는 코드 작성해야함
-			const { limit, page } = payload.pagination;
+		getNextPageParam: (lastPage, allpage) => {
 			if (lastPage.length < limit) {
 				return undefined;
 			}
-			return pages.length + 1;
+			return allpage.length + 1;
 		},
 		initialPageParam: 1,
 	});
