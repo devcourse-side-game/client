@@ -64,7 +64,10 @@ function Header() {
 								</IconButton>
 								<IconButton
 									sx={{ color: '#fff' }}
-									onClick={() => dispatch(logout())}
+									onClick={async () => {
+										await dispatch(logout());
+										navigate('/');
+									}}
 								>
 									<LogoutIcon></LogoutIcon>
 								</IconButton>

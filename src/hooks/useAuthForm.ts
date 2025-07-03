@@ -12,28 +12,15 @@ import {
 	PASSWORD_MISMATCH_ERROR,
 } from '../constants/error';
 import { FormType } from '../constants/enums';
-import axios, { AxiosError } from 'axios';
 import { validatePassword } from '../utils/passwordValidation';
 import { useNavigate } from 'react-router-dom';
 // import { loginApi } from '../api/auth';
 import { loginSuccess } from '../stores/authSlice';
 import { AppDispatch } from '../stores';
 import { useDispatch } from 'react-redux';
-
-const dummyUsers = [
-	{
-		email: 'test@example.com',
-		password: 'Test1234!',
-		username: 'testuser',
-		accessToken: 'accessTokenTest',
-	},
-	{
-		email: 'user@example.com',
-		password: 'User1234!',
-		username: 'user1',
-		accessToken: 'accessTokenTest',
-	},
-];
+import { loginApi, signupApi } from '../api/auth';
+import { AxiosError } from 'axios';
+import { useDialog } from '../contexts/AuthModalContext';
 
 export function useAuthForm({ formType }: FormTypeProps) {
 	const {
@@ -43,12 +30,15 @@ export function useAuthForm({ formType }: FormTypeProps) {
 		setError,
 		formState: { errors },
 		getValues,
+		clearErrors,
+		setFocus,
 	} = useForm<IUserFormData>();
 
 	const navigate = useNavigate();
 	const dispatch = useDispatch<AppDispatch>();
-
+	const { show } = useDialog();
 	const onValidate = async (data: IUserFormData) => {
+		console.log('호출 :: onValidate');
 		if (!data.email) {
 			setError('email', { message: ENTER_EMAIL });
 			return;
@@ -98,13 +88,20 @@ export function useAuthForm({ formType }: FormTypeProps) {
 
 	async function submitSignup(user: IUserFormData) {
 		try {
-			const res = await axios.post('/auth/register', {
+			console.log('호출 :: submitSignup');
+			const res = await signupApi({
 				username: user.username,
 				email: user.email,
 				password: user.password,
 			});
 			// TODO: 회원가입 성공 후 라우팅 또는 메시지 표시
-			console.log('회원가입: ', res.data);
+			console.log('회원가입: ', res);
+			show('회원가입이 완료되었습니다.', () => {
+				submitLogin({
+					email: user.email,
+					password: user.password,
+				});
+			});
 		} catch (error: unknown) {
 			const axiosError = error as AxiosError;
 
@@ -127,16 +124,11 @@ export function useAuthForm({ formType }: FormTypeProps) {
 
 	async function submitLogin(user: IUserFormData) {
 		try {
-			// const res = await loginApi({
-			// 	email: user.email,
-			// 	password: user.password,
-			// });
-
-			const res = dummyUsers.find(
-				(userData) => userData.email === user.email && userData.password === user.password
-			);
+			const res = await loginApi({
+				email: user.email,
+				password: user.password,
+			});
 			console.log(res);
-
 			if (res) {
 				const assessToken = res?.accessToken ? res.accessToken : '';
 				dispatch(loginSuccess(assessToken));
@@ -169,5 +161,7 @@ export function useAuthForm({ formType }: FormTypeProps) {
 		errors,
 		getValues,
 		setError,
+		clearErrors,
+		setFocus,
 	};
 }

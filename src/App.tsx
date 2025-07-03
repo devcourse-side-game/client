@@ -7,17 +7,22 @@ import Header from './layouts/Header';
 // import Footer from './layouts/Footer';
 import { Provider } from 'react-redux';
 import { store } from './stores/index';
+import { AuthModalProvider } from './contexts/AuthModalContext';
+import CommonModal from './components/common/commonMadal';
 function App() {
 	return (
 		<Provider store={store}>
 			<ThemeProvider theme={theme}>
 				<CssBaseline />
-				<BrowserRouter>
-					<Header />
-					<Box sx={{ flexGrow: 1 }}>
-						<AppRoutes />
-					</Box>
-				</BrowserRouter>
+				<AuthModalProvider>
+					<BrowserRouter>
+						<Header />
+						<Box sx={{ flexGrow: 1 }}>
+							<AppRoutes />
+						</Box>
+						<CommonModal />
+					</BrowserRouter>
+				</AuthModalProvider>
 			</ThemeProvider>
 		</Provider>
 	);

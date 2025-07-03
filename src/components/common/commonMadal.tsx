@@ -1,27 +1,27 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
-import { useState } from 'react';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText } from '@mui/material';
+import { useDialog } from '../../contexts/AuthModalContext';
 
 function CommonModal() {
-	const [open, setOpen] = useState(true);
+	const { isOpen, message, hide, onConfirm } = useDialog();
 
-	// 모달 닫기
-	const handleClose = () => {
-		setOpen(false);
+	console.log(isOpen);
+
+	const handleConfirm = () => {
+		if (onConfirm) onConfirm();
+
+		hide();
 	};
+
 	return (
 		<div>
 			{/* Dialog (모달) 컴포넌트 */}
-			<Dialog open={open} onClose={handleClose}>
-				<DialogTitle>My Modal</DialogTitle>
+			<Dialog open={isOpen} onClose={hide}>
 				<DialogContent>
-					<p>This is a simple modal example using MUI.</p>
+					<DialogContentText>{message}</DialogContentText>
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={handleClose} color='primary'>
-						Close
-					</Button>
-					<Button onClick={handleClose} color='primary'>
-						Agree
+					<Button onClick={handleConfirm} color='primary'>
+						확인
 					</Button>
 				</DialogActions>
 			</Dialog>

@@ -20,12 +20,6 @@ function Login() {
 				}}
 			>
 				<Grid size={{ xs: 6, md: 6 }}>
-					<Link href='/' underline='hover'>
-						아이디/비밀번호 찾기
-					</Link>
-				</Grid>
-
-				<Grid size={{ xs: 6, md: 6 }}>
 					<Link href='/signup' underline='hover'>
 						회원가입
 					</Link>
