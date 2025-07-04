@@ -1,8 +1,17 @@
 import { Box, Button, Container, Divider, Grid, Typography } from '@mui/material';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
+import { ThemeType } from '../../constants/enums';
+import { useThemeContext } from '../../contexts/ThemeContext';
 
 function ThemeMangement() {
+	const { mode, setThemeMode } = useThemeContext();
+
+	function changeThemeColor(type: ThemeType) {
+		if (mode !== type) {
+			setThemeMode(type); // 이 함수가 내부에서 localStorage도 업데이트해줌
+		}
+	}
 	return (
 		<Container maxWidth='sm' sx={{ p: 2, width: '500px' }}>
 			<Box display='flex' alignItems='center' gap={2}>
@@ -20,10 +29,11 @@ function ThemeMangement() {
 						startIcon={<DarkModeIcon />}
 						fullWidth
 						sx={{
-							backgroundColor: 'primary.main',
-							color: 'white',
+							backgroundColor: mode === ThemeType.DARK ? 'primary.main' : 'inherit',
+							color: mode === ThemeType.DARK ? 'white' : 'primary.main',
 							height: '45px',
 						}}
+						onClick={() => changeThemeColor(ThemeType.DARK)}
 					>
 						다크 모드
 					</Button>
@@ -33,7 +43,12 @@ function ThemeMangement() {
 						variant='outlined'
 						startIcon={<LightModeIcon />}
 						fullWidth
-						sx={{ height: '45px' }}
+						sx={{
+							backgroundColor: mode === ThemeType.LIGHT ? 'primary.main' : 'inherit',
+							color: mode === ThemeType.LIGHT ? 'white' : 'primary.main',
+							height: '45px',
+						}}
+						onClick={() => changeThemeColor(ThemeType.LIGHT)}
 					>
 						라이트 모드
 					</Button>
