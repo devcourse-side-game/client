@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Stack, Avatar, Typography, Chip, Button, Box } from '@mui/material';
 import { TPartyMember } from '../../types/Party';
 import { PARTY_LIST_ITEM } from '../../constants/Party';
@@ -8,16 +8,30 @@ import {
 	PartyMemberListWrapper,
 } from '../../styles/pages/party/PartyListItem.style';
 import { StarBorderRounded, StarRounded } from '@mui/icons-material';
+import { useUser } from '../../hooks/useUsers';
 
 type TPartyMemberListItemProps = {
 	member: TPartyMember;
 	partyId: number | null;
+	isCompleted: boolean;
+	partyLeaderId: number | null;
 };
 
-function PartyMemberListItem({ member, partyId }: TPartyMemberListItemProps) {
+function PartyMemberListItem({
+	member,
+	partyId,
+	isCompleted,
+	partyLeaderId,
+}: TPartyMemberListItemProps) {
 	const { openModal } = useModal();
-	const [isLeader, setIsLeader] = useState<boolean>(true);
+	const [isLeader, setIsLeader] = useState<boolean>(false);
 	// 파티장 여부 확인
+	const { data: user } = useUser();
+	useEffect(() => {
+		if (user) {
+			setIsLeader(user.id === partyLeaderId);
+		}
+	}, [user, partyLeaderId]);
 
 	const handleOnBanButtonClick = () => {
 		console.log(`ban in party id : ${partyId}`);
@@ -25,7 +39,7 @@ function PartyMemberListItem({ member, partyId }: TPartyMemberListItemProps) {
 			openModal('memberBan', {
 				partyId: partyId,
 				userId: member.id,
-				userName: member.user.username,
+				userName: member.username,
 			});
 	};
 	const handleOnLeaderChangeButtonClick = () => {
@@ -33,7 +47,7 @@ function PartyMemberListItem({ member, partyId }: TPartyMemberListItemProps) {
 			openModal('leaderChange', {
 				partyId: partyId,
 				userId: member.id,
-				userName: member.user.username,
+				userName: member.username,
 			});
 	};
 	return (
@@ -42,29 +56,41 @@ function PartyMemberListItem({ member, partyId }: TPartyMemberListItemProps) {
 				<Avatar alt='tester'></Avatar>
 				<Box>
 					<Stack direction='row' alignItems='center' spacing={0.5}>
-						<Typography variant='h6'>{member.user.username}</Typography>
+						<Typography variant='h6'>{member.username}</Typography>
 						{member.isLeader ? (
 							<Chip size='small' variant='filled' color='info' label='파티장' />
 						) : (
 							<></>
 						)}
-						{isLeader && !member.isLeader ? (
-							<Button onClick={handleOnLeaderChangeButtonClick}>파티장 넘기기</Button>
+						{isLeader && !member.isLeader && !isCompleted ? (
+							<>
+								<Button
+									onClick={handleOnLeaderChangeButtonClick}
+									disabled={isCompleted}
+								>
+									파티장 넘기기
+								</Button>
+							</>
 						) : (
 							<></>
 						)}
 					</Stack>
-					<Typography variant='body2'>닉네임이!</Typography>
+					<Typography variant='body2'>{member.gameUsername}</Typography>
 				</Box>
 				<Box sx={{ flexGrow: 1 }}></Box>
-				{isLeader && !member.isLeader ? (
-					<Button variant='contained' color='warning' onClick={handleOnBanButtonClick}>
+				{isLeader ? (
+					<Button
+						variant='contained'
+						color='warning'
+						onClick={handleOnBanButtonClick}
+						disabled={isCompleted || member.isLeader || !isLeader}
+					>
 						{PARTY_LIST_ITEM.BTN_MEMBER_BAN_TEXT}
 					</Button>
 				) : (
 					<></>
 				)}
-				<Button>좋아요</Button>
+				<Button disabled={isCompleted}>좋아요</Button>
 				<StarRounded color='primary' />
 				<StarBorderRounded color='primary' />
 			</PartyMemberListItemWrapper>

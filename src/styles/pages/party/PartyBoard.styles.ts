@@ -31,3 +31,8 @@ export const PartyButtonWrapper = styled(Box)(({ theme }) => ({
 	justifyContent: 'space-between',
 	gap: theme.spacing(2),
 }));
+export const InfiniteScrollContainer = styled(Box)(() => ({
+	width: '100%',
+	overflowY: 'scroll',
+	height: 'calc(100vh - 200px)',
+}));

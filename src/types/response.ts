@@ -1,4 +1,4 @@
-import { TParty } from './Party';
+import { TGame, TParty, TUserGameProfile } from './Party';
 
 export interface Response {
 	message: string;
@@ -19,19 +19,20 @@ export interface RefreshResponse extends Response {
 
 // export interface NicknameResponse extends Response {}
 
-export interface IGame {
-	id: number;
-	name: string;
-	platform: string;
-	steamAppId: number;
-	bannerUrl: string;
-	isActive: boolean;
-	createdAt: string;
-	updatedAt: string;
-	slug: string;
-}
-export interface GetGameListResponse extends Response {
-	games: IGame[];
+// 게임 목록 조회 응답
+export type TGetGameListResponse = TGame[];
+
+// 파티 목록 조회 응답
+export type IPartiesResponse = TParty[];
+
+// 파티 참가 응답
+export interface IJoinPartyResponse extends Response {
+	message: string;
+	partyId: number;
 }
 
-export type IPartiesResponse = TParty[];
+// 게임 상세 조회 응답
+export type TGameDetailResponse = TGame;
+
+//유저 게임 프로필 조회
+export type TGetUserGameProfilesResponse = TUserGameProfile[];

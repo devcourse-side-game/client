@@ -13,6 +13,7 @@ import {
 	PartyListItemTitleWrapper,
 } from '../../styles/pages/party/PartyListItem.style';
 import GameImage from '../../assets/gameImage.png';
+import { useGameDetail } from '../../hooks/useGames';
 // 임시 데이터 타입 및 더미데이터
 
 export type TPartyListItemProps = {
@@ -23,9 +24,11 @@ export type TPartyListItemProps = {
 };
 
 function PartyListItem({ party, expandedPartyId, setExpandedPartyId }: TPartyListItemProps) {
+	const isExpanded = expandedPartyId === party.id;
+	const { data: gameDetail } = useGameDetail(party.gameId);
 	// 아코디언 확장시 파티 세부 정보 api 호출
 	const handleOnAccordionChange = () => {
-		if (expandedPartyId === party.id) setExpandedPartyId(null);
+		if (isExpanded) setExpandedPartyId(null);
 		else setExpandedPartyId(party.id);
 	};
 
@@ -38,11 +41,20 @@ function PartyListItem({ party, expandedPartyId, setExpandedPartyId }: TPartyLis
 			>
 				<PartyListItemSummaryWrapper>
 					<GameImageBox>
-						<img src={GameImage} alt='game-image' width='100%' height='100%' />
+						<img
+							src={party.gameBannerUrl ? party.gameBannerUrl : GameImage}
+							loading='lazy'
+							onError={(e) => {
+								e.currentTarget.src = GameImage;
+							}}
+							alt='game-image'
+							width='100%'
+							height='100%'
+						/>
 					</GameImageBox>
 					<Stack direction='column'>
 						<ChipContainer direction='row' spacing={1}>
-							<Chip size='small' label={'게임 이름'} />
+							<Chip size='small' label={gameDetail?.name} />
 							<Chip
 								size='small'
 								label={party.isCompleted ? '모집완료' : '모집중'}
@@ -52,15 +64,31 @@ function PartyListItem({ party, expandedPartyId, setExpandedPartyId }: TPartyLis
 						</ChipContainer>
 						<PartyListItemTitleWrapper>
 							<Typography variant='h6'>{party.title}</Typography>
-							<Typography variant='body2'>
-								{`(${8} / ${party.maxParticipants})`}
+							<Typography
+								variant='body2'
+								color={
+									party.currentMemberCount === party.maxParticipants
+										? 'error'
+										: 'text.secondary'
+								}
+							>
+								{`(${party.currentMemberCount} / ${party.maxParticipants})`}
 							</Typography>
 						</PartyListItemTitleWrapper>
-						<Typography variant='body2'>{'생성인'}</Typography>
+						{party.leader && (
+							<>
+								<Typography variant='subtitle1'>{party.leader.username}</Typography>
+								<Typography variant='subtitle2'>
+									{party.leader.gameUsername}
+								</Typography>
+							</>
+						)}
 					</Stack>
 				</PartyListItemSummaryWrapper>
 				<PartyListItemDetailsWrapper>
-					<PartyListItemDetail partyId={party.id} />
+					{isExpanded && (
+						<PartyListItemDetail partyId={party.id} isCompleted={party.isCompleted} />
+					)}
 				</PartyListItemDetailsWrapper>
 			</PartyListItemAccordion>
 		</PartyListItemContainer>

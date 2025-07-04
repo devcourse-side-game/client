@@ -1,64 +1,54 @@
 import axios from 'axios';
 //import api from './axios';
-import { QueryFunctionContext } from '@tanstack/react-query';
 import {
-	TFilterOptions,
 	TPartyCreateRequest,
 	TPartyCreateSuccessResponse,
 	TPartyListItemDetailResponse,
+	TGetPartiesPayload,
+	TBanPartyMemberParams,
+	TChangePartyLeaderParams,
 } from '../types/Party';
-import { IPartiesResponse } from '../types/response';
+import { IJoinPartyResponse, IPartiesResponse } from '../types/response';
+import { IJoinPartyRequest } from '../types/request';
 
-// const API_BASE_URL_MOCK = 'http://localhost:3001';
-const API_BASE_URL_PROTO = 'http://localhost:3002';
-const TEST_TOKEN =
-	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoic29yaTEyMyIsImVtYWlsIjoidGVzdHNvcmkxMjNAZ21haWwuY29tIiwiaWF0IjoxNzUxMjEzNzUzLCJleHAiOjE3NTEyMTQzNTMsImF1ZCI6InRlc3Rzb3JpMTIzQGdtYWlsLmNvbSIsImlzcyI6ImdhbWUtcGFydHkifQ.ljVzBnUr_SrY5lQ-EeigSptGKUQeYUtmmhTP848SzpI';
-
+const API_BASE_URL_PROTO = 'http://localhost:3000';
 const API_TESTBASE_URL = API_BASE_URL_PROTO;
 /** 기능 : 파티 목록 조회 */
-export const fetchParties = async ({
-	queryKey,
-}: QueryFunctionContext<['parties', TFilterOptions[]]>): Promise<IPartiesResponse> => {
-	const [_queryName, filterOptions] = queryKey;
-	console.log(_queryName);
+export const fetchParties = async (payload: TGetPartiesPayload): Promise<IPartiesResponse> => {
+	const { filterOptions, pagination } = payload;
+	const accessToken = localStorage.getItem('accessToken');
+	const queryParams = new URLSearchParams();
 
-	let optionGameParam = '';
-	// let optionPartyOwnerNameParam = '';
-	// let optionPartyTitleParam = '';
+	// 페이지네이션 파라미터
+	queryParams.append('page', pagination.page.toString());
+	queryParams.append('limit', pagination.limit.toString());
 
-	// 필터 옵션에 따라 URL 변경
+	// 필터 옵션 파라미터
 	if (filterOptions.length) {
-		// 필터 옵션 적용type을 Enum 또는 상수화 필요
 		const optionGameId = filterOptions.find((option) => option.type === 'gameId');
-		console.log('test : ' + optionGameId?.label);
-		optionGameParam = optionGameId?.value ? `game_id=${optionGameId.value}` : '';
-
-		// optionPartyOwnerName 와 optionPartyTitle 은 백엔드와 회의 후 추후 옵션 추가 필요
-		// const optionPartyOwnerName = filterOptions.find(
-		// 	(option) => option.type === 'partyOwnerName'
-		// );
-		// optionPartyOwnerNameParam = optionPartyOwnerName?.value ? '' : '';
-		// const optionPartyTitle = filterOptions.find((option) => option.type === 'partyTitle');
-		// optionPartyTitleParam = optionPartyTitle?.value ? '' : '';
+		if (optionGameId?.value) {
+			queryParams.append('gameId', optionGameId.value.toString());
+		}
+		// 다른 필터들도 추가...
 	}
-	const apiURLParams = `?${optionGameParam}`;
-	const url = `${API_TESTBASE_URL}/api/parties${apiURLParams}`;
-	// const response = await api.get<TGetPartiesResponse>(url);
+
+	const url = `${API_TESTBASE_URL}/api/parties?${queryParams.toString()}`;
 	const response = await axios.get<IPartiesResponse>(url, {
 		headers: {
-			Authorization: `Bearer ${TEST_TOKEN}`,
+			Authorization: `Bearer ${accessToken}`,
 		},
 	});
 	return response.data;
 };
+
 /** 기능 : 파티 세부 정보 조회 */
 export const fetchPartyDetail = async (payload: number): Promise<TPartyListItemDetailResponse> => {
-	console.log(payload);
+	const accessToken = localStorage.getItem('accessToken');
 	const response = await axios.get<TPartyListItemDetailResponse>(
 		`${API_TESTBASE_URL}/api/parties/${payload}`,
 		{
 			headers: {
-				Authorization: `Bearer ${TEST_TOKEN}`,
+				Authorization: `Bearer ${accessToken}`,
 			},
 		}
 	);
@@ -69,14 +59,71 @@ export const fetchPartyDetail = async (payload: number): Promise<TPartyListItemD
 export const createParty = async (
 	payload: TPartyCreateRequest
 ): Promise<TPartyCreateSuccessResponse> => {
+	const accessToken = localStorage.getItem('accessToken');
 	try {
 		const response = await axios.post<TPartyCreateSuccessResponse>(
 			`${API_TESTBASE_URL}/api/parties`,
-			payload
+			payload,
+			{
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
+				},
+			}
 		);
 		return response.data;
 	} catch (error) {
 		console.error('API Error: Failed to create party', error);
 		throw error;
 	}
+};
+
+export const joinParty = async (payload: IJoinPartyRequest): Promise<IJoinPartyResponse> => {
+	const accessToken = localStorage.getItem('accessToken');
+	const { partyId } = payload;
+	const body = {
+		gameUsername: payload.gameUsername,
+		profileId: payload.profileId,
+		accessCode: payload.accessCode,
+	};
+	console.log('요청 보내짐');
+	const response = await axios.post<IJoinPartyResponse>(
+		`${API_TESTBASE_URL}/api/parties/${partyId}/members`,
+		body,
+		{
+			headers: {
+				Authorization: `Bearer ${accessToken}`,
+			},
+		}
+	);
+	return response.data;
+};
+
+export const banPartyMember = async (params: TBanPartyMemberParams): Promise<void> => {
+	const accessToken = localStorage.getItem('accessToken');
+	const { partyId, userId } = params;
+	const response = await axios.post<void>(
+		`${API_TESTBASE_URL}/api/parties/${partyId}/members/${userId}`,
+		{},
+		{
+			headers: {
+				Authorization: `Bearer ${accessToken}`,
+			},
+		}
+	);
+	return response.data;
+};
+
+export const changePartyLeader = async (params: TChangePartyLeaderParams): Promise<void> => {
+	const accessToken = localStorage.getItem('accessToken');
+	const { partyId, userId } = params;
+	const response = await axios.post<void>(
+		`${API_TESTBASE_URL}/api/parties/${partyId}/members/leader/${userId}`,
+		{},
+		{
+			headers: {
+				Authorization: `Bearer ${accessToken}`,
+			},
+		}
+	);
+	return response.data;
 };

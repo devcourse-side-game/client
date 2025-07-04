@@ -1,9 +1,5 @@
 import {
-	Box,
 	Button,
-	DialogActions,
-	DialogContent,
-	DialogTitle,
 	FormControlLabel,
 	FormGroup,
 	InputAdornment,
@@ -13,10 +9,23 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import SearchableGameSelect from '../../SearchableGameSelect';
-import { TPartyFormFlow, TPartyCreateRequest } from '../../../../types/Party';
+import {
+	TPartyFormFlow,
+	TPartyCreateRequest,
+	TPartyCreateFormErrors,
+	TUserGameProfile,
+} from '../../../../types/Party';
 import { useCreateParty } from '../../../../hooks/useParties';
-import { IGame } from '../../../../types/response';
-import { PartyCreateContainer } from '../../../../styles/pages/party/forms/PartyCreate.styles';
+import { TGame } from '../../../../types/Party';
+import {
+	FormContainer,
+	FormDialogActions,
+	FormDialogContent,
+	FormDialogTitle,
+} from '../../../../styles/pages/party/forms/Form.styles';
+import craetePratyFormValidation from '../../../../utils/partyValidation';
+import UserGameProfileSelect from '../../UserGameProfileSelect';
+import { useUser } from '../../../../hooks/useUsers';
 
 type TPartyCreateFormProps = {
 	onFlowComplete: () => void;
@@ -24,31 +33,51 @@ type TPartyCreateFormProps = {
 
 function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 	const [formTitle, setFormTitle] = useState('');
-	const [optionGame, setOptionGame] = useState<IGame | null>(null);
+	const [optionGame, setOptionGame] = useState<TGame | null>(null);
 	const [purposeTag, setPurposeTag] = useState<string>('');
 	const [formDescription, setFormDescription] = useState<string>('');
 	const [formMaxNum, setFormMaxNum] = useState<number>(4);
-	const [formOwnerNickname, setFormOwnerNickname] = useState<string>('');
 	const [accessCode, setAccessCode] = useState<string>('');
 	const [isPrivateChecked, setIsPrivateChecked] = useState(false);
+	const [gameProfile, setGameProfile] = useState<TUserGameProfile | null>(null);
+	const [errors, setErrors] = useState<TPartyCreateFormErrors>({
+		title: '',
+		gameUsername: '',
+		accessCode: '',
+		description: '',
+		maxParticipants: '',
+		gameId: '',
+	});
+
+	//유저 정보 가져오기
+	const { data: user } = useUser();
 
 	// 모달 내 흐름 제어
 	const [view, setView] = useState<TPartyFormFlow>('form');
-
 	const { mutate, isPending } = useCreateParty();
 
+	const onFlowFailed = () => {
+		setView('form');
+	};
 	const handleOnCreateClick = () => {
 		const newParty: TPartyCreateRequest = {
 			title: formTitle,
 			gameId: optionGame?.id,
 			purposeTag: purposeTag,
 			maxParticipants: formMaxNum,
-			startTime: String(Date.now()),
-			endTime: String(Date.now()),
 			description: formDescription ? formDescription : '',
 			isPrivate: isPrivateChecked,
 			accessCode: accessCode,
+			gameUsername: gameProfile?.gameUsername ?? '',
+			profileId: gameProfile?.id ?? null,
 		};
+		console.log(`gameUsername: ${gameProfile?.gameUsername}`);
+		console.log(`profileId: ${gameProfile?.id}`);
+		const errors = craetePratyFormValidation(newParty);
+		setErrors(errors);
+		if (errors.title || errors.gameUsername || (errors.accessCode && isPrivateChecked)) {
+			return;
+		}
 		mutate(newParty, {
 			onSuccess: (data) => {
 				console.log(data.message);
@@ -56,95 +85,72 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 			},
 			onError: (error) => {
 				alert(`에러: ${error.message}`);
+				setView('failed');
 			},
 		});
 	};
-	if (view === 'success') {
-		return (
-			<>
-				<DialogTitle>성공</DialogTitle>
-				<DialogContent>
-					<Typography sx={{ py: 4, textAlign: 'center' }}>
-						파티가 성공적으로 생성되었습니다!
-					</Typography>
-				</DialogContent>
-				<DialogActions>
-					{/* 확인 버튼을 누르면 전체 흐름이 완료되었음을 부모에게 알립니다. */}
-					<Button onClick={onFlowComplete} variant='contained' autoFocus>
-						확인
-					</Button>
-				</DialogActions>
-			</>
-		);
-	}
-
-	return (
-		<PartyCreateContainer>
-			<DialogTitle>새로운 파티 생성</DialogTitle>
-			<DialogContent>
-				<Box sx={{ display: 'flex', flexDirection: 'column' }}>
-					<Box>
-						<div>파티 이름</div>
+	switch (view) {
+		case 'form':
+			return (
+				<FormContainer>
+					<FormDialogTitle>새로운 파티 생성</FormDialogTitle>
+					<FormDialogContent>
 						<TextField
 							value={formTitle}
+							required
 							type='text'
-							label='모집할 파티 제목을 입력하세요'
+							label='파티 이름'
+							error={!!errors.title}
+							helperText={errors.title}
 							onChange={(e) => setFormTitle(e.target.value)}
 						/>
-					</Box>
-					<Box>
-						<div>게임 선택</div>
-						<SearchableGameSelect setOptionGame={setOptionGame} />
-					</Box>
-					<FormGroup>
-						<FormControlLabel
-							control={
-								<Switch
-									checked={isPrivateChecked}
-									onChange={() => setIsPrivateChecked(!isPrivateChecked)}
-									inputProps={{ 'aria-label': 'Basic switch' }}
-								/>
-							}
-							label={isPrivateChecked ? '비공개 파티' : '공개 파티'}
+						<SearchableGameSelect
+							setOptionGame={setOptionGame}
+							validate={errors.gameId}
 						/>
-					</FormGroup>
-					{isPrivateChecked ? (
-						<Box>
-							<div>비밀번호</div>
+						<FormGroup>
+							<FormControlLabel
+								control={
+									<Switch
+										checked={isPrivateChecked}
+										onChange={() => setIsPrivateChecked(!isPrivateChecked)}
+										inputProps={{ 'aria-label': 'Basic switch' }}
+									/>
+								}
+								label={isPrivateChecked ? '비공개 파티' : '공개 파티'}
+							/>
+						</FormGroup>
+						{isPrivateChecked ? (
 							<TextField
-								value={formTitle}
+								value={accessCode}
+								required={isPrivateChecked}
 								type='text'
-								label='참가 비밀번호를 설정하세요'
+								label='방 비밀번호'
 								onChange={(e) => setAccessCode(e.target.value)}
 							/>
-						</Box>
-					) : null}
-					<Box>
-						<div>파티 목적</div>
+						) : null}
 						<TextField
 							value={purposeTag}
 							type='text'
-							label='파티의 목적을 나타낼 태그를 입력하세요'
+							label='파티 목적 태그'
+							placeholder='ex) 레이드, 랭크게임 등'
 							onChange={(e) => setPurposeTag(e.target.value)}
 						/>
-					</Box>
-					<Box>
-						<div>파티 세부 정보</div>
 						<TextField
 							value={formDescription}
-							type='text'
 							multiline
 							minRows={1}
-							label='파티 모집에 필요한 세부 내용을 입력하세요'
+							label='파티 정보 입력'
+							placeholder='ex) 파티 목적, 파티 규칙 등'
+							inputProps={{
+								pattern: '.*',
+							}}
 							onChange={(e) => setFormDescription(e.target.value)}
 						/>
-					</Box>
-					<Box>
-						<div>최대 인원</div>
 						<TextField
 							value={formMaxNum}
 							type='number'
-							label='최대 파티원 수를 정하세요'
+							label='파티 인원 수'
 							slotProps={{
 								input: {
 									endAdornment: (
@@ -155,25 +161,75 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 							inputProps={{ min: 1, max: 16 }}
 							onChange={(e) => setFormMaxNum(parseInt(e.target.value))}
 						/>
-					</Box>
-					<Box>
-						<div>게임 닉네임</div>
-						<TextField
-							value={formOwnerNickname}
-							type='text'
-							label='인게임 닉네임을 입력해주세요'
-							onChange={(e) => setFormOwnerNickname(e.target.value)}
+						{/* 변경 필요 : 파티장의 유저프로필 선택 or 닉네임 입력 중 하나 선택 */}
+						<UserGameProfileSelect
+							userId={user?.id ?? null}
+							gameId={optionGame?.id}
+							setGameProfile={setGameProfile}
+							validate={errors.gameUsername}
 						/>
-					</Box>
-				</Box>
-			</DialogContent>
-			<DialogActions>
-				<Button onClick={onFlowComplete}>취소</Button>
-				<Button onClick={handleOnCreateClick} variant='contained' disabled={isPending}>
-					{isPending ? '생성 중...' : '파티 생성'}
-				</Button>
-			</DialogActions>
-		</PartyCreateContainer>
-	);
+					</FormDialogContent>
+					<FormDialogActions>
+						<Button onClick={onFlowComplete}>취소</Button>
+						<Button
+							onClick={handleOnCreateClick}
+							variant='contained'
+							disabled={isPending}
+						>
+							{isPending ? '생성 중...' : '파티 생성'}
+						</Button>
+					</FormDialogActions>
+				</FormContainer>
+			);
+		case 'success':
+			return (
+				<FormContainer>
+					<FormDialogTitle>성공</FormDialogTitle>
+					<FormDialogContent>
+						<Typography sx={{ py: 4, textAlign: 'center' }}>
+							파티가 성공적으로 생성되었습니다!
+						</Typography>
+					</FormDialogContent>
+					<FormDialogActions>
+						{/* 확인 버튼을 누르면 전체 흐름이 완료되었음을 부모에게 알립니다. */}
+						<Button onClick={onFlowComplete} variant='contained' autoFocus>
+							확인
+						</Button>
+					</FormDialogActions>
+				</FormContainer>
+			);
+		case 'failed':
+			return (
+				<FormContainer>
+					<FormDialogTitle>실패</FormDialogTitle>
+					<FormDialogContent>
+						<Typography sx={{ py: 4, textAlign: 'center' }}>
+							파티 생성에 실패했습니다.
+						</Typography>
+					</FormDialogContent>
+					<FormDialogActions>
+						<Button onClick={onFlowFailed} variant='contained' autoFocus>
+							확인
+						</Button>
+					</FormDialogActions>
+				</FormContainer>
+			);
+		default:
+			return (
+				<FormContainer>
+					<FormDialogTitle>에러</FormDialogTitle>
+					<FormDialogContent>
+						<Typography sx={{ py: 4, textAlign: 'center' }}>
+							알 수 없는 에러가 발생했습니다.
+						</Typography>
+					</FormDialogContent>
+					<FormDialogActions>
+						<Button onClick={onFlowComplete} variant='contained' autoFocus>
+							확인
+						</Button>
+					</FormDialogActions>
+				</FormContainer>
+			);
+	}
 }
 export default PartyCreateFlow;
