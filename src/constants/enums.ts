@@ -3,3 +3,8 @@ export enum FormType {
 	LOGIN,
 	SIGNUP,
 }
+
+export enum ThemeType {
+	DARK = 'dark',
+	LIGHT = 'light',
+}

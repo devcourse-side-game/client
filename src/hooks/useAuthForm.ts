@@ -10,7 +10,7 @@ import {
 } from '../constants/error';
 import { EMAIL_REGEX } from '../constants/regex';
 import { useForm } from 'react-hook-form';
-import { FormTypeProps, IUserFormData } from '../types/auth';
+import { IFormTypeProps, IUserFormData } from '../types/auth';
 import { FormType } from '../constants/enums';
 import { validatePassword } from '../utils/passwordValidation';
 import { useMemo, useState } from 'react';
@@ -18,7 +18,7 @@ import { nicknameCheckApi } from '../api/auth';
 import { AxiosError } from 'axios';
 import { useDialog } from '../contexts/AuthModalContext';
 
-export function useAuthForm({ formType }: FormTypeProps) {
+export function useAuthForm({ formType }: IFormTypeProps) {
 	const {
 		control,
 		handleSubmit,
@@ -66,7 +66,6 @@ export function useAuthForm({ formType }: FormTypeProps) {
 			show(`'${usernameValue}' ${res.message}`, () => {
 				console.log('사용');
 			});
-
 			return true;
 		} catch (error: unknown) {
 			const axiosError = error as AxiosError;
@@ -80,6 +79,7 @@ export function useAuthForm({ formType }: FormTypeProps) {
 						break;
 				}
 				setIsNicknameConfirmed(false);
+				return false;
 			}
 		}
 	};

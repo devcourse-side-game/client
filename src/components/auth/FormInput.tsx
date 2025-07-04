@@ -1,29 +1,21 @@
 import { TextField } from '@mui/material';
-import { Control, Controller, FieldErrors } from 'react-hook-form';
-import { IUserFormData } from '../../types/auth';
+import { Controller } from 'react-hook-form';
+import { IFormInput } from '../../types/auth';
 
-interface IFormInput {
-	error: FieldErrors<IUserFormData>;
-	control: Control<IUserFormData, IUserFormData>;
-	label: string;
-	required: string;
-	defaultValue: string;
-}
-
-function FormInput({ error, control, label, required, defaultValue }: IFormInput) {
+function FormInput({ error, control, label, required, inputName, inputType = 'text' }: IFormInput) {
 	return (
 		<Controller
-			name='email'
+			name={inputName}
 			control={control}
-			defaultValue={defaultValue}
 			rules={{
-				required: required,
+				required,
 			}}
 			render={({ field }) => (
 				<TextField
 					{...field}
-					error={!!error.email}
+					error={!!error[inputName]}
 					label={label}
+					type={inputType}
 					sx={{ marginBottom: '10px' }}
 				/>
 			)}
