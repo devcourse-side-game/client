@@ -7,7 +7,7 @@ import {
 import { GetGameListRequest } from '../types/request';
 import { TGetUserGameProfilesQuery } from '../types/Party';
 
-const API_BASE_URL_PROTO = 'http://localhost:3002';
+const API_BASE_URL_PROTO = 'http://localhost:3000';
 
 const API_TESTBASE_URL = API_BASE_URL_PROTO;
 
