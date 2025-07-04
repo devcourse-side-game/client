@@ -14,6 +14,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../stores';
 import { logout } from '../stores/authSlice';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { logoutApi } from '../api/auth';
+import { AxiosError } from 'axios';
 
 function Header() {
 	// const [show, setShow] = useState(true);
@@ -23,6 +25,17 @@ function Header() {
 	const dispatch = useDispatch<AppDispatch>();
 
 	const show = !(location.pathname === '/login' || location.pathname === '/signup');
+
+	const handleLogout = async () => {
+		try {
+			await logoutApi(); // 서버 쿠키 삭제 요청
+			dispatch(logout()); // Redux 상태 & localStorage 정리
+			navigate('/');
+		} catch (err) {
+			const axiosError = err as AxiosError<Response>;
+			console.log(axiosError);
+		}
+	};
 
 	return (
 		<AppBar position='static'>
@@ -62,13 +75,7 @@ function Header() {
 								>
 									<Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
 								</IconButton>
-								<IconButton
-									sx={{ color: '#fff' }}
-									onClick={async () => {
-										await dispatch(logout());
-										navigate('/');
-									}}
-								>
+								<IconButton sx={{ color: '#fff' }} onClick={handleLogout}>
 									<LogoutIcon></LogoutIcon>
 								</IconButton>
 							</>

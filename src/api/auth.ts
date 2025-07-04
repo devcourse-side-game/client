@@ -17,7 +17,7 @@ export const nicknameCheckApi = async (payload: NicknameCheckRequest): Promise<R
 	return response.data;
 };
 
-export const logoutApi = async () => {
-	// TODO :: 로그아웃 로직은 프론트에서 제어
-	return '';
+export const logoutApi = async (): Promise<Response> => {
+	const response = await api.post<Response>('/auth/logout');
+	return response.data;
 };
