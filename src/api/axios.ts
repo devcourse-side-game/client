@@ -10,16 +10,14 @@ const api = axios.create({
 
 api.interceptors.request.use((config) => {
 	// 로그인 관련 API는 토큰 없이 요청
-	const noAuthPaths = ['/login', '/signup'];
+	const noAuthPaths = ['/login', '/regiter'];
 	const isPublic = noAuthPaths.some((path) => config.url?.includes(path));
-
 	if (!isPublic) {
 		const token = localStorage.getItem('accessToken');
 		if (token) {
 			config.headers.Authorization = `Bearer ${token}`;
 		}
 	}
-
 	return config;
 });
 

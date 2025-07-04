@@ -1,7 +1,6 @@
 import { Box, Button, FormControl, FormHelperText, Grid, Link, TextField } from '@mui/material';
-import { useMemo } from 'react';
 import { FormType } from '../../constants/enums';
-import { FormTypeProps } from '../../types/auth';
+import { FormTypeProps, IUserFormData } from '../../types/auth';
 import { Controller } from 'react-hook-form';
 import { useAuthForm } from '../../hooks/useAuthForm';
 import {
@@ -9,6 +8,9 @@ import {
 	ENTER_EMAIL,
 	ENTER_PASSWORD,
 	ENTER_USERNAME,
+	ErrorCode,
+	NOT_FOUND_USER,
+	PASSWORD_MISMATCH_ERROR,
 } from '../../constants/error';
 import PasswordValidBox from './PasswordValidBox';
 import {
@@ -17,20 +19,32 @@ import {
 	PASSWORD_LETTER_VALID,
 	SIGNUP_TITLE,
 } from '../../constants/auth';
-import { validatePassword } from '../../utils/passwordValidation';
 import { AxiosError } from 'axios';
-import { nicknameCheckApi } from '../../api/auth';
+import { loginApi, signupApi } from '../../api/auth';
 import { useDialog } from '../../contexts/AuthModalContext';
+import FormInput from './FormInput';
+import { loginSuccess } from '../../stores/authSlice';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../stores';
+import { Response } from '../../types/response';
 
 function AuthForm({ formType }: FormTypeProps) {
-	const { control, handleSubmit, errors, watch, getValues, setError, clearErrors } = useAuthForm({
+	const {
+		control,
+		handleSubmit,
+		errors,
+		setError,
+		confirmUsername,
+		isLengthValid,
+		isComplexValid,
+		onValidate,
+	} = useAuthForm({
 		formType,
 	});
-	const passwordValue = watch('password');
 	const { show } = useDialog();
-	const { isLengthValid, isComplexValid } = useMemo(() => {
-		return validatePassword(passwordValue);
-	}, [passwordValue]);
+	const navigate = useNavigate();
+	const dispatch = useDispatch<AppDispatch>();
 
 	const errorMessage =
 		errors.email?.message ||
@@ -39,39 +53,93 @@ function AuthForm({ formType }: FormTypeProps) {
 		errors.username?.message ||
 		'';
 
-	async function confirmUsername() {
-		const usernameValue = getValues('username');
-		clearErrors();
-		if (!usernameValue) {
-			setError('username', { message: ENTER_USERNAME });
-		} else {
-			try {
-				const res = await nicknameCheckApi({
-					username: usernameValue,
-				});
+	async function onSubmit(data: IUserFormData) {
+		const valied = await onValidate(data);
+		if (valied) {
+			switch (formType) {
+				case FormType.SIGNUP:
+					submitSignup({
+						username: data.username,
+						email: data.email,
+						password: data.password,
+					});
+					break;
+				case FormType.LOGIN:
+					submitLogin({
+						email: data.email,
+						password: data.password,
+					});
+					break;
+			}
+		}
+	}
 
-				console.log('닉네임 중복 확인: ' + res.message);
-				show(res.message, () => {
-					console.log('사용');
+	async function submitSignup(user: IUserFormData) {
+		try {
+			console.log('호출 :: submitSignup');
+			const res = await signupApi({
+				username: user.username,
+				email: user.email,
+				password: user.password,
+			});
+			console.log(res);
+			show('회원가입이 완료되었습니다.', () => {
+				submitLogin({
+					email: user.email,
+					password: user.password,
 				});
-			} catch (error: unknown) {
-				const axiosError = error as AxiosError;
-				if (axiosError.response) {
-					const { status } = axiosError.response;
+			});
+		} catch (err: unknown) {
+			const axiosError = err as AxiosError<Response>;
+			const response = axiosError.response?.data;
+			console.log(err);
+			switch (response?.errorCode) {
+				case ErrorCode.DATABASE_ERROR:
+					show(response.message);
+					break;
+				case ErrorCode.USER_ALREADY_EXISTS:
+					setError('username', { message: ALREADU_USED_USERNAME });
+					break;
+				case ErrorCode.REPASSWORD_MISMATCH:
+					setError('username', { message: PASSWORD_MISMATCH_ERROR });
+					break;
+			}
+		}
+	}
 
-					switch (status) {
-						case 409: // 이미 사용중인 닉네임
-							setError('username', { message: ALREADU_USED_USERNAME });
-							break;
-					}
-				}
+	async function submitLogin(user: IUserFormData) {
+		try {
+			const res = await loginApi({
+				email: user.email,
+				password: user.password,
+			});
+			const assessToken = res?.accessToken ? res.accessToken : '';
+			dispatch(loginSuccess(assessToken));
+			navigate('/');
+		} catch (err: unknown) {
+			const axiosError = err as AxiosError<Response>;
+			const response = axiosError.response?.data;
+			console.log(axiosError);
+			switch (response?.errorCode) {
+				case ErrorCode.DATABASE_ERROR:
+					show(response.message);
+					break;
+				case ErrorCode.UNAUTHORIZED:
+					show(response.message);
+					break;
+				case ErrorCode.USER_NOT_FOUND:
+					setError('email', { message: NOT_FOUND_USER });
+					break;
+				case ErrorCode.INVALID_PASSWORD:
+					setError('password', { message: PASSWORD_MISMATCH_ERROR });
+					break;
 			}
 		}
 	}
 
 	return (
 		<>
-			<form onSubmit={handleSubmit}>
+			<form onSubmit={handleSubmit(onSubmit)}>
 				<FormControl fullWidth error={errorMessage !== ''} margin='normal'>
 					{FormType.SIGNUP === formType && (
 						<>
@@ -106,49 +174,13 @@ function AuthForm({ formType }: FormTypeProps) {
 									</Grid>
 								)}
 							/>
-						</>
-					)}
-					{/* TODO :: 추후 email, password 테스트 코드 삭제  */}
-					<Controller
-						name='email'
-						control={control}
-						defaultValue='test@mail.com'
-						rules={{
-							required: ENTER_EMAIL,
-						}}
-						render={({ field }) => (
-							<TextField
-								{...field}
-								error={!!errors.email}
+							<FormInput
+								error={errors}
+								control={control}
+								defaultValue=''
 								label='이메일'
-								sx={{ marginBottom: '10px' }}
+								required={ENTER_EMAIL}
 							/>
-						)}
-					/>
-
-					{FormType.LOGIN === formType && (
-						<Controller
-							name='password'
-							control={control}
-							defaultValue='!1234567'
-							rules={{
-								required: ENTER_PASSWORD,
-								validate: (value) => value.length > 0 || ENTER_PASSWORD,
-							}}
-							render={({ field }) => (
-								<TextField
-									{...field}
-									error={!!errors.password}
-									type='password'
-									label='비밀번호'
-									sx={{ marginBottom: '10px' }}
-								/>
-							)}
-						/>
-					)}
-
-					{FormType.SIGNUP === formType && (
-						<>
 							<Controller
 								name='password'
 								control={control}
@@ -195,6 +227,36 @@ function AuthForm({ formType }: FormTypeProps) {
 									content={PASSWORD_LETTER_VALID}
 								/>
 							</Box>
+						</>
+					)}
+
+					{FormType.LOGIN === formType && (
+						<>
+							<FormInput
+								error={errors}
+								control={control}
+								defaultValue='test@mail.com'
+								label='이메일'
+								required={ENTER_EMAIL}
+							/>
+							<Controller
+								name='password'
+								control={control}
+								defaultValue='!1234567'
+								rules={{
+									required: ENTER_PASSWORD,
+									validate: (value) => value.length > 0 || ENTER_PASSWORD,
+								}}
+								render={({ field }) => (
+									<TextField
+										{...field}
+										error={!!errors.password}
+										type='password'
+										label='비밀번호'
+										sx={{ marginBottom: '10px' }}
+									/>
+								)}
+							/>
 						</>
 					)}
 
