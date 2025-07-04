@@ -1,8 +1,8 @@
 import { Box, Typography } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
-import { PasswordValidBoxPorps } from '../../types/auth';
+import { IPasswordValidBoxPorps } from '../../types/auth';
 
-function PasswordValidBox({ check, content }: PasswordValidBoxPorps) {
+function PasswordValidBox({ check, content }: IPasswordValidBoxPorps) {
 	return (
 		<Box display='flex' alignItems='center' gap={1}>
 			<CheckIcon color={check ? 'success' : 'disabled'} sx={{ fontSize: 16 }} />

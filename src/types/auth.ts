@@ -1,28 +1,22 @@
+import { Control, FieldErrors } from 'react-hook-form';
 import { FormType } from '../constants/enums';
 
-export interface FormTitleProps {
+export interface IFormTitleProps {
 	title: string;
 }
-export interface FormTypeProps {
+export interface IFormTypeProps {
 	formType: FormType;
 }
 
-export interface InputProps {
+export interface IFormInput {
+	error: FieldErrors<IUserFormData>;
+	control: Control<IUserFormData>;
 	label: string;
-	value: string;
-	onChange: (value: string) => void;
+	required: string;
+	defaultValue?: string;
+	inputName: 'email' | 'password' | 'username' | 'passwordCheck';
+	inputType?: string;
 }
-
-// export interface SignData {
-// 	email: string;
-// 	password: string;
-// }
-
-// export interface LoginData {
-// 	email: string;
-// 	password: string;
-// 	username: string;
-// }
 
 export interface IUserFormData {
 	email: string;
@@ -31,7 +25,7 @@ export interface IUserFormData {
 	passwordCheck?: string;
 }
 
-export interface PasswordValidBoxPorps {
+export interface IPasswordValidBoxPorps {
 	check: boolean;
 	content: string;
 }
