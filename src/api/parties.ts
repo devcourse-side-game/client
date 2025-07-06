@@ -101,14 +101,9 @@ export const joinParty = async (payload: IJoinPartyRequest): Promise<IJoinPartyR
 export const banPartyMember = async (params: TBanPartyMemberParams): Promise<void> => {
 	const accessToken = localStorage.getItem('accessToken');
 	const { partyId, userId } = params;
-	const response = await axios.post<void>(
+	const response = await axios.delete<void>(
 		`${API_TESTBASE_URL}/api/parties/${partyId}/members/${userId}`,
-		{},
-		{
-			headers: {
-				Authorization: `Bearer ${accessToken}`,
-			},
-		}
+		{ data: {}, headers: { Authorization: `Bearer ${accessToken}` } }
 	);
 	return response.data;
 };

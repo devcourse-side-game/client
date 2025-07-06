@@ -38,7 +38,7 @@ function PartyMemberListItem({
 		if (partyId)
 			openModal('memberBan', {
 				partyId: partyId,
-				userId: member.id,
+				userId: member.userId,
 				userName: member.username,
 			});
 	};
@@ -46,7 +46,7 @@ function PartyMemberListItem({
 		if (partyId)
 			openModal('leaderChange', {
 				partyId: partyId,
-				userId: member.id,
+				userId: member.userId,
 				userName: member.username,
 			});
 	};
