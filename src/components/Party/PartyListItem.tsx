@@ -14,6 +14,7 @@ import {
 } from '../../styles/pages/party/PartyListItem.style';
 import GameImage from '../../assets/gameImage.png';
 import { useGameDetail } from '../../hooks/useGames';
+import LockIcon from '@mui/icons-material/Lock';
 // 임시 데이터 타입 및 더미데이터
 
 export type TPartyListItemProps = {
@@ -64,6 +65,7 @@ function PartyListItem({ party, expandedPartyId, setExpandedPartyId }: TPartyLis
 						</ChipContainer>
 						<PartyListItemTitleWrapper>
 							<Typography variant='h6'>{party.title}</Typography>
+							{party.isPrivate ? <LockIcon /> : null}
 							<Typography
 								variant='body2'
 								color={

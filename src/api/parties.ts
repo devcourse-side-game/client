@@ -7,6 +7,8 @@ import {
 	TGetPartiesPayload,
 	TBanPartyMemberParams,
 	TChangePartyLeaderParams,
+	TPartyDisbandData,
+	TPartyCompleteData,
 } from '../types/Party';
 import { IJoinPartyResponse, IPartiesResponse } from '../types/response';
 import { IJoinPartyRequest } from '../types/request';
@@ -111,13 +113,29 @@ export const banPartyMember = async (params: TBanPartyMemberParams): Promise<voi
 export const changePartyLeader = async (params: TChangePartyLeaderParams): Promise<void> => {
 	const accessToken = localStorage.getItem('accessToken');
 	const { partyId, userId } = params;
-	const response = await axios.post<void>(
+	const response = await axios.put<void>(
 		`${API_TESTBASE_URL}/api/parties/${partyId}/members/leader/${userId}`,
+		{ data: {}, headers: { Authorization: `Bearer ${accessToken}` } }
+	);
+	return response.data;
+};
+
+export const disbandParty = async (params: TPartyDisbandData): Promise<void> => {
+	const accessToken = localStorage.getItem('accessToken');
+	const { partyId } = params;
+	const response = await axios.delete<void>(`${API_TESTBASE_URL}/api/parties/${partyId}`, {
+		headers: { Authorization: `Bearer ${accessToken}` },
+	});
+	return response.data;
+};
+export const partyComplete = async (params: TPartyCompleteData): Promise<void> => {
+	const accessToken = localStorage.getItem('accessToken');
+	const { partyId } = params;
+	const response = await axios.patch<void>(
+		`${API_TESTBASE_URL}/api/parties/${partyId}/complete`,
 		{},
 		{
-			headers: {
-				Authorization: `Bearer ${accessToken}`,
-			},
+			headers: { Authorization: `Bearer ${accessToken}` },
 		}
 	);
 	return response.data;

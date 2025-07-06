@@ -14,6 +14,8 @@ import {
 	TBanPartyMemberParams,
 	TChangePartyLeaderParams,
 	TParty,
+	TPartyDisbandData,
+	TPartyCompleteData,
 } from '../types/Party';
 import {
 	banPartyMember,
@@ -22,6 +24,8 @@ import {
 	joinParty,
 	fetchParties,
 	fetchPartyDetail,
+	partyComplete,
+	disbandParty,
 } from '../api/parties';
 import { IJoinPartyResponse, IPartiesResponse } from '../types/response';
 import { IJoinPartyRequest } from '../types/request';
@@ -190,6 +194,62 @@ export const useChangePartyLeader = (params: TChangePartyLeaderParams) => {
 		},
 		onError: (error) => {
 			console.error('파티 리더 변경 실패', error);
+		},
+	});
+};
+
+export const useDisbandParty = (params: TPartyDisbandData) => {
+	const queryClient = useQueryClient();
+	return useMutation<void, Error, TPartyDisbandData, unknown>({
+		mutationFn: () => disbandParty(params),
+		onSuccess: (data) => {
+			console.log('파티 해산 성공');
+			console.dir(data);
+			queryClient.invalidateQueries({ queryKey: ['parties'] });
+			queryClient.invalidateQueries({ queryKey: ['selectedPartyDetail', params.partyId] });
+			queryClient.setQueryData(['parties'], (oldData: InfiniteData<TParty[]> | undefined) => {
+				if (!oldData) return oldData;
+
+				return {
+					...oldData,
+					pages: oldData.pages.map((page) =>
+						page.map((party) =>
+							party.id === params.partyId ? { ...party, isCompleted: true } : party
+						)
+					),
+				};
+			});
+		},
+		onError: (error) => {
+			console.error('파티 해산 실패', error);
+		},
+	});
+};
+
+export const useCompleteParty = (params: TPartyCompleteData) => {
+	const queryClient = useQueryClient();
+	return useMutation<void, Error, TPartyCompleteData, unknown>({
+		mutationFn: () => partyComplete(params),
+		onSuccess: (data) => {
+			console.log('파티 완료 성공');
+			console.dir(data);
+			queryClient.invalidateQueries({ queryKey: ['parties'] });
+			queryClient.invalidateQueries({ queryKey: ['selectedPartyDetail', params.partyId] });
+			queryClient.setQueryData(['parties'], (oldData: InfiniteData<TParty[]> | undefined) => {
+				if (!oldData) return oldData;
+
+				return {
+					...oldData,
+					pages: oldData.pages.map((page) =>
+						page.map((party) =>
+							party.id === params.partyId ? { ...party, isCompleted: true } : party
+						)
+					),
+				};
+			});
+		},
+		onError: (error) => {
+			console.error('파티 완료 실패', error);
 		},
 	});
 };

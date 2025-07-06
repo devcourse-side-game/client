@@ -1,26 +1,21 @@
 import React, { useEffect, useState } from 'react';
+import { useDisbandParty } from '../../../../hooks/useParties';
 import { TPartyFormFlow } from '../../../../types/Party';
-import { Box, Button, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
-import { useChangePartyLeader } from '../../../../hooks/useParties';
+import { Button } from '@mui/material';
+import { DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
 
-type TPartyJoinFlowProps = {
+type TPartyDisbandFlowProps = {
 	onFlowComplete: () => void;
 	partyId: number;
-	userId: number;
-	userName: string;
 };
-export default function LeaderChangeFlow({
-	onFlowComplete,
-	partyId,
-	userId,
-	userName,
-}: TPartyJoinFlowProps) {
+
+export default function PartyDisbandFlow({ onFlowComplete, partyId }: TPartyDisbandFlowProps) {
 	const [view, setView] = useState<TPartyFormFlow>('form');
-	const {
-		mutate: changePartyLeader,
-		isSuccess,
-		isError,
-	} = useChangePartyLeader({ partyId, userId });
+	const { mutate: disbandParty, isSuccess, isError } = useDisbandParty({ partyId });
+	const handleOnClick = () => {
+		disbandParty({ partyId });
+	};
+
 	useEffect(() => {
 		if (isSuccess) {
 			setView('success');
@@ -28,29 +23,29 @@ export default function LeaderChangeFlow({
 			setView('failed');
 		}
 	}, [isSuccess, isError]);
-	const handleOnClick = () => {
-		// 리더 변경 api 호출 필요
-		changePartyLeader({ partyId, userId });
-	};
 
 	switch (view) {
 		case 'form':
 			return (
 				<>
-					<DialogTitle>파티 리더 교체</DialogTitle>
+					<DialogTitle>파티 해산</DialogTitle>
 					<DialogContent>
 						<Typography sx={{ py: 4, textAlign: 'center' }}>
-							{`${userName}님으로 리더를 바꾸시겠습니까?`}
+							{`파티를 해산하시겠습니까?`}
 						</Typography>
-						<Box>
-							<div>이 멤버를 리더로 바꾸시겠습니까?</div>
-							<Typography>{`${userName}`}</Typography>
-						</Box>
+						<Typography sx={{ py: 4, textAlign: 'center' }}>
+							{`삭제한 파티는 다시 복구할 수 없습니다.`}
+						</Typography>
 					</DialogContent>
 					<DialogActions>
 						<Button onClick={onFlowComplete}>취소</Button>
-						<Button onClick={handleOnClick} variant='contained' disabled={false}>
-							{'리더 교체'}
+						<Button
+							onClick={handleOnClick}
+							variant='contained'
+							color='error'
+							disabled={false}
+						>
+							{'파티 해산'}
 						</Button>
 					</DialogActions>
 				</>
@@ -58,10 +53,10 @@ export default function LeaderChangeFlow({
 		case 'success':
 			return (
 				<>
-					<DialogTitle>파티 리더 교체</DialogTitle>
+					<DialogTitle>파티 해산</DialogTitle>
 					<DialogContent>
 						<Typography sx={{ py: 4, textAlign: 'center' }}>
-							{`${userName}님으로 리더가 변경됬습니다.`}
+							{`파티가 해산되었습니다.`}
 						</Typography>
 					</DialogContent>
 					<DialogActions>
@@ -75,10 +70,13 @@ export default function LeaderChangeFlow({
 		case 'failed':
 			return (
 				<>
-					<DialogTitle>파티 리더 교체</DialogTitle>
+					<DialogTitle>파티 해산</DialogTitle>
 					<DialogContent>
 						<Typography sx={{ py: 4, textAlign: 'center' }}>
-							{`${userName}님으로 리더를 바꾸는데 실패했습니다.`}
+							{`파티 해산에 실패했습니다. 다시 시도해주세요.`}
+						</Typography>
+						<Typography sx={{ py: 4, textAlign: 'center' }}>
+							증상이 지속되면 관리자에게 문의해주세요.
 						</Typography>
 					</DialogContent>
 					<DialogActions>
