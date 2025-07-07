@@ -29,12 +29,7 @@ export default function UserGameProfileSelect({
 	const [selectedValue, setSelectedValue] = useState<string>('');
 	const [formGameUsername, setFormGameUsername] = useState<string>('');
 
-	const {
-		data: userGameProfiles,
-		isLoading,
-		isError,
-		isSuccess,
-	} = useUserGameProfiles({
+	const { data: userGameProfiles, isSuccess } = useUserGameProfiles({
 		userId: userId,
 		gameId: gameId ?? undefined,
 	});
