@@ -22,7 +22,6 @@ function PartyFilter({ filterOptions, setFilterOptions }: TPartyFilterProps) {
 
 	const handleFilterChange = () => {
 		const newOptions: TFilterOptions[] = [];
-		// type을 Enum 또는 상수화 필요
 		if (optionGame)
 			newOptions.push({ type: 'gameId', value: optionGame.id, label: optionGame.name });
 		if (filterPartyOwnerNicknameText)

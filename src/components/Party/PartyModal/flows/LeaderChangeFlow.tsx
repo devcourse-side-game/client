@@ -29,7 +29,6 @@ export default function LeaderChangeFlow({
 		}
 	}, [isSuccess, isError]);
 	const handleOnClick = () => {
-		// 리더 변경 api 호출 필요
 		changePartyLeader({ partyId, userId });
 	};
 

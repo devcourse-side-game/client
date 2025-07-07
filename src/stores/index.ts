@@ -4,7 +4,7 @@ import authReducer from './authSlice';
 export const store = configureStore({
 	reducer: {
 		auth: authReducer,
-		// 다른 slice도 여기에 추가
+		// TODO: 다른 slice도 여기에 추가
 	},
 });
 

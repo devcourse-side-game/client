@@ -16,5 +16,6 @@ export const PARTY_LIST_ITEM = {
 export const BOARD_PARTY = {
 	// 게시판 정보
 	PARTY_BOARD_TITLE: '게임 파티 게시판',
-	PARTY_BOARD_SUBTITLE: '함께 게임할 파티원을 찾아보세요!',
+	PARTY_BOARD_SUBTITLE_FINDER: '함께 게임할 파티원을 찾아보세요!',
+	PARTY_BOARD_SUBTITLE_MY_PARTIES: '참여중인 파티를 관리하세요!.',
 };

@@ -201,7 +201,7 @@ export type TPartyModalType =
 	| 'memberLike'
 	| 'partyDisband'
 	| 'partyComplete'
-	| 'leave'
+	| 'leaveParty'
 	| '';
 
 export type TCreatePartyData = null; // 'create' 타입은 추가 데이터가 필요 없음
@@ -237,3 +237,9 @@ export type TModalState = {
 		payload: ModalPayloadMap[K]; // payload는 K에 해당하는 값이어야 한다는 규칙 생성
 	};
 }[keyof ModalPayloadMap]; // 모든 생성된 객체 타입을 OR(|)로 묶음
+
+// tab 타입
+export enum TTabType {
+	MY_PARTIES = 0,
+	PARTY_FINDER = 1,
+}

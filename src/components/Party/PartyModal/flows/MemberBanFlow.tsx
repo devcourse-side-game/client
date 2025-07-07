@@ -27,7 +27,7 @@ export default function MemberBanFlow({
 		}
 	}, [isSuccess, isError]);
 	const handleOnBanClick = () => {
-		// 맴버 밴 api 호출 필요
+		// TODO: 맴버 밴 api 호출 필요
 		banPartyMember({ partyId, userId });
 	};
 	switch (view) {

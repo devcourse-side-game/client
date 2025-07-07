@@ -161,7 +161,6 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 							inputProps={{ min: 1, max: 16 }}
 							onChange={(e) => setFormMaxNum(parseInt(e.target.value))}
 						/>
-						{/* 변경 필요 : 파티장의 유저프로필 선택 or 닉네임 입력 중 하나 선택 */}
 						<UserGameProfileSelect
 							userId={user?.id ?? null}
 							gameId={optionGame?.id}

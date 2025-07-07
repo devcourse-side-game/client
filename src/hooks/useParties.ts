@@ -28,23 +28,12 @@ import {
 	partyComplete,
 	disbandParty,
 	leaveParty,
+	fetchPartiesMine,
 } from '../api/parties';
 import { IJoinPartyResponse, IPartiesResponse } from '../types/response';
 import { IJoinPartyRequest } from '../types/request';
 // import { createParty, fetchParties, fetchPartyDetail } from '../api/parties';
 
-export const useParties = (payload: TGetPartiesPayload) => {
-	return useQuery<IPartiesResponse, Error, IPartiesResponse, ['parties', TGetPartiesPayload]>({
-		queryKey: ['parties', payload],
-		queryFn: ({ queryKey }) => {
-			const [_queryName, payload] = queryKey;
-			return fetchParties(payload);
-		},
-		refetchOnWindowFocus: false,
-		refetchOnMount: false,
-		refetchOnReconnect: false,
-	});
-};
 export const useInfiniteParties = (payload: TGetPartiesPayload) => {
 	const { limit } = payload.pagination;
 	return useInfiniteQuery<
@@ -57,6 +46,35 @@ export const useInfiniteParties = (payload: TGetPartiesPayload) => {
 		queryKey: ['parties', payload],
 		queryFn: ({ pageParam = 1 }) => {
 			return fetchParties({
+				...payload,
+				pagination: { ...payload.pagination, page: pageParam },
+			});
+		},
+		refetchOnWindowFocus: false,
+		refetchOnMount: false,
+		refetchOnReconnect: false,
+		getNextPageParam: (lastPage, allpage) => {
+			if (lastPage.length < limit) {
+				return undefined;
+			}
+			return allpage.length + 1;
+		},
+		initialPageParam: 1,
+	});
+};
+
+export const useInfiniteMyParties = (payload: Pick<TGetPartiesPayload, 'pagination'>) => {
+	const { limit } = payload.pagination;
+	return useInfiniteQuery<
+		IPartiesResponse,
+		Error,
+		InfiniteData<IPartiesResponse>,
+		['parties', 'me', Pick<TGetPartiesPayload, 'pagination'>],
+		number
+	>({
+		queryKey: ['parties', 'me', payload],
+		queryFn: ({ pageParam = 1 }) => {
+			return fetchPartiesMine({
 				...payload,
 				pagination: { ...payload.pagination, page: pageParam },
 			});
@@ -92,11 +110,10 @@ export const useSelectedPartyDetail = (partyId: number) => {
 			}
 			return fetchPartyDetail(id); // 추출한 id를 API 함수에 전달
 		},
-		// 갱신 설정 조정 필요. 개발중 우선 갱신 안되게 설정.
 		refetchOnWindowFocus: false,
 		refetchOnMount: false,
 		refetchOnReconnect: false,
-		//refetchInterval: 1000 * 10,
+		refetchInterval: 1000 * 10,
 	});
 };
 

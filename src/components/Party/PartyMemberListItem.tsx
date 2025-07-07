@@ -56,12 +56,20 @@ function PartyMemberListItem({
 				<Avatar alt='tester'></Avatar>
 				<Box>
 					<Stack direction='row' alignItems='center' spacing={0.5}>
-						<Typography variant='h6'>{member.username}</Typography>
+						{/* 유저 이름 */}
+						<Typography
+							variant='h6'
+							color={member.userId === user.id ? 'info' : 'textPrimary'}
+						>
+							{member.username}
+						</Typography>
+						{/* 파티장 여부 */}
 						{member.isLeader ? (
 							<Chip size='small' variant='filled' color='info' label='파티장' />
 						) : (
 							<></>
 						)}
+						{/* 파티장 넘기기 버튼 */}
 						{isLeader && !member.isLeader && !isCompleted ? (
 							<>
 								<Button
@@ -75,9 +83,11 @@ function PartyMemberListItem({
 							<></>
 						)}
 					</Stack>
+					{/* 게임 닉네임 */}
 					<Typography variant='body2'>{member.gameUsername}</Typography>
 				</Box>
 				<Box sx={{ flexGrow: 1 }}></Box>
+				{/* 강퇴 버튼 */}
 				{isLeader ? (
 					<Button
 						variant='contained'
@@ -90,8 +100,11 @@ function PartyMemberListItem({
 				) : (
 					<></>
 				)}
+				좋아요 버튼
 				<Button disabled={isCompleted}>좋아요</Button>
+				{/* 좋아요 아이콘 */}
 				<StarRounded color='primary' />
+				{/* 좋아요 아이콘 미선택 */}
 				<StarBorderRounded color='primary' />
 			</PartyMemberListItemWrapper>
 		</PartyMemberListWrapper>
