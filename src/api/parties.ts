@@ -1,5 +1,4 @@
-import axios from 'axios';
-//import api from './axios';
+import api from './axios';
 import {
 	TPartyCreateRequest,
 	TPartyCreateSuccessResponse,
@@ -14,12 +13,9 @@ import {
 import { IJoinPartyResponse, IPartiesResponse } from '../types/response';
 import { IJoinPartyRequest } from '../types/request';
 
-const API_BASE_URL_PROTO = 'http://localhost:3000';
-const API_TESTBASE_URL = API_BASE_URL_PROTO;
 /** 기능 : 파티 목록 조회 */
 export const fetchParties = async (payload: TGetPartiesPayload): Promise<IPartiesResponse> => {
 	const { filterOptions, pagination } = payload;
-	const accessToken = localStorage.getItem('accessToken');
 	const queryParams = new URLSearchParams();
 
 	// 페이지네이션 파라미터
@@ -35,138 +31,85 @@ export const fetchParties = async (payload: TGetPartiesPayload): Promise<IPartie
 		// TODO: 다른 필터들도 추가...
 	}
 
-	const url = `${API_TESTBASE_URL}/api/parties?${queryParams.toString()}`;
-	const response = await axios.get<IPartiesResponse>(url, {
-		headers: {
-			Authorization: `Bearer ${accessToken}`,
-		},
-	});
+	const url = `/parties?${queryParams.toString()}`;
+	const response = await api.get<IPartiesResponse>(url);
 	return response.data;
 };
 
 /** 기능 : 파티 세부 정보 조회 */
 export const fetchPartyDetail = async (payload: number): Promise<TPartyListItemDetailResponse> => {
-	const accessToken = localStorage.getItem('accessToken');
-	const response = await axios.get<TPartyListItemDetailResponse>(
-		`${API_TESTBASE_URL}/api/parties/${payload}`,
-		{
-			headers: {
-				Authorization: `Bearer ${accessToken}`,
-			},
-		}
-	);
+	const url = `/parties/${payload}`;
+	const response = await api.get<TPartyListItemDetailResponse>(url);
 	return response.data;
 };
-//데이터가 소팅된 상태로 넘어오나? 날짜별로 소팅하는 시점은?
 
+/** 기능 : 파티 생성 */
 export const createParty = async (
 	payload: TPartyCreateRequest
 ): Promise<TPartyCreateSuccessResponse> => {
-	const accessToken = localStorage.getItem('accessToken');
-	try {
-		const response = await axios.post<TPartyCreateSuccessResponse>(
-			`${API_TESTBASE_URL}/api/parties`,
-			payload,
-			{
-				headers: {
-					Authorization: `Bearer ${accessToken}`,
-				},
-			}
-		);
-		return response.data;
-	} catch (error) {
-		console.error('API Error: Failed to create party', error);
-		throw error;
-	}
+	const url = `/parties`;
+	const response = await api.post<TPartyCreateSuccessResponse>(url, payload);
+	return response.data;
 };
 
+/** 기능 : 파티 참여 */
 export const joinParty = async (payload: IJoinPartyRequest): Promise<IJoinPartyResponse> => {
-	const accessToken = localStorage.getItem('accessToken');
 	const { partyId } = payload;
 	const body = {
 		gameUsername: payload.gameUsername,
 		profileId: payload.profileId,
 		accessCode: payload.accessCode,
 	};
-	console.log('요청 보내짐');
-	const response = await axios.post<IJoinPartyResponse>(
-		`${API_TESTBASE_URL}/api/parties/${partyId}/members`,
-		body,
-		{
-			headers: {
-				Authorization: `Bearer ${accessToken}`,
-			},
-		}
-	);
+
+	const response = await api.post<IJoinPartyResponse>(`/parties/${partyId}/members`, body);
 	return response.data;
 };
 
+/** 기능 : 파티 멤버 강퇴 */
 export const banPartyMember = async (params: TBanPartyMemberParams): Promise<void> => {
-	const accessToken = localStorage.getItem('accessToken');
 	const { partyId, userId } = params;
-	const response = await axios.delete<void>(
-		`${API_TESTBASE_URL}/api/parties/${partyId}/members/${userId}`,
-		{ headers: { Authorization: `Bearer ${accessToken}` } }
-	);
+	const response = await api.delete<void>(`/parties/${partyId}/members/${userId}`);
 	return response.data;
 };
 
+/** 기능 : 파티장 변경 */
 export const changePartyLeader = async (params: TChangePartyLeaderParams): Promise<void> => {
-	const accessToken = localStorage.getItem('accessToken');
 	const { partyId, userId } = params;
-	const response = await axios.put<void>(
-		`${API_TESTBASE_URL}/api/parties/${partyId}/members/leader/${userId}`,
-		{ data: {}, headers: { Authorization: `Bearer ${accessToken}` } }
-	);
-	return response.data;
-};
-
-export const disbandParty = async (params: TPartyDisbandData): Promise<void> => {
-	const accessToken = localStorage.getItem('accessToken');
-	const { partyId } = params;
-	const response = await axios.delete<void>(`${API_TESTBASE_URL}/api/parties/${partyId}`, {
-		headers: { Authorization: `Bearer ${accessToken}` },
+	const response = await api.put<void>(`/parties/${partyId}/members/leader/${userId}`, {
+		data: {},
 	});
 	return response.data;
 };
+
+/** 기능 : 파티 해체 */
+export const disbandParty = async (params: TPartyDisbandData): Promise<void> => {
+	const { partyId } = params;
+	const response = await api.delete<void>(`/parties/${partyId}`);
+	return response.data;
+};
+
+/** 기능 : 파티 완료 */
 export const partyComplete = async (params: TPartyCompleteData): Promise<void> => {
-	const accessToken = localStorage.getItem('accessToken');
 	const { partyId } = params;
-	const response = await axios.patch<void>(
-		`${API_TESTBASE_URL}/api/parties/${partyId}/complete`,
-		{},
-		{
-			headers: { Authorization: `Bearer ${accessToken}` },
-		}
-	);
+	const response = await api.patch<void>(`/parties/${partyId}/complete`);
 	return response.data;
 };
 
+/** 기능 : 파티 나가기 */
 export const leaveParty = async (params: TLeavePartyParams): Promise<void> => {
-	const accessToken = localStorage.getItem('accessToken');
 	const { partyId } = params;
-	const response = await axios.delete<void>(
-		`${API_TESTBASE_URL}/api/parties/${partyId}/members`,
-		{
-			headers: { Authorization: `Bearer ${accessToken}` },
-		}
-	);
+	const response = await api.delete<void>(`/parties/${partyId}/members`);
 	return response.data;
 };
 
+/** 기능 : 내 파티 목록 조회 */
 export const fetchPartiesMine = async (
 	payload: Pick<TGetPartiesPayload, 'pagination'>
 ): Promise<IPartiesResponse> => {
-	const accessToken = localStorage.getItem('accessToken');
 	const { page, limit } = payload.pagination;
 	const queryParams = new URLSearchParams();
 	queryParams.append('page', page.toString());
 	queryParams.append('limit', limit.toString());
-	const response = await axios.get<IPartiesResponse>(
-		`${API_TESTBASE_URL}/api/parties/me?${queryParams.toString()}`,
-		{
-			headers: { Authorization: `Bearer ${accessToken}` },
-		}
-	);
+	const response = await api.get<IPartiesResponse>(`/parties/me?${queryParams.toString()}`);
 	return response.data;
 };
