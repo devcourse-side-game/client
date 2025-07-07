@@ -1,5 +1,4 @@
 import { Container, Grid } from '@mui/material';
-// import MyPageComponent from '../components/user/MyPageComponent';
 import MyPageNaviComponent from '../components/user/MyPageNaviComponent';
 import { Outlet } from 'react-router-dom';
 

@@ -3,7 +3,8 @@ import { TParty } from './Party';
 export interface Response {
 	message: string;
 	statusCode?: string;
-	error?: string;
+	errors?: string;
+	detaul?: string;
 	errorCode: string;
 }
 
@@ -15,9 +16,12 @@ export interface RefreshResponse extends Response {
 	accessToken: string;
 }
 
-// export interface SignupResponse extends Response {}
-
-// export interface NicknameResponse extends Response {}
+export interface IUserDataResponse extends Response {
+	email: string;
+	password: string;
+	username: string;
+	createdAt: Date;
+}
 
 export interface IGame {
 	id: number;

@@ -98,40 +98,33 @@ export function useAuthForm({ formType }: IFormTypeProps) {
 			return false;
 		}
 
-		// TODO: 로그인 or 회원가입 API 요청
-		switch (formType) {
-			case FormType.SIGNUP: {
-				// 유저 닉네임 확인
-				if (!data.username) {
-					setError('username', { message: ENTER_USERNAME });
-					return false;
-				}
-
-				if (!isNicknameConfirmed) {
-					setError('username', { message: NICKNAME_CONFIRM_REQUIRED });
-					return false;
-				}
-
-				// 비밀번호 조합 유효성 체크
-				const { isLengthValid, isComplexValid } = validatePassword(data.password);
-				if (!(isLengthValid && isComplexValid)) {
-					setError('passwordCheck', { message: PASSWORD_COMPLEXITY_ERROR });
-					return false;
-				}
-
-				// 비밀번호 일치 확인
-				if (data.password !== data.passwordCheck) {
-					setError('passwordCheck', { message: PASSWORD_MISMATCH_ERROR });
-					console.log('비밀번호 불일치');
-					return false;
-				}
-				return true;
+		if (formType === FormType.SIGNUP) {
+			// 유저 닉네임 확인
+			if (!data.username) {
+				setError('username', { message: ENTER_USERNAME });
+				return false;
 			}
-			case FormType.LOGIN:
-				// 로그인 api 호출
-				// submitLogin(data);
-				return true;
+
+			if (!isNicknameConfirmed) {
+				setError('username', { message: NICKNAME_CONFIRM_REQUIRED });
+				return false;
+			}
+
+			// 비밀번호 조합 유효성 체크
+			const { isLengthValid, isComplexValid } = validatePassword(data.password);
+			if (!(isLengthValid && isComplexValid)) {
+				setError('passwordCheck', { message: PASSWORD_COMPLEXITY_ERROR });
+				return false;
+			}
+
+			// 비밀번호 일치 확인
+			if (data.password !== data.passwordCheck) {
+				setError('passwordCheck', { message: PASSWORD_MISMATCH_ERROR });
+				console.log('비밀번호 불일치');
+				return false;
+			}
 		}
+		return true;
 	};
 
 	return {
