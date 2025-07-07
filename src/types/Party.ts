@@ -1,35 +1,37 @@
-//파티관련
+// ===== 파티 기본 타입 =====
 export type TParty = {
 	id: number;
 	title: string;
-	game_id: number;
-	//game_name: string;
+	gameId: number;
+	gameBannerUrl: string;
 	purposeTag: string;
 	maxParticipants: number;
-	//current_participants: number;
-	//start_time: string;
-	//end_time: string;
 	isCompleted: boolean;
 	isPrivate: boolean;
 	creatorId: number;
-	//creator_name: string;
 	createdAt: string;
 	updatedAt: string;
 	description: string;
 	accessCode: string | null;
+	leader: TLeader;
+	currentMemberCount: number;
 };
-// "id": 10,
-//         "title": "파티 생성 테스트5",
-//         "gameId": 5553,
-//         "creatorId": 8,
-//         "purposeTag": "친선전",
-//         "maxParticipants": 5,
-//         "description": "설명입니다",
-//         "isPrivate": false,
-//         "accessCode": null,
-//         "isCompleted": false,
-//         "createdAt": "2025-06-29T01:05:13.327Z",
-//         "updatedAt": "2025-06-29T01:05:13.327Z"
+
+// ===== 사용자 관련 타입 =====
+export type TLeader = {
+	userId: number;
+	username: string;
+	gameUsername: string;
+};
+
+export type TUser = {
+	id: number;
+	username: string;
+	email: string;
+	profileImage: string | null;
+};
+
+// ===== 게임 관련 타입 =====
 export type TGame = {
 	id: number;
 	name: string;
@@ -41,100 +43,54 @@ export type TGame = {
 	updatedAt: string;
 	slug: string;
 };
-export type TUser = {
+
+export type TOptionGame = {
 	id: number;
-	username: string;
-	password: string;
-	email: string;
-	profileImage: string | null;
-	createdAt: string;
-	updatedAt: string;
+	title: string;
+	category: string;
 };
+
+// ===== 파티 멤버 관련 타입 =====
+export type TPartyMember = {
+	id: number;
+	userId: number;
+	username: string;
+	isLeader: boolean;
+	joinedAt: string;
+	leftAt: string | null;
+	gameUsername: string;
+};
+
+export type TUserGameProfile = {
+	id: number | null;
+	userId: number;
+	gameId: number | null;
+	gameUsername: string;
+	game: TGame | null;
+};
+
+// ===== 파티 상세 정보 타입 =====
 export type TPartyListItemDetailResponse = {
 	id: number;
 	title: string;
 	gameId: number;
-	game: TGame;
+	creatorId: number;
 	creator: TUser;
+	game: TGame;
 	purposeTag: string;
 	maxParticipants: number;
 	//currentParticipants: number;
-	startTime: string;
-	//endTime: string;
-	isCompleted: boolean;
+	description: string;
 	isPrivate: boolean;
-	creator_id: number;
-	creator_name: string;
+	accessCode: string | null;
+	isCompleted: boolean;
 	created_at: string;
 	updated_at: string;
-	description: string;
+
 	members: TPartyMember[];
 };
-// {
-//     "id": 10,
-//     "title": "파티 생성 테스트5",
-//     "gameId": 5553,
-//     "creatorId": 8,
-//     "purposeTag": "친선전",
-//     "maxParticipants": 5,
-//     "description": "설명입니다",
-//     "isPrivate": false,
-//     "accessCode": null,
-//     "isCompleted": false,
-//     "createdAt": "2025-06-29T01:05:13.327Z",
-//     "updatedAt": "2025-06-29T01:05:13.327Z",
-//     "game": {
-//         "id": 5553,
-//         "name": "Iron Grip Warlord Scorched Earth Trailer",
-//         "platforms": "steam",
-//         "steamAppId": 81712,
-//         "bannerUrl": "https://cdn.cloudflare.steamstatic.com/steam/apps/81712/header.jpg",
-//         "isActive": 1,
-//         "createdAt": "2025-06-24T17:44:29.856Z",
-//         "updatedAt": "2025-06-24T17:44:29.856Z",
-//         "slug": "iron-grip-warlord-scorched-earth-trailer"
-//     },
-//     "creator": {
-//         "id": 8,
-//         "username": "testuser2",
-//         "password": "$2b$10$Ifh7fAFU6A/Qm0bjTXrgFu5H5/d90U6NTF/PjZunbRS/cy38cT3ji",
-//         "email": "testuser2@example.com",
-//         "profileImage": null,
-//         "createdAt": "2025-06-26T14:29:15.774Z",
-//         "updatedAt": "2025-06-26T14:29:15.774Z"
-//     },
-//     "members": [
-//         {
-//             "id": 12,
-//             "partyId": 10,
-//             "userId": 8,
-//             "user": {
-//                 "id": 8,
-//                 "username": "testuser2",
-//                 "password": "$2b$10$Ifh7fAFU6A/Qm0bjTXrgFu5H5/d90U6NTF/PjZunbRS/cy38cT3ji",
-//                 "email": "testuser2@example.com",
-//                 "profileImage": null,
-//                 "createdAt": "2025-06-26T14:29:15.774Z",
-//                 "updatedAt": "2025-06-26T14:29:15.774Z"
-//             },
-//             "isLeader": true,
-//             "joinedAt": "2025-06-29T01:05:13.334Z",
-//             "leftAt": null
-//         }
-//     ]
-// }
 
-// 파티게시판 멤버관련
-export type TPartyMember = {
-	id: number;
-	partyId: number;
-	userId: number;
-	user: TUser;
-	isLeader: boolean;
-	joinedAt: string;
-	leftAt: string | null;
-};
-
+// ===== 파티 목록 및 페이지네이션 타입 =====
 export type TGetPartiesResponse = {
 	parties: TParty[];
 	total: number;
@@ -142,67 +98,123 @@ export type TGetPartiesResponse = {
 	limit: number;
 };
 
-// 검색 옵션
+export type IPartiesResponse = {
+	parties: TParty[];
+	total: number;
+	page: number;
+	limit: number;
+	hasNext: boolean;
+	hasPrev: boolean;
+};
+
+// ===== 필터 및 검색 관련 타입 =====
 export type TFilterOptions = {
 	type: string;
 	value: string | number | null;
 	label: string;
 };
-export type TPartyListFilterOptions = {
-	options: TFilterOptions[];
+
+export type TGetPartiesPayload = {
+	filterOptions: TFilterOptions[];
+	pagination: {
+		page: number;
+		limit: number;
+	};
 };
 
-// gameOptions 배열에 있는 객체의 타입 정의
-export type TOptionGame = {
-	id: number;
-	title: string;
-	category: string;
-};
-
-// 파티 생성 리퀘스트
+// ===== 파티 생성 관련 타입 =====
 export type TPartyCreateRequest = {
 	title: string;
 	gameId: number | undefined;
 	purposeTag: string;
 	maxParticipants: number;
-	startTime: string;
-	endTime: string;
 	description: string;
 	isPrivate: boolean;
 	accessCode: string;
+	gameUsername: string;
+	profileId: number | null;
 };
 
-// 파티 생성 실패 응답
+export type TPartyCreateFormErrors = {
+	title: string;
+	gameUsername: string;
+	gameId: string;
+	accessCode: string;
+	description: string;
+	maxParticipants: string;
+};
+
+// ===== API 응답 타입 =====
 export type TPartyCreateSuccessResponse = {
 	message: string;
 	partyId: number;
 };
 
-//파티 생성 성공 응답
 export type TBadRequestResponse = {
 	statusCode: number;
 	message: string;
 	error: string;
 };
 
-//인증 실패 응답
 export type TBadAuthResponse = {
 	statusCode: number;
 	message: string;
 	error: string;
 };
 
-/**  */
-export type TPartyFormFlow = 'form' | 'success';
+// ===== 파티 관리 액션 파라미터 타입 =====
+export type TChangePartyLeaderParams = {
+	partyId: number;
+	userId: number;
+};
 
-export type TPartyModalType = 'create' | 'join' | 'leaderChange' | 'memberBan' | 'memberLike' | '';
+export type TBanPartyMemberParams = {
+	partyId: number;
+	userId: number;
+};
 
-// 모달에 필요한 데이터 타입들
+export type TGetUserGameProfilesQuery = {
+	userId: number;
+	gameId?: number;
+};
+
+export type TPartyDisbandParams = {
+	partyId: number;
+};
+
+export type TPartyCompleteParams = {
+	partyId: number;
+};
+
+export type TLeavePartyParams = {
+	partyId: number;
+};
+
+// ===== 모달 관련 타입 =====
+export type TPartyFormFlow = 'form' | 'success' | 'failed';
+
+export type TPartyModalType =
+	| 'create'
+	| 'join'
+	| 'leaderChange'
+	| 'memberBan'
+	| 'memberLike'
+	| 'partyDisband'
+	| 'partyComplete'
+	| 'leaveParty'
+	| '';
+
 export type TCreatePartyData = null; // 'create' 타입은 추가 데이터가 필요 없음
-export type TJoinPartyData = { partyId: number };
+export type TJoinPartyData = { partyId: number; isPrivate: boolean };
 export type TMemberBanData = { partyId: number; userId: number; userName: string };
 export type TLeaderChangeData = { partyId: number; userId: number; userName?: string };
 export type TMemberLikeData = { partyId: number; userId: number; userName?: string };
+export type TPartyDisbandData = { partyId: number };
+export type TPartyCompleteData = { partyId: number };
+export type TLeavePartyData = {
+	partyId: number;
+	partyTitle: string;
+};
 
 export interface ModalPayloadMap {
 	'': null;
@@ -211,7 +223,11 @@ export interface ModalPayloadMap {
 	memberBan: TMemberBanData;
 	leaderChange: TLeaderChangeData;
 	memberLike: TMemberLikeData;
+	partyDisband: TPartyDisbandData;
+	partyComplete: TPartyCompleteData;
+	leaveParty: TLeavePartyData;
 }
+
 // ai 도움좀 받았습니다... 머리가 굳어가네요
 // 맵을 이용해 모든 경우의 수를 포함하는 단일 유니온 타입을 생성
 export type TModalState = {
@@ -221,3 +237,9 @@ export type TModalState = {
 		payload: ModalPayloadMap[K]; // payload는 K에 해당하는 값이어야 한다는 규칙 생성
 	};
 }[keyof ModalPayloadMap]; // 모든 생성된 객체 타입을 OR(|)로 묶음
+
+// tab 타입
+export enum TTabType {
+	MY_PARTIES = 0,
+	PARTY_FINDER = 1,
+}

@@ -1,26 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { TPartyFormFlow } from '../../../../types/Party';
-import { Box, Button, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
-import { useChangePartyLeader } from '../../../../hooks/useParties';
+import { useCompleteParty } from '../../../../hooks/useParties';
+import { Button } from '@mui/material';
+import { DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
 
-type TPartyJoinFlowProps = {
+type TPartyCompleteFlowProps = {
 	onFlowComplete: () => void;
 	partyId: number;
-	userId: number;
-	userName: string;
 };
-export default function LeaderChangeFlow({
-	onFlowComplete,
-	partyId,
-	userId,
-	userName,
-}: TPartyJoinFlowProps) {
+
+export default function PartyCompleteFlow({ onFlowComplete, partyId }: TPartyCompleteFlowProps) {
 	const [view, setView] = useState<TPartyFormFlow>('form');
-	const {
-		mutate: changePartyLeader,
-		isSuccess,
-		isError,
-	} = useChangePartyLeader({ partyId, userId });
+	const { mutate: completeParty, isSuccess, isError } = useCompleteParty({ partyId });
+
 	useEffect(() => {
 		if (isSuccess) {
 			setView('success');
@@ -29,27 +21,23 @@ export default function LeaderChangeFlow({
 		}
 	}, [isSuccess, isError]);
 	const handleOnClick = () => {
-		changePartyLeader({ partyId, userId });
+		completeParty({ partyId });
 	};
 
 	switch (view) {
 		case 'form':
 			return (
 				<>
-					<DialogTitle>파티 리더 교체</DialogTitle>
+					<DialogTitle>파티 모집 완료</DialogTitle>
 					<DialogContent>
 						<Typography sx={{ py: 4, textAlign: 'center' }}>
-							{`${userName}님으로 리더를 바꾸시겠습니까?`}
+							{`파티 모집을 완료하시겠습니까?`}
 						</Typography>
-						<Box>
-							<div>이 멤버를 리더로 바꾸시겠습니까?</div>
-							<Typography>{`${userName}`}</Typography>
-						</Box>
 					</DialogContent>
 					<DialogActions>
 						<Button onClick={onFlowComplete}>취소</Button>
 						<Button onClick={handleOnClick} variant='contained' disabled={false}>
-							{'리더 교체'}
+							{'모집 완료'}
 						</Button>
 					</DialogActions>
 				</>
@@ -57,10 +45,10 @@ export default function LeaderChangeFlow({
 		case 'success':
 			return (
 				<>
-					<DialogTitle>파티 리더 교체</DialogTitle>
+					<DialogTitle>파티 모집 완료</DialogTitle>
 					<DialogContent>
 						<Typography sx={{ py: 4, textAlign: 'center' }}>
-							{`${userName}님으로 리더가 변경됬습니다.`}
+							{`파티 모집이 완료되었습니다.`}
 						</Typography>
 					</DialogContent>
 					<DialogActions>
@@ -74,10 +62,13 @@ export default function LeaderChangeFlow({
 		case 'failed':
 			return (
 				<>
-					<DialogTitle>파티 리더 교체</DialogTitle>
+					<DialogTitle>파티 모집 완료</DialogTitle>
 					<DialogContent>
 						<Typography sx={{ py: 4, textAlign: 'center' }}>
-							{`${userName}님으로 리더를 바꾸는데 실패했습니다.`}
+							{`파티 모집 완료에 실패했습니다. 다시 시도해주세요.`}
+						</Typography>
+						<Typography sx={{ py: 4, textAlign: 'center' }}>
+							증상이 지속되면 관리자에게 문의해주세요.
 						</Typography>
 					</DialogContent>
 					<DialogActions>

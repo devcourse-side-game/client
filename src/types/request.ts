@@ -14,14 +14,16 @@ export interface NicknameCheckRequest {
 }
 
 export interface GetGameListRequest {
-	platform: string;
-	isActive: boolean;
 	limit: number;
 	page: number;
-	search: string;
+	isactive?: boolean;
+	platform?: string;
+	search?: string;
 }
 
-export interface PagenationRequest {
-	limit: number;
-	page: number;
+export interface IJoinPartyRequest {
+	accessCode: string;
+	gameUsername: string;
+	profileId?: number;
+	partyId: number;
 }

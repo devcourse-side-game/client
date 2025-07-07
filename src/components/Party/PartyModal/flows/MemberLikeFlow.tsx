@@ -25,7 +25,7 @@ export default function MemberLikeFlow({ onFlowComplete, partyId }: TPartyJoinFl
 	if (isError) return <div> 에러가 발생했습니다 : {error.message} </div>;
 
 	const handleOnJoinClick = () => {
-		// 참가 hook 필요
+		// TODO: 참가 hook 필요
 		setView('success');
 	};
 

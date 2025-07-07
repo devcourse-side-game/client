@@ -1,42 +1,105 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import { BOARD_PARTY } from '../../constants/Party';
 import PartyFilter from './PartyFilter';
 import PartyList from './PartyList';
 import { useQueryClient } from '@tanstack/react-query';
-import { TFilterOptions } from '../../types/Party';
-import { useParties } from '../../hooks/useParties';
+import { TFilterOptions, TGetPartiesPayload, TTabType } from '../../types/Party';
+import { useInfiniteMyParties, useInfiniteParties } from '../../hooks/useParties';
 import { useModal } from '../../hooks/useModal';
 import {
 	PartyBoardContainer,
 	PartyBoardHeaderWrapper,
 	PartyButtonWrapper,
+	InfiniteScrollContainer,
 } from '../../styles/pages/party/PartyBoard.styles';
+import { useInView } from 'react-intersection-observer';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../stores';
+import { useNavigate } from 'react-router-dom';
 
-function PartyBoard() {
+const LIMIT = 8;
+function PartyBoard({ type }: { type: TTabType }) {
 	const queryClient = useQueryClient();
+	const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
 	const [filterOptions, setFilterOptions] = useState<TFilterOptions[]>([]);
-	const { data, isLoading, isFetching, isSuccess, isError, error } = useParties(filterOptions);
+	const [pagination, setPagination] = useState({
+		page: 1,
+		limit: LIMIT,
+	});
+
+	const payload: TGetPartiesPayload = {
+		filterOptions,
+		pagination,
+	};
+
+	const allPartiesQuery = useInfiniteParties(payload);
+	const myPartiesQuery = useInfiniteMyParties(payload);
+	const currentQuery = type === TTabType.PARTY_FINDER ? allPartiesQuery : myPartiesQuery;
+	const {
+		data,
+		fetchNextPage,
+		isLoading,
+		isError,
+		isSuccess,
+		hasNextPage,
+		isFetchingNextPage,
+		error,
+	} = currentQuery;
+
+	// 모달 컴포넌트 사용
 	const { openModal } = useModal();
+	//네비게이션 사용
+	const navigate = useNavigate();
+
+	/* 무한 스크롤 처리 */
+	const scrollContainerRef = useRef<HTMLDivElement>(null);
+	const { inView, ref: viewRef } = useInView({
+		root: scrollContainerRef.current,
+		threshold: 0.5,
+	});
+	useEffect(() => {
+		if (inView && hasNextPage) {
+			fetchNextPage();
+		}
+	}, [inView, hasNextPage, fetchNextPage]);
 
 	/* 게시판 데이터 무효화를 통해 파티 목록 갱신*/
 	const handleRefreshClick = () => {
 		queryClient.invalidateQueries({ queryKey: ['parties'] });
 	};
 	const handleOpenCreateModal = () => {
-		openModal('create', null);
+		if (isLoggedIn) {
+			openModal('create', null);
+		} else {
+			navigate('/login');
+		}
+	};
+
+	// 필터 변경 시 페이지 초기화
+	const handleFilterChange = (newFilterOptions: TFilterOptions[]) => {
+		setFilterOptions(newFilterOptions);
+		setPagination((prev) => ({ ...prev, page: 1 })); // 페이지 초기화
 	};
 
 	return (
 		<PartyBoardContainer>
 			<PartyBoardHeaderWrapper>
-				<Typography variant='h2'>{BOARD_PARTY.PARTY_BOARD_TITLE}</Typography>
-				<Typography variant='h6'>{BOARD_PARTY.PARTY_BOARD_SUBTITLE}</Typography>
+				<Typography variant='h3'>{BOARD_PARTY.PARTY_BOARD_TITLE}</Typography>
+				<Typography variant='h6' fontWeight={400}>
+					{type === TTabType.PARTY_FINDER
+						? BOARD_PARTY.PARTY_BOARD_SUBTITLE_FINDER
+						: BOARD_PARTY.PARTY_BOARD_SUBTITLE_MY_PARTIES}
+				</Typography>
 			</PartyBoardHeaderWrapper>
-			<PartyFilter
-				filterOptions={filterOptions}
-				setFilterOptions={setFilterOptions}
-			></PartyFilter>
+			{type === TTabType.PARTY_FINDER ? (
+				<PartyFilter
+					filterOptions={filterOptions}
+					setFilterOptions={handleFilterChange}
+				></PartyFilter>
+			) : (
+				<></>
+			)}
 			<PartyButtonWrapper>
 				<Box sx={{ width: '100px' }}></Box>
 				<Button variant='text' onClick={handleRefreshClick}>
@@ -47,14 +110,18 @@ function PartyBoard() {
 				</Button>
 			</PartyButtonWrapper>
 
-			<PartyList
-				data={data}
-				isLoading={isLoading}
-				isFetching={isFetching}
-				isSuccess={isSuccess}
-				isError={isError}
-				error={error}
-			></PartyList>
+			<InfiniteScrollContainer ref={scrollContainerRef}>
+				<PartyList
+					data={data}
+					isLoading={isLoading}
+					isFetching={isFetchingNextPage}
+					isSuccess={isSuccess}
+					isError={isError}
+					error={error}
+					ref={viewRef}
+					hasNextPage={hasNextPage}
+				></PartyList>
+			</InfiniteScrollContainer>
 		</PartyBoardContainer>
 	);
 }
