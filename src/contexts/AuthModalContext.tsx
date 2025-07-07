@@ -10,8 +10,7 @@ interface DialogContextProps {
 
 const AuthModalContext = createContext<DialogContextProps | undefined>(undefined);
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export const AuthModalProvider = ({ children }: { children: ReactNode }) => {
+export function AuthModalProvider({ children }: { children: ReactNode }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [message, setMessage] = useState('');
 	const [onConfirm, setOnConfirm] = useState<() => void>();
@@ -33,7 +32,7 @@ export const AuthModalProvider = ({ children }: { children: ReactNode }) => {
 			{children}
 		</AuthModalContext.Provider>
 	);
-};
+}
 
 export const useDialog = () => {
 	const context = useContext(AuthModalContext);

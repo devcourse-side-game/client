@@ -12,13 +12,13 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export const useThemeContext = () => {
+export function UseThemeContext() {
 	const ctx = useContext(ThemeContext);
 	if (!ctx) throw new Error('useThemeContext must be used within ThemeProvider');
 	return ctx;
-};
+}
 
-export const CustomThemeProvider = ({ children }: { children: React.ReactNode }) => {
+export function CustomThemeProvider({ children }: { children: React.ReactNode }) {
 	const [mode, setMode] = useState<ThemeType>(() => {
 		const saveTheme = localStorage.getItem('theme');
 		return saveTheme == ThemeType.DARK
@@ -50,4 +50,4 @@ export const CustomThemeProvider = ({ children }: { children: React.ReactNode })
 			</ThemeProvider>
 		</ThemeContext.Provider>
 	);
-};
+}

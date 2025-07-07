@@ -1,11 +1,8 @@
+import { IUserDataResponse } from '../types/response';
 import api from './axios';
 
-export const searchMyDataApi = async () => {
-	try {
-		const response = await api.get('/users/me');
-		return response.data;
-	} catch (err) {
-		console.log('사용자 정보 요청 실패', err);
-		throw err;
-	}
+export const searchMyDataApi = async (): Promise<IUserDataResponse> => {
+	const response = await api.get<IUserDataResponse>('/users/me');
+	console.log(response);
+	return response.data;
 };

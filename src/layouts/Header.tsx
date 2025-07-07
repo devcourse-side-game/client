@@ -29,8 +29,7 @@ function Header() {
 	const handleLogout = async () => {
 		try {
 			await logoutApi(); // 서버 쿠키 삭제 요청
-			dispatch(logout()); // Redux 상태 & localStorage 정리
-			navigate('/');
+			await dispatch(logout()); // Redux 상태 & localStorage 정리
 		} catch (err) {
 			const axiosError = err as AxiosError<Response>;
 			console.log(axiosError);
@@ -42,7 +41,7 @@ function Header() {
 			<Container maxWidth='xl'>
 				<Toolbar sx={{ display: { xs: 'flex', md: 'flex' }, mr: 1 }} disableGutters>
 					<Box
-						sx={{ flexGrow: 1, display: { xs: 'flex' }, alignItems: 'center' }}
+						sx={{ flexGrow: 0, display: { xs: 'flex' }, alignItems: 'center' }}
 						onClick={() => navigate('/')}
 					>
 						<AdbIcon
@@ -66,6 +65,7 @@ function Header() {
 							GameParty
 						</Typography>
 					</Box>
+					<Box sx={{ flexGrow: 1 }}></Box>
 					<Box sx={{ flexGrow: 0 }}>
 						{isLoggedIn ? (
 							<>
