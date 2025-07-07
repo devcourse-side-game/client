@@ -1,6 +1,6 @@
 import { Box, Button, FormControl, FormHelperText, Grid, Link, TextField } from '@mui/material';
 import { FormType } from '../../constants/enums';
-import { FormTypeProps, IUserFormData } from '../../types/auth';
+import { IFormTypeProps, IUserFormData } from '../../types/auth';
 import { Controller } from 'react-hook-form';
 import { useAuthForm } from '../../hooks/useAuthForm';
 import {
@@ -29,7 +29,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../stores';
 import { Response } from '../../types/response';
 
-function AuthForm({ formType }: FormTypeProps) {
+function AuthForm({ formType }: IFormTypeProps) {
 	const {
 		control,
 		handleSubmit,
@@ -101,7 +101,7 @@ function AuthForm({ formType }: FormTypeProps) {
 					setError('username', { message: ALREADU_USED_USERNAME });
 					break;
 				case ErrorCode.REPASSWORD_MISMATCH:
-					setError('username', { message: PASSWORD_MISMATCH_ERROR });
+					setError('passwordCheck', { message: PASSWORD_MISMATCH_ERROR });
 					break;
 			}
 		}
@@ -113,8 +113,8 @@ function AuthForm({ formType }: FormTypeProps) {
 				email: user.email,
 				password: user.password,
 			});
-			const assessToken = res?.accessToken ? res.accessToken : '';
-			dispatch(loginSuccess(assessToken));
+			const accessToken = res?.accessToken ? res.accessToken : '';
+			dispatch(loginSuccess(accessToken));
 			navigate('/');
 		} catch (err: unknown) {
 			const axiosError = err as AxiosError<Response>;
@@ -175,46 +175,32 @@ function AuthForm({ formType }: FormTypeProps) {
 								)}
 							/>
 							<FormInput
+								inputName='email'
 								error={errors}
 								control={control}
 								defaultValue=''
 								label='이메일'
 								required={ENTER_EMAIL}
 							/>
-							<Controller
-								name='password'
+
+							<FormInput
+								inputName='password'
+								inputType='password'
+								error={errors}
 								control={control}
 								defaultValue=''
-								rules={{
-									required: ENTER_PASSWORD,
-									validate: (value) => value.length > 0 || ENTER_PASSWORD,
-								}}
-								render={({ field }) => (
-									<TextField
-										{...field}
-										error={!!errors.password}
-										type='password'
-										label='비밀번호'
-										sx={{ marginBottom: '10px' }}
-									/>
-								)}
+								label='비밀번호'
+								required={ENTER_PASSWORD}
 							/>
 
-							<Controller
-								name='passwordCheck'
+							<FormInput
+								inputName='passwordCheck'
+								inputType='password'
+								error={errors}
 								control={control}
 								defaultValue=''
-								rules={{
-									required: ENTER_PASSWORD,
-								}}
-								render={({ field }) => (
-									<TextField
-										{...field}
-										error={!!errors.passwordCheck}
-										type='password'
-										label='비밀번호 확인'
-									/>
-								)}
+								label='비밀번호 확인'
+								required={ENTER_PASSWORD}
 							/>
 
 							<Box>
@@ -233,29 +219,21 @@ function AuthForm({ formType }: FormTypeProps) {
 					{FormType.LOGIN === formType && (
 						<>
 							<FormInput
+								inputName='email'
 								error={errors}
 								control={control}
 								defaultValue='test@mail.com'
 								label='이메일'
 								required={ENTER_EMAIL}
 							/>
-							<Controller
-								name='password'
+							<FormInput
+								inputName='password'
+								inputType='password'
+								error={errors}
 								control={control}
 								defaultValue='!1234567'
-								rules={{
-									required: ENTER_PASSWORD,
-									validate: (value) => value.length > 0 || ENTER_PASSWORD,
-								}}
-								render={({ field }) => (
-									<TextField
-										{...field}
-										error={!!errors.password}
-										type='password'
-										label='비밀번호'
-										sx={{ marginBottom: '10px' }}
-									/>
-								)}
+								label='비밀번호'
+								required={ENTER_PASSWORD}
 							/>
 						</>
 					)}

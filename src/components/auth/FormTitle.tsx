@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
-import { FormTitleProps } from '../../types/auth';
+import { IFormTitleProps } from '../../types/auth';
 
-function FormTitle({ title }: FormTitleProps) {
+function FormTitle({ title }: IFormTitleProps) {
 	return (
 		<Typography
 			variant='h2'

@@ -8,7 +8,11 @@ export interface Response {
 }
 
 export interface LoginResponse extends Response {
-	accessToken?: string;
+	accessToken: string;
+}
+
+export interface RefreshResponse extends Response {
+	accessToken: string;
 }
 
 // export interface SignupResponse extends Response {}

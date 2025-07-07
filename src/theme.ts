@@ -1,49 +1,45 @@
 import { createTheme } from '@mui/material/styles';
+import { ThemeType } from './constants/enums';
 
-const theme = createTheme({
-	palette: {
-		primary: {
-			main: '#1976d2', // 기본 색상
+export const themeMap = {
+	[ThemeType.LIGHT]: createTheme({
+		palette: {
+			mode: 'light',
+			primary: {
+				main: '#1976d2',
+			},
+			secondary: {
+				main: '#ff4081',
+			},
+			background: {
+				default: '#f5f5f5',
+				paper: '#ffffff',
+			},
+			text: {
+				primary: '#000000',
+				secondary: '#555555',
+			},
 		},
-		secondary: {
-			main: '#dc004e',
+	}),
+	[ThemeType.DARK]: createTheme({
+		palette: {
+			mode: 'dark',
+			primary: {
+				main: '#90caf9',
+			},
+			secondary: {
+				main: '#f48fb1',
+			},
+			background: {
+				default: '#121212',
+				paper: '#1e1e1e',
+			},
+			text: {
+				primary: '#ffffff',
+				secondary: '#cccccc',
+			},
 		},
-	},
-	typography: {
-		fontFamily: 'Roboto, Arial, sans-serif',
-		h1: {
-			fontSize: '2.5rem',
-			fontWeight: 700,
-		},
-		h2: {
-			fontSize: '2rem',
-			fontWeight: 600,
-		},
-		h3: {
-			fontSize: '1.75rem',
-			fontWeight: 600,
-		},
-		h4: {
-			fontSize: '1.5rem',
-			fontWeight: 500,
-		},
-		h5: {
-			fontSize: '1.25rem',
-			fontWeight: 500,
-		},
-		h6: {
-			fontSize: '1rem',
-			fontWeight: 500,
-		},
-		body1: {
-			fontSize: '1rem',
-			fontWeight: 400,
-		},
-		body2: {
-			fontSize: '0.875rem',
-			fontWeight: 400,
-		},
-	},
-});
+	}),
+};
 
-export default theme;
+export default themeMap;

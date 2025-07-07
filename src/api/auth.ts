@@ -1,6 +1,6 @@
 import api from './axios';
 import { LoginRequest, NicknameCheckRequest, SignupRequest } from '../types/request';
-import { LoginResponse, Response } from '../types/response';
+import { LoginResponse, RefreshResponse, Response } from '../types/response';
 
 export const loginApi = async (payload: LoginRequest): Promise<LoginResponse> => {
 	const response = await api.post<LoginResponse>('/auth/login', payload);
@@ -19,5 +19,10 @@ export const nicknameCheckApi = async (payload: NicknameCheckRequest): Promise<R
 
 export const logoutApi = async (): Promise<Response> => {
 	const response = await api.post<Response>('/auth/logout');
+	return response.data;
+};
+
+export const refreshTokenApi = async (): Promise<RefreshResponse> => {
+	const response = await api.post<RefreshResponse>('/auth/refresh');
 	return response.data;
 };
