@@ -2,10 +2,10 @@ import { Box, Button, Container, Divider, Grid, Typography } from '@mui/material
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import { ThemeType } from '../../constants/enums';
-import { useThemeContext } from '../../contexts/ThemeContext';
+import { UseThemeContext } from '../../contexts/ThemeContext';
 
 function ThemeMangement() {
-	const { mode, setThemeMode } = useThemeContext();
+	const { mode, setThemeMode } = UseThemeContext();
 
 	function changeThemeColor(type: ThemeType) {
 		if (mode !== type) {

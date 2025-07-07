@@ -1,7 +1,8 @@
+import { IUserDataResponse } from '../types/response';
 import api from './axios';
 
-/** 기능 : 내 정보 조회 */
-export const searchMyDataApi = async () => {
-	const response = await api.get('/users/me');
+export const searchMyDataApi = async (): Promise<IUserDataResponse> => {
+	const response = await api.get<IUserDataResponse>('/users/me');
+	console.log(response);
 	return response.data;
 };

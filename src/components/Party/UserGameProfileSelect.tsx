@@ -30,7 +30,7 @@ export default function UserGameProfileSelect({
 	const [formGameUsername, setFormGameUsername] = useState<string>('');
 
 	const { data: userGameProfiles, isSuccess } = useUserGameProfiles({
-		userId: userId,
+		userId: userId ?? undefined,
 		gameId: gameId ?? undefined,
 	});
 

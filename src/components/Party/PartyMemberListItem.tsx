@@ -59,7 +59,7 @@ function PartyMemberListItem({
 						{/* 유저 이름 */}
 						<Typography
 							variant='h6'
-							color={member.userId === user.id ? 'info' : 'textPrimary'}
+							color={member.userId === user?.id ? 'info' : 'textPrimary'}
 						>
 							{member.username}
 						</Typography>
