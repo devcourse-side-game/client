@@ -66,12 +66,16 @@ export default function PartyJoinFlow({ onFlowComplete, partyId, isPrivate }: TP
 								required
 							/>
 						) : null}
-						<UserGameProfileSelect
-							userId={user?.id ?? null}
-							gameId={data?.gameId}
-							setGameProfile={setSelectedGameProfile}
-							validate={''}
-						></UserGameProfileSelect>
+						{user && user.id ? (
+							<UserGameProfileSelect
+								userId={user.id}
+								gameId={data?.gameId}
+								setGameProfile={setSelectedGameProfile}
+								validate={''}
+							/>
+						) : (
+							<Typography>로그인 후 이용해주세요.</Typography>
+						)}
 					</FormDialogContent>
 					<FormDialogActions>
 						<Button onClick={onFlowComplete}>취소</Button>

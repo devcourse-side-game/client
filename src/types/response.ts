@@ -17,6 +17,7 @@ export interface RefreshResponse extends Response {
 }
 
 export interface IUserDataResponse extends Response {
+	id: number;
 	email: string;
 	password: string;
 	username: string;

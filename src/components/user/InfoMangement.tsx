@@ -8,25 +8,14 @@ import {
 	TextField,
 	Typography,
 } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
-import { searchMyDataApi } from '../../api/user';
-
-const fetchUser = async () => {
-	const data = await searchMyDataApi();
-	return data;
-};
+import { useUser } from '../../hooks/useUsers';
 
 function MyPageComponent() {
 	function handleSave() {
 		console.log('계정 삭제 확인 모달');
 	}
 
-	const { data, isLoading, error } = useQuery({
-		queryKey: ['user'],
-		queryFn: fetchUser,
-	});
-
-	console.log(data);
+	const { data, isLoading } = useUser();
 
 	return isLoading ? (
 		<div>Loading...</div>
