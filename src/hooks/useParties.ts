@@ -16,6 +16,7 @@ import {
 	TParty,
 	TPartyDisbandData,
 	TPartyCompleteData,
+	TLeavePartyParams,
 } from '../types/Party';
 import {
 	banPartyMember,
@@ -26,6 +27,7 @@ import {
 	fetchPartyDetail,
 	partyComplete,
 	disbandParty,
+	leaveParty,
 } from '../api/parties';
 import { IJoinPartyResponse, IPartiesResponse } from '../types/response';
 import { IJoinPartyRequest } from '../types/request';
@@ -250,6 +252,34 @@ export const useCompleteParty = (params: TPartyCompleteData) => {
 		},
 		onError: (error) => {
 			console.error('파티 완료 실패', error);
+		},
+	});
+};
+
+export const useLeaveParty = (params: TLeavePartyParams) => {
+	const queryClient = useQueryClient();
+	return useMutation<void, Error, TLeavePartyParams, unknown>({
+		mutationFn: () => leaveParty(params),
+		onSuccess: (data) => {
+			console.log('파티 탈퇴 성공');
+			console.dir(data);
+			queryClient.invalidateQueries({ queryKey: ['parties'] });
+			queryClient.invalidateQueries({ queryKey: ['selectedPartyDetail', params.partyId] });
+			queryClient.setQueryData(['parties'], (oldData: InfiniteData<TParty[]> | undefined) => {
+				if (!oldData) return oldData;
+
+				return {
+					...oldData,
+					pages: oldData.pages.map((page) =>
+						page.map((party) =>
+							party.id === params.partyId ? { ...party, isCompleted: true } : party
+						)
+					),
+				};
+			});
+		},
+		onError: (error) => {
+			console.error('파티 탈퇴 실패', error);
 		},
 	});
 };

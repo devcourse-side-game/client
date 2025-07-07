@@ -9,6 +9,7 @@ import {
 	TChangePartyLeaderParams,
 	TPartyDisbandData,
 	TPartyCompleteData,
+	TLeavePartyParams,
 } from '../types/Party';
 import { IJoinPartyResponse, IPartiesResponse } from '../types/response';
 import { IJoinPartyRequest } from '../types/request';
@@ -134,6 +135,18 @@ export const partyComplete = async (params: TPartyCompleteData): Promise<void> =
 	const response = await axios.patch<void>(
 		`${API_TESTBASE_URL}/api/parties/${partyId}/complete`,
 		{},
+		{
+			headers: { Authorization: `Bearer ${accessToken}` },
+		}
+	);
+	return response.data;
+};
+
+export const leaveParty = async (params: TLeavePartyParams): Promise<void> => {
+	const accessToken = localStorage.getItem('accessToken');
+	const { partyId } = params;
+	const response = await axios.delete<void>(
+		`${API_TESTBASE_URL}/api/parties/${partyId}/members`,
 		{
 			headers: { Authorization: `Bearer ${accessToken}` },
 		}

@@ -103,6 +103,23 @@ function PartyListItemDetail({ partyId, isCompleted }: TPartyListItemDetailProps
 				) : (
 					<></>
 				)}
+				{isPartyMember && !isCompleted && !isLeader ? (
+					<Button
+						variant='contained'
+						color='error'
+						onClick={() => {
+							console.log(data);
+							openModal('leaveParty', {
+								partyId: partyId,
+								partyTitle: data?.title || '',
+							});
+						}}
+					>
+						파티 나가기
+					</Button>
+				) : (
+					<></>
+				)}
 			</PartyListItemButtonWrapper>
 		</Stack>
 	);

@@ -186,6 +186,10 @@ export type TPartyCompleteParams = {
 	partyId: number;
 };
 
+export type TLeavePartyParams = {
+	partyId: number;
+};
+
 // ===== 모달 관련 타입 =====
 export type TPartyFormFlow = 'form' | 'success' | 'failed';
 
@@ -197,6 +201,7 @@ export type TPartyModalType =
 	| 'memberLike'
 	| 'partyDisband'
 	| 'partyComplete'
+	| 'leave'
 	| '';
 
 export type TCreatePartyData = null; // 'create' 타입은 추가 데이터가 필요 없음
@@ -206,6 +211,10 @@ export type TLeaderChangeData = { partyId: number; userId: number; userName?: st
 export type TMemberLikeData = { partyId: number; userId: number; userName?: string };
 export type TPartyDisbandData = { partyId: number };
 export type TPartyCompleteData = { partyId: number };
+export type TLeavePartyData = {
+	partyId: number;
+	partyTitle: string;
+};
 
 export interface ModalPayloadMap {
 	'': null;
@@ -216,6 +225,7 @@ export interface ModalPayloadMap {
 	memberLike: TMemberLikeData;
 	partyDisband: TPartyDisbandData;
 	partyComplete: TPartyCompleteData;
+	leaveParty: TLeavePartyData;
 }
 
 // ai 도움좀 받았습니다... 머리가 굳어가네요
