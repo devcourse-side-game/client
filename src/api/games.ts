@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from './axios';
 import {
 	TGameDetailResponse,
 	TGetGameListResponse,
@@ -7,13 +7,9 @@ import {
 import { GetGameListRequest } from '../types/request';
 import { TGetUserGameProfilesQuery } from '../types/Party';
 
-const API_BASE_URL_PROTO = 'http://localhost:3000';
-
-const API_TESTBASE_URL = API_BASE_URL_PROTO;
-
+/** 기능 : 게임 목록 조회 */
 export const fetchGameList = async (payload: GetGameListRequest): Promise<TGetGameListResponse> => {
 	const queryParams = new URLSearchParams();
-	const accessToken = localStorage.getItem('accessToken');
 	// isActive, page,limit
 	if (payload.isactive) {
 		queryParams.append('isActive', payload.isactive.toString());
@@ -27,42 +23,23 @@ export const fetchGameList = async (payload: GetGameListRequest): Promise<TGetGa
 	queryParams.append('page', payload.page.toString());
 	queryParams.append('limit', payload.limit.toString());
 
-	const response = await axios.get<TGetGameListResponse>(
-		`${API_TESTBASE_URL}/api/games?${queryParams.toString()}`,
-		{
-			headers: {
-				Authorization: `Bearer ${accessToken}`,
-			},
-		}
-	);
+	const response = await api.get<TGetGameListResponse>(`/games?${queryParams.toString()}`);
 	return response.data;
 };
 
+/** 기능 : 게임 상세 조회 */
 export const fetchGameDetail = async (payload: number): Promise<TGameDetailResponse> => {
-	const accessToken = localStorage.getItem('accessToken');
-	const response = await axios.get<TGameDetailResponse>(
-		`${API_TESTBASE_URL}/api/games/${payload}`,
-		{
-			headers: {
-				Authorization: `Bearer ${accessToken}`,
-			},
-		}
-	);
+	const response = await api.get<TGameDetailResponse>(`/games/${payload}`);
 	return response.data;
 };
 
+/** 기능 : 유저 게임 프로필 조회 */
 export const fetchUserGameProfiles = async (
 	payload: TGetUserGameProfilesQuery
 ): Promise<TGetUserGameProfilesResponse> => {
-	const accessToken = localStorage.getItem('accessToken');
 	const { userId, gameId } = payload;
-	const response = await axios.get<TGetUserGameProfilesResponse>(
-		`${API_TESTBASE_URL}/api/users/${userId}/game-profiles/${gameId}`,
-		{
-			headers: {
-				Authorization: `Bearer ${accessToken}`,
-			},
-		}
+	const response = await api.get<TGetUserGameProfilesResponse>(
+		`/users/${userId}/game-profiles/${gameId}`
 	);
 	return response.data;
 };
