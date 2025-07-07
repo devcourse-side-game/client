@@ -6,6 +6,9 @@ import PartyJoinFlow from './flows/PartyJoinFlow';
 import LeaderChangeFlow from './flows/LeaderChangeFlow';
 import MemberBanFlow from './flows/MemberBanFlow';
 import { useModal } from '../../../hooks/useModal';
+import PartyDisbandFlow from './flows/PartyDisbandFlow';
+import PartyCompleteFlow from './flows/PartyCompleteFlow';
+import LeavePartyFlow from './flows/LeavePartyFlow';
 // ... 등등
 
 export default function PartyGlobalModal() {
@@ -22,6 +25,7 @@ export default function PartyGlobalModal() {
 						<PartyJoinFlow
 							onFlowComplete={closeModal}
 							partyId={modalState.payload.partyId}
+							isPrivate={modalState.payload.isPrivate}
 						/>
 					);
 				else return null;
@@ -63,6 +67,34 @@ export default function PartyGlobalModal() {
 					modalState.payload.userName !== undefined
 				)
 					return <PartyCreateFlow onFlowComplete={closeModal} />;
+				else return null;
+			case 'partyDisband':
+				if (modalState.payload.partyId !== undefined)
+					return (
+						<PartyDisbandFlow
+							onFlowComplete={closeModal}
+							partyId={modalState.payload.partyId}
+						/>
+					);
+				else return null;
+			case 'partyComplete':
+				if (modalState.payload.partyId !== undefined)
+					return (
+						<PartyCompleteFlow
+							onFlowComplete={closeModal}
+							partyId={modalState.payload.partyId}
+						/>
+					);
+				else return null;
+			case 'leaveParty':
+				if (modalState.payload.partyId !== undefined)
+					return (
+						<LeavePartyFlow
+							onFlowComplete={closeModal}
+							partyId={modalState.payload.partyId}
+							partyTitle={modalState.payload.partyTitle}
+						/>
+					);
 				else return null;
 			default:
 				return null;

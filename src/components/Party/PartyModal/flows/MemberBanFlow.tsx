@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TPartyFormFlow } from '../../../../types/Party';
 import { Box, Button, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
 import { useBanPartyMember } from '../../../../hooks/useParties';
@@ -19,14 +19,16 @@ export default function MemberBanFlow({
 	const [view, setView] = useState<TPartyFormFlow>('form');
 	const { mutate: banPartyMember, isSuccess, isError } = useBanPartyMember({ partyId, userId });
 
-	const handleOnBanClick = () => {
-		// 맴버 밴 api 호출 필요
-		banPartyMember({ partyId, userId });
+	useEffect(() => {
 		if (isSuccess) {
 			setView('success');
 		} else if (isError) {
 			setView('failed');
 		}
+	}, [isSuccess, isError]);
+	const handleOnBanClick = () => {
+		// TODO: 맴버 밴 api 호출 필요
+		banPartyMember({ partyId, userId });
 	};
 	switch (view) {
 		case 'form':

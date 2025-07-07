@@ -29,12 +29,7 @@ export default function UserGameProfileSelect({
 	const [selectedValue, setSelectedValue] = useState<string>('');
 	const [formGameUsername, setFormGameUsername] = useState<string>('');
 
-	const {
-		data: userGameProfiles,
-		isLoading,
-		isError,
-		isSuccess,
-	} = useUserGameProfiles({
+	const { data: userGameProfiles, isSuccess } = useUserGameProfiles({
 		userId: userId,
 		gameId: gameId ?? undefined,
 	});
@@ -168,6 +163,3 @@ export default function UserGameProfileSelect({
 		</>
 	);
 }
-
-//TODO : 프로필 추가 입력 후 바로 입력한 값이 적용 안되는 문제 수정 필요
-//TODO : 프로필이 있을 경우 프로필 추가를 해도 기존 프로필이 들어가는 문제 논의

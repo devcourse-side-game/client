@@ -14,6 +14,9 @@ import {
 	TBanPartyMemberParams,
 	TChangePartyLeaderParams,
 	TParty,
+	TPartyDisbandData,
+	TPartyCompleteData,
+	TLeavePartyParams,
 } from '../types/Party';
 import {
 	banPartyMember,
@@ -22,23 +25,15 @@ import {
 	joinParty,
 	fetchParties,
 	fetchPartyDetail,
+	partyComplete,
+	disbandParty,
+	leaveParty,
+	fetchPartiesMine,
 } from '../api/parties';
 import { IJoinPartyResponse, IPartiesResponse } from '../types/response';
 import { IJoinPartyRequest } from '../types/request';
 // import { createParty, fetchParties, fetchPartyDetail } from '../api/parties';
 
-export const useParties = (payload: TGetPartiesPayload) => {
-	return useQuery<IPartiesResponse, Error, IPartiesResponse, ['parties', TGetPartiesPayload]>({
-		queryKey: ['parties', payload],
-		queryFn: ({ queryKey }) => {
-			const [_queryName, payload] = queryKey;
-			return fetchParties(payload);
-		},
-		refetchOnWindowFocus: false,
-		refetchOnMount: false,
-		refetchOnReconnect: false,
-	});
-};
 export const useInfiniteParties = (payload: TGetPartiesPayload) => {
 	const { limit } = payload.pagination;
 	return useInfiniteQuery<
@@ -51,6 +46,35 @@ export const useInfiniteParties = (payload: TGetPartiesPayload) => {
 		queryKey: ['parties', payload],
 		queryFn: ({ pageParam = 1 }) => {
 			return fetchParties({
+				...payload,
+				pagination: { ...payload.pagination, page: pageParam },
+			});
+		},
+		refetchOnWindowFocus: false,
+		refetchOnMount: false,
+		refetchOnReconnect: false,
+		getNextPageParam: (lastPage, allpage) => {
+			if (lastPage.length < limit) {
+				return undefined;
+			}
+			return allpage.length + 1;
+		},
+		initialPageParam: 1,
+	});
+};
+
+export const useInfiniteMyParties = (payload: Pick<TGetPartiesPayload, 'pagination'>) => {
+	const { limit } = payload.pagination;
+	return useInfiniteQuery<
+		IPartiesResponse,
+		Error,
+		InfiniteData<IPartiesResponse>,
+		['parties', 'me', Pick<TGetPartiesPayload, 'pagination'>],
+		number
+	>({
+		queryKey: ['parties', 'me', payload],
+		queryFn: ({ pageParam = 1 }) => {
+			return fetchPartiesMine({
 				...payload,
 				pagination: { ...payload.pagination, page: pageParam },
 			});
@@ -86,11 +110,10 @@ export const useSelectedPartyDetail = (partyId: number) => {
 			}
 			return fetchPartyDetail(id); // 추출한 id를 API 함수에 전달
 		},
-		// 갱신 설정 조정 필요. 개발중 우선 갱신 안되게 설정.
 		refetchOnWindowFocus: false,
 		refetchOnMount: false,
 		refetchOnReconnect: false,
-		//refetchInterval: 1000 * 10,
+		refetchInterval: 1000 * 10,
 	});
 };
 
@@ -149,11 +172,31 @@ export const useJoinParty = () => {
 };
 
 export const useBanPartyMember = (params: TBanPartyMemberParams) => {
+	const queryClient = useQueryClient();
 	return useMutation<void, Error, TBanPartyMemberParams, unknown>({
 		mutationFn: () => banPartyMember(params),
 		onSuccess: (data) => {
 			console.log('파티 멤버 추방 성공');
 			console.dir(data);
+			// 1. 특정 파티의 상세 정보만 갱신
+			queryClient.invalidateQueries({
+				queryKey: ['selectedPartyDetail', params.partyId],
+			});
+			// 2. 파티 목록의 특정 파티만 업데이트 (Optimistic Update)
+			queryClient.setQueryData(['parties'], (oldData: InfiniteData<TParty[]> | undefined) => {
+				if (!oldData) return oldData;
+
+				return {
+					...oldData,
+					pages: oldData.pages.map((page) =>
+						page.map((party) =>
+							party.id === params.partyId
+								? { ...party, currentMemberCount: party.currentMemberCount - 1 }
+								: party
+						)
+					),
+				};
+			});
 		},
 		onError: (error) => {
 			console.error('파티 멤버 추방 실패', error);
@@ -170,6 +213,90 @@ export const useChangePartyLeader = (params: TChangePartyLeaderParams) => {
 		},
 		onError: (error) => {
 			console.error('파티 리더 변경 실패', error);
+		},
+	});
+};
+
+export const useDisbandParty = (params: TPartyDisbandData) => {
+	const queryClient = useQueryClient();
+	return useMutation<void, Error, TPartyDisbandData, unknown>({
+		mutationFn: () => disbandParty(params),
+		onSuccess: (data) => {
+			console.log('파티 해산 성공');
+			console.dir(data);
+			queryClient.invalidateQueries({ queryKey: ['parties'] });
+			queryClient.invalidateQueries({ queryKey: ['selectedPartyDetail', params.partyId] });
+			queryClient.setQueryData(['parties'], (oldData: InfiniteData<TParty[]> | undefined) => {
+				if (!oldData) return oldData;
+
+				return {
+					...oldData,
+					pages: oldData.pages.map((page) =>
+						page.map((party) =>
+							party.id === params.partyId ? { ...party, isCompleted: true } : party
+						)
+					),
+				};
+			});
+		},
+		onError: (error) => {
+			console.error('파티 해산 실패', error);
+		},
+	});
+};
+
+export const useCompleteParty = (params: TPartyCompleteData) => {
+	const queryClient = useQueryClient();
+	return useMutation<void, Error, TPartyCompleteData, unknown>({
+		mutationFn: () => partyComplete(params),
+		onSuccess: (data) => {
+			console.log('파티 완료 성공');
+			console.dir(data);
+			queryClient.invalidateQueries({ queryKey: ['parties'] });
+			queryClient.invalidateQueries({ queryKey: ['selectedPartyDetail', params.partyId] });
+			queryClient.setQueryData(['parties'], (oldData: InfiniteData<TParty[]> | undefined) => {
+				if (!oldData) return oldData;
+
+				return {
+					...oldData,
+					pages: oldData.pages.map((page) =>
+						page.map((party) =>
+							party.id === params.partyId ? { ...party, isCompleted: true } : party
+						)
+					),
+				};
+			});
+		},
+		onError: (error) => {
+			console.error('파티 완료 실패', error);
+		},
+	});
+};
+
+export const useLeaveParty = (params: TLeavePartyParams) => {
+	const queryClient = useQueryClient();
+	return useMutation<void, Error, TLeavePartyParams, unknown>({
+		mutationFn: () => leaveParty(params),
+		onSuccess: (data) => {
+			console.log('파티 탈퇴 성공');
+			console.dir(data);
+			queryClient.invalidateQueries({ queryKey: ['parties'] });
+			queryClient.invalidateQueries({ queryKey: ['selectedPartyDetail', params.partyId] });
+			queryClient.setQueryData(['parties'], (oldData: InfiniteData<TParty[]> | undefined) => {
+				if (!oldData) return oldData;
+
+				return {
+					...oldData,
+					pages: oldData.pages.map((page) =>
+						page.map((party) =>
+							party.id === params.partyId ? { ...party, isCompleted: true } : party
+						)
+					),
+				};
+			});
+		},
+		onError: (error) => {
+			console.error('파티 탈퇴 실패', error);
 		},
 	});
 };

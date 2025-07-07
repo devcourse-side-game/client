@@ -178,16 +178,43 @@ export type TGetUserGameProfilesQuery = {
 	gameId?: number;
 };
 
+export type TPartyDisbandParams = {
+	partyId: number;
+};
+
+export type TPartyCompleteParams = {
+	partyId: number;
+};
+
+export type TLeavePartyParams = {
+	partyId: number;
+};
+
 // ===== 모달 관련 타입 =====
 export type TPartyFormFlow = 'form' | 'success' | 'failed';
 
-export type TPartyModalType = 'create' | 'join' | 'leaderChange' | 'memberBan' | 'memberLike' | '';
+export type TPartyModalType =
+	| 'create'
+	| 'join'
+	| 'leaderChange'
+	| 'memberBan'
+	| 'memberLike'
+	| 'partyDisband'
+	| 'partyComplete'
+	| 'leaveParty'
+	| '';
 
 export type TCreatePartyData = null; // 'create' 타입은 추가 데이터가 필요 없음
-export type TJoinPartyData = { partyId: number };
+export type TJoinPartyData = { partyId: number; isPrivate: boolean };
 export type TMemberBanData = { partyId: number; userId: number; userName: string };
 export type TLeaderChangeData = { partyId: number; userId: number; userName?: string };
 export type TMemberLikeData = { partyId: number; userId: number; userName?: string };
+export type TPartyDisbandData = { partyId: number };
+export type TPartyCompleteData = { partyId: number };
+export type TLeavePartyData = {
+	partyId: number;
+	partyTitle: string;
+};
 
 export interface ModalPayloadMap {
 	'': null;
@@ -196,6 +223,9 @@ export interface ModalPayloadMap {
 	memberBan: TMemberBanData;
 	leaderChange: TLeaderChangeData;
 	memberLike: TMemberLikeData;
+	partyDisband: TPartyDisbandData;
+	partyComplete: TPartyCompleteData;
+	leaveParty: TLeavePartyData;
 }
 
 // ai 도움좀 받았습니다... 머리가 굳어가네요
@@ -207,3 +237,9 @@ export type TModalState = {
 		payload: ModalPayloadMap[K]; // payload는 K에 해당하는 값이어야 한다는 규칙 생성
 	};
 }[keyof ModalPayloadMap]; // 모든 생성된 객체 타입을 OR(|)로 묶음
+
+// tab 타입
+export enum TTabType {
+	MY_PARTIES = 0,
+	PARTY_FINDER = 1,
+}

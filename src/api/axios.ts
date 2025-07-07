@@ -25,30 +25,30 @@ api.interceptors.request.use((config) => {
 	return config;
 });
 
-// 응답 인터셉터: accessToken 만료 시
-api.interceptors.response.use(
-	(res) => res,
-	async (err) => {
-		console.log(err.response?.status);
-		if (err.response?.status === 401 && !err.config._retry) {
-			err.config._retry = true;
+// // 응답 인터셉터: accessToken 만료 시
+// api.interceptors.response.use(
+// 	(res) => res,
+// 	async (err) => {
+// 		console.log(err.response?.status);
+// 		if (err.response?.status === 401 && !err.config._retry) {
+// 			err.config._retry = true;
 
-			try {
-				const response = await refreshTokenApi();
-				const newAccessToken = response.accessToken;
+// 			try {
+// 				const response = await refreshTokenApi();
+// 				const newAccessToken = response.accessToken;
 
-				store.dispatch(loginSuccess(newAccessToken));
-				err.config.headers.Authorization = `Bearer ${newAccessToken}`;
-				return api(err.config); // 요청 재시도
-			} catch (e) {
-				// const navigate = useNavigate();
-				store.dispatch(logout());
-				// navigate('/login');
-				return Promise.reject(e);
-			}
-		}
-		return Promise.reject(err);
-	}
-);
+// 				store.dispatch(loginSuccess(newAccessToken));
+// 				err.config.headers.Authorization = `Bearer ${newAccessToken}`;
+// 				return api(err.config); // 요청 재시도
+// 			} catch (e) {
+// 				// const navigate = useNavigate();
+// 				store.dispatch(logout());
+// 				// navigate('/login');
+// 				return Promise.reject(e);
+// 			}
+// 		}
+// 		return Promise.reject(err);
+// 	}
+// );
 
 export default api;

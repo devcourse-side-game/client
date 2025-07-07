@@ -14,9 +14,10 @@ import { useUser } from '../../../../hooks/useUsers';
 type TPartyJoinFlowProps = {
 	onFlowComplete: () => void;
 	partyId: number;
+	isPrivate: boolean;
 };
 
-export default function PartyJoinFlow({ onFlowComplete, partyId }: TPartyJoinFlowProps) {
+export default function PartyJoinFlow({ onFlowComplete, partyId, isPrivate }: TPartyJoinFlowProps) {
 	const { data, isLoading, isError, error } = useSelectedPartyDetail(partyId);
 	const [formAccessCode, setFormAccessCode] = useState<string>('');
 	const [selectedGameProfile, setSelectedGameProfile] = useState<TUserGameProfile | null>(null);
@@ -41,7 +42,7 @@ export default function PartyJoinFlow({ onFlowComplete, partyId }: TPartyJoinFlo
 			partyId: partyId,
 			gameUsername: selectedGameProfile?.gameUsername ?? '',
 			profileId: selectedGameProfile?.id ?? undefined,
-			accessCode: data?.accessCode ?? '',
+			accessCode: formAccessCode ?? '',
 		});
 	};
 
@@ -56,7 +57,7 @@ export default function PartyJoinFlow({ onFlowComplete, partyId }: TPartyJoinFlo
 					<FormDialogTitle>파티 참가하기</FormDialogTitle>
 					<FormDialogContent>
 						<Typography>{`${data?.title}파티에 참가합니다.`}</Typography>
-						{data?.accessCode ? (
+						{isPrivate ? (
 							<TextField
 								value={formAccessCode}
 								onChange={(e) => setFormAccessCode(e.target.value)}

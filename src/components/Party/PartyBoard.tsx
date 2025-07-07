@@ -4,8 +4,8 @@ import { BOARD_PARTY } from '../../constants/Party';
 import PartyFilter from './PartyFilter';
 import PartyList from './PartyList';
 import { useQueryClient } from '@tanstack/react-query';
-import { TFilterOptions, TGetPartiesPayload } from '../../types/Party';
-import { useInfiniteParties } from '../../hooks/useParties';
+import { TFilterOptions, TGetPartiesPayload, TTabType } from '../../types/Party';
+import { useInfiniteMyParties, useInfiniteParties } from '../../hooks/useParties';
 import { useModal } from '../../hooks/useModal';
 import {
 	PartyBoardContainer,
@@ -19,7 +19,7 @@ import { RootState } from '../../stores';
 import { useNavigate } from 'react-router-dom';
 
 const LIMIT = 8;
-function PartyBoard() {
+function PartyBoard({ type }: { type: TTabType }) {
 	const queryClient = useQueryClient();
 	const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
 	const [filterOptions, setFilterOptions] = useState<TFilterOptions[]>([]);
@@ -32,6 +32,10 @@ function PartyBoard() {
 		filterOptions,
 		pagination,
 	};
+
+	const allPartiesQuery = useInfiniteParties(payload);
+	const myPartiesQuery = useInfiniteMyParties(payload);
+	const currentQuery = type === TTabType.PARTY_FINDER ? allPartiesQuery : myPartiesQuery;
 	const {
 		data,
 		fetchNextPage,
@@ -41,7 +45,8 @@ function PartyBoard() {
 		hasNextPage,
 		isFetchingNextPage,
 		error,
-	} = useInfiniteParties(payload);
+	} = currentQuery;
+
 	// 모달 컴포넌트 사용
 	const { openModal } = useModal();
 	//네비게이션 사용
@@ -80,13 +85,21 @@ function PartyBoard() {
 	return (
 		<PartyBoardContainer>
 			<PartyBoardHeaderWrapper>
-				<Typography variant='h2'>{BOARD_PARTY.PARTY_BOARD_TITLE}</Typography>
-				<Typography variant='h6'>{BOARD_PARTY.PARTY_BOARD_SUBTITLE}</Typography>
+				<Typography variant='h3'>{BOARD_PARTY.PARTY_BOARD_TITLE}</Typography>
+				<Typography variant='h6' fontWeight={400}>
+					{type === TTabType.PARTY_FINDER
+						? BOARD_PARTY.PARTY_BOARD_SUBTITLE_FINDER
+						: BOARD_PARTY.PARTY_BOARD_SUBTITLE_MY_PARTIES}
+				</Typography>
 			</PartyBoardHeaderWrapper>
-			<PartyFilter
-				filterOptions={filterOptions}
-				setFilterOptions={handleFilterChange}
-			></PartyFilter>
+			{type === TTabType.PARTY_FINDER ? (
+				<PartyFilter
+					filterOptions={filterOptions}
+					setFilterOptions={handleFilterChange}
+				></PartyFilter>
+			) : (
+				<></>
+			)}
 			<PartyButtonWrapper>
 				<Box sx={{ width: '100px' }}></Box>
 				<Button variant='text' onClick={handleRefreshClick}>

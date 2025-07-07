@@ -17,6 +17,7 @@ function PartyListItemDetail({ partyId, isCompleted }: TPartyListItemDetailProps
 	const { openModal } = useModal();
 	const [isPartyMember, setIsPartyMember] = useState<boolean>(false);
 	const { data: user } = useUser();
+	const isLeader = data?.creatorId === user?.id;
 	useEffect(() => {
 		if (data) {
 			setIsPartyMember(
@@ -63,10 +64,58 @@ function PartyListItemDetail({ partyId, isCompleted }: TPartyListItemDetailProps
 						variant='contained'
 						disabled={isCompleted}
 						onClick={() => {
-							openModal('join', { partyId: partyId });
+							openModal('join', {
+								partyId: partyId,
+								isPrivate: data?.isPrivate || false,
+							});
 						}}
 					>
 						{isCompleted ? '모집 완료' : '파티 참가'}
+					</Button>
+				) : (
+					<></>
+				)}
+				{isLeader && !isCompleted ? (
+					<Stack direction='row' spacing={1}>
+						<Button
+							variant='contained'
+							color='error'
+							onClick={() => {
+								if (data?.id) {
+									openModal('partyDisband', { partyId: data.id });
+								}
+							}}
+						>
+							파티 해산
+						</Button>
+						<Button
+							variant='contained'
+							color='primary'
+							onClick={() => {
+								if (data?.id) {
+									openModal('partyComplete', { partyId: data.id });
+								}
+							}}
+						>
+							파티 모집 완료
+						</Button>
+					</Stack>
+				) : (
+					<></>
+				)}
+				{isPartyMember && !isCompleted && !isLeader ? (
+					<Button
+						variant='contained'
+						color='error'
+						onClick={() => {
+							console.log(data);
+							openModal('leaveParty', {
+								partyId: partyId,
+								partyTitle: data?.title || '',
+							});
+						}}
+					>
+						파티 나가기
 					</Button>
 				) : (
 					<></>
