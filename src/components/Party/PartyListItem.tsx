@@ -26,7 +26,7 @@ export type TPartyListItemProps = {
 
 function PartyListItem({ party, expandedPartyId, setExpandedPartyId }: TPartyListItemProps) {
 	const isExpanded = expandedPartyId === party.id;
-	const { data: gameDetail } = useGameDetail(party.gameId, isExpanded);
+	const { data: gameDetail } = useGameDetail(party.gameId, true);
 	// 아코디언 확장시 파티 세부 정보 api 호출
 	const handleOnAccordionChange = () => {
 		if (isExpanded) setExpandedPartyId(null);
