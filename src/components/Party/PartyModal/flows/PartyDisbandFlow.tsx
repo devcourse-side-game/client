@@ -11,9 +11,9 @@ type TPartyDisbandFlowProps = {
 
 export default function PartyDisbandFlow({ onFlowComplete, partyId }: TPartyDisbandFlowProps) {
 	const [view, setView] = useState<TPartyFormFlow>('form');
-	const { mutate: disbandParty, isSuccess, isError } = useDisbandParty({ partyId });
+	const { mutate: disbandParty, isSuccess, isError } = useDisbandParty(partyId);
 	const handleOnClick = () => {
-		disbandParty({ partyId });
+		disbandParty(partyId);
 	};
 
 	useEffect(() => {

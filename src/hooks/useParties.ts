@@ -8,9 +8,6 @@ import {
 import {
 	TBanPartyMemberParams,
 	TChangePartyLeaderParams,
-	TPartyDisbandData,
-	TPartyCompleteData,
-	TLeavePartyParams,
 	TFilterOption,
 	IGetPartiesData,
 	TPagination,
@@ -221,13 +218,13 @@ export const useChangePartyLeader = (params: TChangePartyLeaderParams) => {
 	});
 };
 
-export const useDisbandParty = (params: TPartyDisbandData) => {
+export const useDisbandParty = (partyId: number) => {
 	const queryClient = useQueryClient();
-	return useMutation<void, Error, TPartyDisbandData, unknown>({
-		mutationFn: () => disbandParty(params),
+	return useMutation<void, Error, number, unknown>({
+		mutationFn: () => disbandParty(partyId),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['parties'] });
-			queryClient.invalidateQueries({ queryKey: ['selectedPartyDetail', params.partyId] });
+			queryClient.invalidateQueries({ queryKey: ['selectedPartyDetail', partyId] });
 			queryClient.setQueryData(
 				['parties'],
 				(oldData: InfiniteData<IPartiesResponse> | undefined) => {
@@ -237,9 +234,7 @@ export const useDisbandParty = (params: TPartyDisbandData) => {
 						...oldData,
 						pages: oldData.pages.map((page) =>
 							page.map((party) =>
-								party.id === params.partyId
-									? { ...party, isCompleted: true }
-									: party
+								party.id === partyId ? { ...party, isCompleted: true } : party
 							)
 						),
 					};
@@ -252,15 +247,13 @@ export const useDisbandParty = (params: TPartyDisbandData) => {
 	});
 };
 
-export const useCompleteParty = (params: TPartyCompleteData) => {
+export const useCompleteParty = (partyId: number) => {
 	const queryClient = useQueryClient();
-	return useMutation<void, Error, TPartyCompleteData, unknown>({
-		mutationFn: () => partyComplete(params),
-		onSuccess: (data) => {
-			console.log('파티 완료 성공');
-			console.dir(data);
+	return useMutation<void, Error, number, unknown>({
+		mutationFn: () => partyComplete(partyId),
+		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['parties'] });
-			queryClient.invalidateQueries({ queryKey: ['selectedPartyDetail', params.partyId] });
+			queryClient.invalidateQueries({ queryKey: ['selectedPartyDetail', partyId] });
 			queryClient.setQueryData(
 				['parties'],
 				(oldData: InfiniteData<IPartiesResponse> | undefined) => {
@@ -270,9 +263,7 @@ export const useCompleteParty = (params: TPartyCompleteData) => {
 						...oldData,
 						pages: oldData.pages.map((page) =>
 							page.map((party) =>
-								party.id === params.partyId
-									? { ...party, isCompleted: true }
-									: party
+								party.id === partyId ? { ...party, isCompleted: true } : party
 							)
 						),
 					};
@@ -285,15 +276,13 @@ export const useCompleteParty = (params: TPartyCompleteData) => {
 	});
 };
 
-export const useLeaveParty = (params: TLeavePartyParams) => {
+export const useLeaveParty = (partyId: number) => {
 	const queryClient = useQueryClient();
-	return useMutation<void, Error, TLeavePartyParams, unknown>({
-		mutationFn: () => leaveParty(params),
-		onSuccess: (data) => {
-			console.log('파티 탈퇴 성공');
-			console.dir(data);
+	return useMutation<void, Error, number, unknown>({
+		mutationFn: () => leaveParty(partyId),
+		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['parties'] });
-			queryClient.invalidateQueries({ queryKey: ['selectedPartyDetail', params.partyId] });
+			queryClient.invalidateQueries({ queryKey: ['selectedPartyDetail', partyId] });
 			queryClient.setQueryData(
 				['parties'],
 				(oldData: InfiniteData<IPartiesResponse> | undefined) => {
@@ -303,9 +292,7 @@ export const useLeaveParty = (params: TLeavePartyParams) => {
 						...oldData,
 						pages: oldData.pages.map((page) =>
 							page.map((party) =>
-								party.id === params.partyId
-									? { ...party, isCompleted: true }
-									: party
+								party.id === partyId ? { ...party, isCompleted: true } : party
 							)
 						),
 					};

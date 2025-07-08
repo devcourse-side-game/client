@@ -13,7 +13,7 @@ export default function LeavePartyFlow({
 	partyId,
 	partyTitle,
 }: TLeavePartyFlowData) {
-	const { mutate: leaveParty, isSuccess, isError } = useLeaveParty({ partyId }); // 파티 아이디 받아오기
+	const { mutate: leaveParty, isSuccess, isError } = useLeaveParty(partyId); // 파티 아이디 받아오기
 	const [view, setView] = useState<TPartyFormFlow>('form');
 
 	useEffect(() => {
@@ -24,7 +24,7 @@ export default function LeavePartyFlow({
 		}
 	}, [isSuccess, isError]);
 	const handleOnLeaveClick = () => {
-		leaveParty({ partyId });
+		leaveParty(partyId);
 	};
 	switch (view) {
 		case 'form':

@@ -90,24 +90,6 @@ export type TCreatePartyValidationFormErrors = {
 	maxParticipants: string;
 };
 
-// ===== API 응답 타입 =====
-export type TPartyCreateSuccessResponse = {
-	message: string;
-	partyId: number;
-};
-
-export type TBadRequestResponse = {
-	statusCode: number;
-	message: string;
-	error: string;
-};
-
-export type TBadAuthResponse = {
-	statusCode: number;
-	message: string;
-	error: string;
-};
-
 // ===== 파티 관리 액션 파라미터 타입 =====
 export type TChangePartyLeaderParams = {
 	partyId: number;
@@ -122,18 +104,6 @@ export type TBanPartyMemberParams = {
 export type TGetUserGameProfilesQuery = {
 	userId: number;
 	gameId?: number;
-};
-
-export type TPartyDisbandParams = {
-	partyId: number;
-};
-
-export type TPartyCompleteParams = {
-	partyId: number;
-};
-
-export type TLeavePartyParams = {
-	partyId: number;
 };
 
 // ===== 모달 관련 타입 =====

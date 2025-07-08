@@ -2,9 +2,6 @@ import api from './axios';
 import {
 	TBanPartyMemberParams,
 	TChangePartyLeaderParams,
-	TPartyDisbandData,
-	TPartyCompleteData,
-	TLeavePartyParams,
 	ICreatePartyPayload,
 	IPartyDetail,
 } from '../types/party';
@@ -33,12 +30,12 @@ export const createParty = async (payload: ICreatePartyPayload): Promise<IPartyD
 };
 
 /** 기능 : 파티 참여 */
-export const joinParty = async (payload: IJoinPartyRequest): Promise<IJoinPartyResponse> => {
-	const { partyId } = payload;
+export const joinParty = async (requestData: IJoinPartyRequest): Promise<IJoinPartyResponse> => {
+	const { partyId } = requestData;
 	const body = {
-		gameUsername: payload.gameUsername,
-		profileId: payload.profileId,
-		accessCode: payload.accessCode,
+		gameUsername: requestData.gameUsername,
+		profileId: requestData.profileId,
+		accessCode: requestData.accessCode,
 	};
 
 	const response = await api.post<IJoinPartyResponse>(`/parties/${partyId}/members`, body);
@@ -62,22 +59,19 @@ export const changePartyLeader = async (params: TChangePartyLeaderParams): Promi
 };
 
 /** 기능 : 파티 해체 */
-export const disbandParty = async (params: TPartyDisbandData): Promise<void> => {
-	const { partyId } = params;
+export const disbandParty = async (partyId: number): Promise<void> => {
 	const response = await api.delete<void>(`/parties/${partyId}`);
 	return response.data;
 };
 
 /** 기능 : 파티 완료 */
-export const partyComplete = async (params: TPartyCompleteData): Promise<void> => {
-	const { partyId } = params;
+export const partyComplete = async (partyId: number): Promise<void> => {
 	const response = await api.patch<void>(`/parties/${partyId}/complete`);
 	return response.data;
 };
 
 /** 기능 : 파티 나가기 */
-export const leaveParty = async (params: TLeavePartyParams): Promise<void> => {
-	const { partyId } = params;
+export const leaveParty = async (partyId: number): Promise<void> => {
 	const response = await api.delete<void>(`/parties/${partyId}/members`);
 	return response.data;
 };

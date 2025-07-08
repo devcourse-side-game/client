@@ -11,7 +11,7 @@ type TPartyCompleteFlowProps = {
 
 export default function PartyCompleteFlow({ onFlowComplete, partyId }: TPartyCompleteFlowProps) {
 	const [view, setView] = useState<TPartyFormFlow>('form');
-	const { mutate: completeParty, isSuccess, isError } = useCompleteParty({ partyId });
+	const { mutate: completeParty, isSuccess, isError } = useCompleteParty(partyId);
 
 	useEffect(() => {
 		if (isSuccess) {
@@ -21,7 +21,7 @@ export default function PartyCompleteFlow({ onFlowComplete, partyId }: TPartyCom
 		}
 	}, [isSuccess, isError]);
 	const handleOnClick = () => {
-		completeParty({ partyId });
+		completeParty(partyId);
 	};
 
 	switch (view) {
