@@ -12,7 +12,7 @@ export const PartyBoardContainer = styled(Box)(({ theme }) => ({
 	justifyContent: 'center',
 	gap: theme.spacing(2),
 	padding: theme.spacing(2),
-	border: `1px solid ${theme.palette.divider}`,
+	// border: `1px solid ${theme.palette.divider}`,
 	borderRadius: theme.shape.borderRadius,
 }));
 export const PartyBoardHeaderWrapper = styled(Box)(({ theme }) => ({
@@ -35,4 +35,15 @@ export const InfiniteScrollContainer = styled(Box)(() => ({
 	width: '100%',
 	overflowY: 'scroll',
 	height: 'calc(100vh - 200px)',
+
+	/* 스크롤바 숨기기 - 웹킷 브라우저용 (Chrome, Safari 등) */
+	'&::-webkit-scrollbar': {
+		display: 'none',
+	},
+
+	/* Firefox용 */
+	scrollbarWidth: 'none',
+
+	/* IE, Edge 구버전 대응 */
+	msOverflowStyle: 'none',
 }));
