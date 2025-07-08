@@ -1,56 +1,31 @@
+import { TGame } from './game';
+import { TUser } from './user';
+
 // ===== 파티 기본 타입 =====
-export type TParty = {
+export interface IPartyBase {
 	id: number;
 	title: string;
 	gameId: number;
-	gameBannerUrl: string;
-	purposeTag: string;
-	maxParticipants: number;
-	isCompleted: boolean;
-	isPrivate: boolean;
-	creatorId: number;
 	createdAt: string;
 	updatedAt: string;
 	description: string;
+	isCompleted: boolean;
+	isPrivate: boolean;
 	accessCode: string | null;
-	leader: TLeader;
-	currentMemberCount: number;
-};
-
-// ===== 사용자 관련 타입 =====
+	creatorId: number;
+	purposeTag: string;
+	maxParticipants: number;
+}
 export type TLeader = {
 	userId: number;
 	username: string;
 	gameUsername: string;
 };
-
-export type TUser = {
-	id: number;
-	username: string;
-	email: string;
-	profileImage: string | null;
-};
-
-// ===== 게임 관련 타입 =====
-export type TGame = {
-	id: number;
-	name: string;
-	platform: string;
-	steamAppId: number;
-	bannerUrl: string;
-	isActive: boolean;
-	createdAt: string;
-	updatedAt: string;
-	slug: string;
-};
-
-export type TOptionGame = {
-	id: number;
-	title: string;
-	category: string;
-};
-
-// ===== 파티 멤버 관련 타입 =====
+export interface IPartyListItem extends IPartyBase {
+	leader: TLeader;
+	gameBannerUrl: string;
+	currentMemberCount: number;
+}
 export type TPartyMember = {
 	id: number;
 	userId: number;
@@ -60,6 +35,19 @@ export type TPartyMember = {
 	leftAt: string | null;
 	gameUsername: string;
 };
+export interface IPartyDetail extends IPartyBase {
+	creator: TUser;
+	game: TGame;
+	members: TPartyMember[];
+}
+
+// ===== 사용자 관련 타입 =====
+
+export type TOptionGame = {
+	id: number;
+	title: string;
+	category: string;
+};
 
 export type TUserGameProfile = {
 	id: number | null;
@@ -68,72 +56,30 @@ export type TUserGameProfile = {
 	gameUsername: string;
 	game: TGame | null;
 };
-
-// ===== 파티 상세 정보 타입 =====
-export type TPartyListItemDetailResponse = {
-	id: number;
-	title: string;
-	gameId: number;
-	creatorId: number;
-	creator: TUser;
-	game: TGame;
-	purposeTag: string;
-	maxParticipants: number;
-	//currentParticipants: number;
-	description: string;
-	isPrivate: boolean;
-	accessCode: string | null;
-	isCompleted: boolean;
-	created_at: string;
-	updated_at: string;
-
-	members: TPartyMember[];
-};
-
-// ===== 파티 목록 및 페이지네이션 타입 =====
-export type TGetPartiesResponse = {
-	parties: TParty[];
-	total: number;
-	page: number;
-	limit: number;
-};
-
-export type IPartiesResponse = {
-	parties: TParty[];
-	total: number;
-	page: number;
-	limit: number;
-	hasNext: boolean;
-	hasPrev: boolean;
-};
-
 // ===== 필터 및 검색 관련 타입 =====
-export type TFilterOptions = {
+export type TFilterOption = {
 	type: string;
-	value: string | number | null;
+	value: string | number;
 	label: string;
 };
 
-export type TGetPartiesPayload = {
-	filterOptions: TFilterOptions[];
-	pagination: {
-		page: number;
-		limit: number;
-	};
+export type TPagination = {
+	page: number;
+	limit: number;
 };
 
+export interface IGetPartiesData {
+	filterOptions: TFilterOption[];
+	pagination: TPagination;
+}
+
 // ===== 파티 생성 관련 타입 =====
-export type TPartyCreateRequest = {
-	title: string;
-	gameId: number | undefined;
-	purposeTag: string;
-	maxParticipants: number;
-	description: string;
-	isPrivate: boolean;
-	accessCode: string;
+type TPartyAutoGenerateInfo = 'id' | 'createdAt' | 'updatedAt' | 'isCompleted' | 'creatorId';
+export type TCreatePartyInfo = Omit<IPartyBase, TPartyAutoGenerateInfo>;
+export interface ICreatePartyPayload extends TCreatePartyInfo {
 	gameUsername: string;
 	profileId: number | null;
-};
+}
 
 export type TPartyCreateFormErrors = {
 	title: string;

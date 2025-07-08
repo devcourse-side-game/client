@@ -14,31 +14,17 @@ import { IJoinPartyResponse, IPartiesResponse } from '../types/response';
 import { IJoinPartyRequest } from '../types/request';
 
 /** 기능 : 파티 목록 조회 */
-export const fetchParties = async (payload: TGetPartiesPayload): Promise<IPartiesResponse> => {
-	const { filterOptions, pagination } = payload;
-	const queryParams = new URLSearchParams();
-
-	// 페이지네이션 파라미터
-	queryParams.append('page', pagination.page.toString());
-	queryParams.append('limit', pagination.limit.toString());
-
-	// 필터 옵션 파라미터
-	if (filterOptions.length) {
-		const optionGameId = filterOptions.find((option) => option.type === 'gameId');
-		if (optionGameId?.value) {
-			queryParams.append('gameId', optionGameId.value.toString());
-		}
-		// TODO: 다른 필터들도 추가...
-	}
-
-	const url = `/parties?${queryParams.toString()}`;
+export const fetchParties = async (queryParams: URLSearchParams): Promise<IPartiesResponse> => {
+	const url = `/parties?${queryParams}`;
 	const response = await api.get<IPartiesResponse>(url);
 	return response.data;
 };
 
 /** 기능 : 파티 세부 정보 조회 */
-export const fetchPartyDetail = async (payload: number): Promise<TPartyListItemDetailResponse> => {
-	const url = `/parties/${payload}`;
+export const fetchPartyDetail = async (
+	queryParams: URLSearchParams
+): Promise<TPartyListItemDetailResponse> => {
+	const url = `/parties/${queryParams}`;
 	const response = await api.get<TPartyListItemDetailResponse>(url);
 	return response.data;
 };
@@ -103,13 +89,8 @@ export const leaveParty = async (params: TLeavePartyParams): Promise<void> => {
 };
 
 /** 기능 : 내 파티 목록 조회 */
-export const fetchPartiesMine = async (
-	payload: Pick<TGetPartiesPayload, 'pagination'>
-): Promise<IPartiesResponse> => {
-	const { page, limit } = payload.pagination;
-	const queryParams = new URLSearchParams();
-	queryParams.append('page', page.toString());
-	queryParams.append('limit', limit.toString());
-	const response = await api.get<IPartiesResponse>(`/parties/me?${queryParams.toString()}`);
+export const fetchPartiesMine = async (queryParams: URLSearchParams): Promise<IPartiesResponse> => {
+	const url = `/parties/me?${queryParams}`;
+	const response = await api.get<IPartiesResponse>(url);
 	return response.data;
 };

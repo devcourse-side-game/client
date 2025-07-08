@@ -17,6 +17,9 @@ import {
 	TPartyDisbandData,
 	TPartyCompleteData,
 	TLeavePartyParams,
+	TFilterOption,
+	TPagenation,
+	IGetPartiesData,
 } from '../types/party';
 import {
 	banPartyMember,
@@ -34,60 +37,78 @@ import { IJoinPartyResponse, IPartiesResponse } from '../types/response';
 import { IJoinPartyRequest } from '../types/request';
 // import { createParty, fetchParties, fetchPartyDetail } from '../api/parties';
 
-export const useInfiniteParties = (payload: TGetPartiesPayload) => {
-	const { limit } = payload.pagination;
+function addFilterOptionsToQueryParams(
+	queryParams: URLSearchParams,
+	filterOptions: TFilterOption[]
+) {
+	filterOptions.forEach((option) => {
+		queryParams.append(option.type, option.value.toString());
+	});
+	return queryParams;
+}
+function addPagenationToQueryParams(queryParams: URLSearchParams, pagination: TPagenation) {
+	queryParams.append('page', pagination.page.toString());
+	queryParams.append('limit', pagination.limit.toString());
+	return queryParams;
+}
+
+//<TQueryFnData, TError = DefaultError, TData = InfiniteData<TQueryFnData>
+export const useInfiniteParties = (getPartiesData: IGetPartiesData) => {
+	const { limit } = getPartiesData.pagination;
+
 	return useInfiniteQuery<
 		IPartiesResponse,
 		Error,
 		InfiniteData<IPartiesResponse>,
-		['parties', TGetPartiesPayload],
-		number
+		['parties', 'all']
 	>({
-		queryKey: ['parties', payload],
+		queryKey: ['parties', 'all'],
 		queryFn: ({ pageParam = 1 }) => {
-			return fetchParties({
-				...payload,
-				pagination: { ...payload.pagination, page: pageParam },
-			});
+			// 쿼리 파라미터터 생성
+			const { filterOptions, pagination } = getPartiesData;
+			const queryParams = new URLSearchParams();
+			addFilterOptionsToQueryParams(queryParams, filterOptions);
+			addPagenationToQueryParams(queryParams, { ...pagination, page: pageParam });
+			return fetchParties(queryParams);
 		},
-		refetchOnWindowFocus: false,
-		refetchOnMount: false,
-		refetchOnReconnect: false,
 		getNextPageParam: (lastPage, allpage) => {
 			if (lastPage.length < limit) {
 				return undefined;
 			}
 			return allpage.length + 1;
 		},
+		refetchOnWindowFocus: false,
+		refetchOnMount: false,
+		refetchOnReconnect: false,
 		initialPageParam: 1,
 	});
 };
 
-export const useInfiniteMyParties = (payload: Pick<TGetPartiesPayload, 'pagination'>) => {
-	const { limit } = payload.pagination;
+export const useInfiniteMyParties = (getPartiesData: Pick<IGetPartiesData, 'pagination'>) => {
+	const { limit } = getPartiesData.pagination;
 	return useInfiniteQuery<
 		IPartiesResponse,
 		Error,
 		InfiniteData<IPartiesResponse>,
-		['parties', 'me', Pick<TGetPartiesPayload, 'pagination'>],
+		['parties', 'me'],
 		number
 	>({
-		queryKey: ['parties', 'me', payload],
+		queryKey: ['parties', 'me'],
 		queryFn: ({ pageParam = 1 }) => {
-			return fetchPartiesMine({
-				...payload,
-				pagination: { ...payload.pagination, page: pageParam },
-			});
+			const { pagination } = getPartiesData;
+			const queryParams = new URLSearchParams();
+			addPagenationToQueryParams(queryParams, { ...pagination, page: pageParam });
+			return fetchPartiesMine(queryParams);
 		},
-		refetchOnWindowFocus: false,
-		refetchOnMount: false,
-		refetchOnReconnect: false,
 		getNextPageParam: (lastPage, allpage) => {
 			if (lastPage.length < limit) {
 				return undefined;
 			}
 			return allpage.length + 1;
 		},
+		refetchOnWindowFocus: false,
+		refetchOnMount: false,
+		refetchOnReconnect: false,
 		initialPageParam: 1,
 	});
 };
@@ -97,18 +118,13 @@ export const useSelectedPartyDetail = (partyId: number) => {
 		TPartyListItemDetailResponse,
 		Error,
 		TPartyListItemDetailResponse,
-		['selectedPartyDetail', number | undefined]
+		['selectedPartyDetail', number]
 	>({
 		queryKey: ['selectedPartyDetail', partyId],
-		queryFn: ({
-			queryKey,
-		}: QueryFunctionContext<['selectedPartyDetail', number | undefined]>) => {
-			const [_queryName, id] = queryKey; // queryKey 배열에서 partyId 추출
-
-			if (id === undefined) {
-				throw new Error('Party ID is required to fetch party details.');
-			}
-			return fetchPartyDetail(id); // 추출한 id를 API 함수에 전달
+		queryFn: () => {
+			const queryParams = new URLSearchParams();
+			queryParams.append('partyId', partyId.toString());
+			return fetchPartyDetail(queryParams); // 추출한 id를 API 함수에 전달
 		},
 		refetchOnWindowFocus: false,
 		refetchOnMount: false,
@@ -122,16 +138,12 @@ export const useCreateParty = () => {
 
 	return useMutation<TPartyCreateSuccessResponse, Error, TPartyCreateRequest, unknown>({
 		mutationFn: createParty,
-		onSuccess: (data) => {
-			console.log('게시판 생성 성공');
-			console.dir(data);
-			// 성공했을 시 성공을 알려야함
-
+		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['parties'] });
 		},
 		onError: (error) => {
-			console.error('게시판 생성 실패', error);
-			// 실패시 옵션
+			console.error('파티 생성 실패', error);
+			//TODO: 에러 로깅이 들어가면 좋을것 같습니다
 		},
 	});
 };
