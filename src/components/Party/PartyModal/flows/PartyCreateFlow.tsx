@@ -60,9 +60,13 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 		setView('form');
 	};
 	const handleOnCreateClick = () => {
+		if (!optionGame) {
+			alert('게임을 선택해주세요.');
+			return;
+		}
 		const newParty: ICreatePartyPayload = {
 			title: formTitle,
-			gameId: optionGame!.id,
+			gameId: optionGame.id,
 			purposeTag: purposeTag,
 			maxParticipants: formMaxNum,
 			description: formDescription ? formDescription : '',
