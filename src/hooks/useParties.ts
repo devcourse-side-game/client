@@ -53,10 +53,10 @@ export const useInfiniteParties = (getPartiesData: IGetPartiesData) => {
 		IPartiesResponse,
 		Error,
 		InfiniteData<IPartiesResponse>,
-		['parties', 'all'],
+		['parties', 'all', TFilterOption[]],
 		number
 	>({
-		queryKey: ['parties', 'all'],
+		queryKey: ['parties', 'all', getPartiesData.filterOptions],
 		queryFn: ({ pageParam = 1 }) => {
 			// 쿼리 파라미터터 생성
 			const { filterOptions, pagination } = getPartiesData;
