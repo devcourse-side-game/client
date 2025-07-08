@@ -28,6 +28,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../stores';
 import { Response } from '../../types/response';
+import { useQueryClient } from '@tanstack/react-query';
 
 function AuthForm({ formType }: IFormTypeProps) {
 	const {
@@ -45,7 +46,7 @@ function AuthForm({ formType }: IFormTypeProps) {
 	const { show } = useDialog();
 	const navigate = useNavigate();
 	const dispatch = useDispatch<AppDispatch>();
-
+	const queryClient = useQueryClient();
 	const errorMessage =
 		errors.email?.message ||
 		errors.password?.message ||
@@ -115,6 +116,8 @@ function AuthForm({ formType }: IFormTypeProps) {
 			});
 			const accessToken = res?.accessToken ? res.accessToken : '';
 			dispatch(loginSuccess(accessToken));
+			// 로그인 성공 후 사용자 정보 가져옴
+			await queryClient.invalidateQueries({ queryKey: ['me'] });
 			navigate('/');
 		} catch (err: unknown) {
 			const axiosError = err as AxiosError<Response>;

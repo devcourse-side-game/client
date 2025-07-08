@@ -28,6 +28,8 @@ import {
 } from '../api/parties';
 import { IJoinPartyResponse, IPartiesResponse } from '../types/response';
 import { IJoinPartyRequest } from '../types/request';
+import { useSelector } from 'react-redux';
+import { RootState } from '../stores';
 // import { createParty, fetchParties, fetchPartyDetail } from '../api/parties';
 
 function addFilterOptionsToQueryParams(
@@ -80,6 +82,8 @@ export const useInfiniteParties = (getPartiesData: IGetPartiesData) => {
 
 export const useInfiniteMyParties = (getPartiesData: Pick<IGetPartiesData, 'pagination'>) => {
 	const { limit } = getPartiesData.pagination;
+	const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+
 	return useInfiniteQuery<
 		IPartiesResponse,
 		Error,
@@ -100,8 +104,9 @@ export const useInfiniteMyParties = (getPartiesData: Pick<IGetPartiesData, 'pagi
 			}
 			return allpage.length + 1;
 		},
+		enabled: isLoggedIn,
 		refetchOnWindowFocus: false,
-		refetchOnMount: false,
+		refetchOnMount: true,
 		refetchOnReconnect: false,
 		initialPageParam: 1,
 	});

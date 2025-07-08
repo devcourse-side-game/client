@@ -18,20 +18,24 @@ function PartyListItemDetail({ partyId, isCompleted }: TPartyListItemDetailProps
 	const [isPartyMember, setIsPartyMember] = useState<boolean>(false);
 	const { data: user } = useUser();
 	const isLeader = data?.creatorId === user?.id;
+
 	useEffect(() => {
-		if (data) {
-			setIsPartyMember(data?.members.some((member) => member.userId === user?.id) || false);
+		if (data && user) {
+			setIsPartyMember(data.members.some((member) => member.userId === user.id) || false);
 		}
 	}, [data, user]);
+
 	if (isLoading) return <div>파티세부 정보 로딩중...</div>;
 	if (isError) {
 		return (
 			<div>
-				{' '}
-				파티 세부 정보를 불러오는중 문제가 발생했습니다. 반복될경우 관리자에게
-				문의해주세요{' '}
+				파티 세부 정보를 불러오는중 문제가 발생했습니다. 반복될경우 관리자에게 문의해주세요
 			</div>
 		);
+	}
+
+	if (!data) {
+		return <div>파티 정보를 찾을 수 없습니다.</div>;
 	}
 
 	return (
@@ -40,21 +44,19 @@ function PartyListItemDetail({ partyId, isCompleted }: TPartyListItemDetailProps
 				{PARTY_LIST_ITEM.DETAILS_TITLE}
 			</Typography>
 			<Typography variant='body2' align='left'>
-				{data ? data.description : '설명이 없습니다'}
+				{data.description || '설명이 없습니다'}
 			</Typography>
 			<Typography variant='h6' align='left'>
-				{PARTY_LIST_ITEM.getPartyMembersTitle(
-					data ? data.members.length : null,
-					data ? data.maxParticipants : null
-				)}
+				{PARTY_LIST_ITEM.getPartyMembersTitle(data.members.length, data.maxParticipants)}
 			</Typography>
 			<PartyMemberList
-				members={data ? data.members : null}
-				partyId={data ? data.id : null}
+				members={data.members}
+				partyId={data.id}
 				isCompleted={isCompleted}
-				partyLeaderId={data ? data.creatorId : null}
+				partyLeaderId={data.creatorId}
 			/>
 			<PartyListItemButtonWrapper>
+				{/* 모집 완료 메시지 */}
 				{isCompleted && (
 					<Typography
 						variant='body2'
@@ -64,31 +66,30 @@ function PartyListItemDetail({ partyId, isCompleted }: TPartyListItemDetailProps
 						모집이 완료되어 새로운 멤버를 받지 않습니다
 					</Typography>
 				)}
-				{!isPartyMember ? (
+
+				{/* 파티 참가 버튼 - 파티 멤버가 아니고 모집이 완료되지 않은 경우 */}
+				{!isPartyMember && !isCompleted && (
 					<Button
 						variant='contained'
-						disabled={isCompleted}
 						onClick={() => {
 							openModal('join', {
 								partyId: partyId,
-								isPrivate: data?.isPrivate || false,
+								isPrivate: data.isPrivate || false,
 							});
 						}}
 					>
-						{isCompleted ? '모집 완료' : '파티 참가'}
+						파티 참가
 					</Button>
-				) : (
-					<></>
 				)}
-				{isLeader && !isCompleted ? (
+
+				{/* 리더 전용 버튼들 - 리더이고 모집이 완료되지 않은 경우 */}
+				{isLeader && !isCompleted && (
 					<Stack direction='row' spacing={1}>
 						<Button
 							variant='contained'
 							color='error'
 							onClick={() => {
-								if (data?.id) {
-									openModal('partyDisband', { partyId: data.id });
-								}
+								openModal('partyDisband', { partyId: data.id });
 							}}
 						>
 							파티 해산
@@ -97,33 +98,28 @@ function PartyListItemDetail({ partyId, isCompleted }: TPartyListItemDetailProps
 							variant='contained'
 							color='primary'
 							onClick={() => {
-								if (data?.id) {
-									openModal('partyComplete', { partyId: data.id });
-								}
+								openModal('partyComplete', { partyId: data.id });
 							}}
 						>
 							파티 모집 완료
 						</Button>
 					</Stack>
-				) : (
-					<></>
 				)}
-				{isPartyMember && !isCompleted && !isLeader ? (
+
+				{/* 파티 나가기 버튼 - 파티 멤버이고 리더가 아니고 모집이 완료되지 않은 경우 */}
+				{isPartyMember && !isCompleted && !isLeader && (
 					<Button
 						variant='contained'
 						color='error'
 						onClick={() => {
-							console.log(data);
 							openModal('leaveParty', {
 								partyId: partyId,
-								partyTitle: data?.title || '',
+								partyTitle: data.title || '',
 							});
 						}}
 					>
 						파티 나가기
 					</Button>
-				) : (
-					<></>
 				)}
 			</PartyListItemButtonWrapper>
 		</Stack>
