@@ -1,14 +1,14 @@
 import { MESSAGE_ERROR } from '../constants/error';
-import { TPartyCreateFormErrors, TPartyCreateRequest } from '../types/party';
+import { TPartyCreateFormErrors, ICreatePartyPayload } from '../types/party';
 
-export default function craetePratyFormValidation(party: TPartyCreateRequest) {
+export default function craetePratyFormValidation(party: ICreatePartyPayload) {
 	try {
 		console.log(party.profileId);
 		console.log(party.gameUsername);
 		const errors: TPartyCreateFormErrors = {
 			title: checkPartyTitle(party.title),
 			gameUsername: !party.profileId ? checkPartyGameUsername(party.gameUsername) : '',
-			accessCode: checkPartyAccessCode(party.accessCode),
+			accessCode: party.isPrivate ? checkPartyAccessCode(party.accessCode) : '',
 			gameId: checkPartyGameId(party.gameId),
 			description: '',
 			maxParticipants: '',
@@ -46,7 +46,7 @@ function checkPartyGameUsername(gameUsername: string) {
 	}
 	return '';
 }
-function checkPartyAccessCode(accessCode: string) {
+function checkPartyAccessCode(accessCode: string | null) {
 	if (!accessCode) {
 		return MESSAGE_ERROR.ACCESS_CODE.REQUIRED;
 	}

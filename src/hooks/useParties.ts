@@ -15,6 +15,7 @@ import {
 	IGetPartiesData,
 	TPagination,
 	ICreatePartyPayload,
+	IPartyDetail,
 } from '../types/party';
 import {
 	banPartyMember,
@@ -28,12 +29,7 @@ import {
 	leaveParty,
 	fetchPartiesMine,
 } from '../api/parties';
-import {
-	ICreatePartyResponse,
-	IJoinPartyResponse,
-	IPartiesResponse,
-	TGameDetailResponse,
-} from '../types/response';
+import { IJoinPartyResponse, IPartiesResponse } from '../types/response';
 import { IJoinPartyRequest } from '../types/request';
 // import { createParty, fetchParties, fetchPartyDetail } from '../api/parties';
 
@@ -115,17 +111,10 @@ export const useInfiniteMyParties = (getPartiesData: Pick<IGetPartiesData, 'pagi
 };
 
 export const useSelectedPartyDetail = (partyId: number) => {
-	return useQuery<
-		TGameDetailResponse,
-		Error,
-		TGameDetailResponse,
-		['selectedPartyDetail', number]
-	>({
+	return useQuery<IPartyDetail, Error, IPartyDetail, ['selectedPartyDetail', number]>({
 		queryKey: ['selectedPartyDetail', partyId],
 		queryFn: () => {
-			const queryParams = new URLSearchParams();
-			queryParams.append('partyId', partyId.toString());
-			return fetchPartyDetail(queryParams); // 추출한 id를 API 함수에 전달
+			return fetchPartyDetail(partyId); // 추출한 id를 API 함수에 전달
 		},
 		refetchOnWindowFocus: false,
 		refetchOnMount: false,
@@ -137,13 +126,13 @@ export const useSelectedPartyDetail = (partyId: number) => {
 export const useCreateParty = () => {
 	const queryClient = useQueryClient();
 
-	return useMutation<ICreatePartyResponse, Error, ICreatePartyPayload>({
+	return useMutation<IPartyDetail, Error, ICreatePartyPayload>({
 		mutationFn: createParty,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['parties'] });
 		},
-		onError: (error) => {
-			console.error('파티 생성 실패', error);
+		onError: () => {
+			console.error('파티 생성 실패');
 			//TODO: 에러 로깅이 들어가면 좋을것 같습니다
 		},
 	});
@@ -155,8 +144,6 @@ export const useJoinParty = () => {
 	return useMutation<IJoinPartyResponse, Error, IJoinPartyRequest, unknown>({
 		mutationFn: joinParty,
 		onSuccess: (data, variables) => {
-			console.log('파티 참가 성공');
-
 			// 1. 특정 파티의 상세 정보만 갱신
 			queryClient.invalidateQueries({
 				queryKey: ['selectedPartyDetail', variables.partyId],
@@ -191,9 +178,7 @@ export const useBanPartyMember = (params: TBanPartyMemberParams) => {
 	const queryClient = useQueryClient();
 	return useMutation<void, Error, TBanPartyMemberParams, unknown>({
 		mutationFn: () => banPartyMember(params),
-		onSuccess: (data) => {
-			console.log('파티 멤버 추방 성공');
-			console.dir(data);
+		onSuccess: () => {
 			// 1. 특정 파티의 상세 정보만 갱신
 			queryClient.invalidateQueries({
 				queryKey: ['selectedPartyDetail', params.partyId],
@@ -224,11 +209,11 @@ export const useBanPartyMember = (params: TBanPartyMemberParams) => {
 };
 
 export const useChangePartyLeader = (params: TChangePartyLeaderParams) => {
+	const queryClient = useQueryClient();
 	return useMutation<void, Error, TChangePartyLeaderParams, unknown>({
 		mutationFn: () => changePartyLeader(params),
-		onSuccess: (data) => {
-			console.log('파티 리더 변경 성공');
-			console.dir(data);
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['selectedPartyDetail', params.partyId] });
 		},
 		onError: (error) => {
 			console.error('파티 리더 변경 실패', error);
@@ -240,9 +225,7 @@ export const useDisbandParty = (params: TPartyDisbandData) => {
 	const queryClient = useQueryClient();
 	return useMutation<void, Error, TPartyDisbandData, unknown>({
 		mutationFn: () => disbandParty(params),
-		onSuccess: (data) => {
-			console.log('파티 해산 성공');
-			console.dir(data);
+		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['parties'] });
 			queryClient.invalidateQueries({ queryKey: ['selectedPartyDetail', params.partyId] });
 			queryClient.setQueryData(

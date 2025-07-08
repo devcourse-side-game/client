@@ -6,13 +6,9 @@ import {
 	TPartyCompleteData,
 	TLeavePartyParams,
 	ICreatePartyPayload,
+	IPartyDetail,
 } from '../types/party';
-import {
-	ICreatePartyResponse,
-	IJoinPartyResponse,
-	IPartiesResponse,
-	TGameDetailResponse,
-} from '../types/response';
+import { IJoinPartyResponse, IPartiesResponse } from '../types/response';
 import { IJoinPartyRequest } from '../types/request';
 
 /** 기능 : 파티 목록 조회 */
@@ -23,18 +19,16 @@ export const fetchParties = async (queryParams: URLSearchParams): Promise<IParti
 };
 
 /** 기능 : 파티 세부 정보 조회 */
-export const fetchPartyDetail = async (
-	queryParams: URLSearchParams
-): Promise<TGameDetailResponse> => {
-	const url = `/parties/${queryParams}`;
-	const response = await api.get<TGameDetailResponse>(url);
+export const fetchPartyDetail = async (partyId: number): Promise<IPartyDetail> => {
+	const url = `/parties/${partyId}`;
+	const response = await api.get<IPartyDetail>(url);
 	return response.data;
 };
 
 /** 기능 : 파티 생성 */
-export const createParty = async (payload: ICreatePartyPayload): Promise<ICreatePartyResponse> => {
+export const createParty = async (payload: ICreatePartyPayload): Promise<IPartyDetail> => {
 	const url = `/parties`;
-	const response = await api.post<ICreatePartyResponse>(url, payload);
+	const response = await api.post<IPartyDetail>(url, payload);
 	return response.data;
 };
 

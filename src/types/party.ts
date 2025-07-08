@@ -5,7 +5,7 @@ import { TUser } from './user';
 export interface IPartyBase {
 	id: number;
 	title: string;
-	gameId: number | undefined;
+	gameId: number;
 	createdAt: string;
 	updatedAt: string;
 	description: string;

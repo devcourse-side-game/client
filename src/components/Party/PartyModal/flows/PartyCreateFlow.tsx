@@ -62,7 +62,7 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 	const handleOnCreateClick = () => {
 		const newParty: ICreatePartyPayload = {
 			title: formTitle,
-			gameId: optionGame?.id,
+			gameId: optionGame!.id,
 			purposeTag: purposeTag,
 			maxParticipants: formMaxNum,
 			description: formDescription ? formDescription : '',
@@ -77,8 +77,7 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 			return;
 		}
 		mutate(newParty, {
-			onSuccess: (data) => {
-				console.log(data.message);
+			onSuccess: () => {
 				setView('success');
 			},
 			onError: (error) => {
