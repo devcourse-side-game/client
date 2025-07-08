@@ -11,7 +11,7 @@ import {
 import { useUserGameProfiles } from '../../hooks/useGames';
 import GameImage from '../../assets/gameImage.png';
 import { Dispatch, SetStateAction, useState, useEffect } from 'react';
-import { TUserGameProfile } from '../../types/Party';
+import { TUserGameProfile } from '../../types/party';
 
 type TUserGameProfileSelectProps = {
 	userId: number;

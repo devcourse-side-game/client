@@ -1,24 +1,18 @@
 import {
 	InfiniteData,
-	QueryFunctionContext,
 	useInfiniteQuery,
 	useMutation,
 	useQuery,
 	useQueryClient,
 } from '@tanstack/react-query';
 import {
-	TPartyCreateRequest,
 	TPartyCreateSuccessResponse,
-	TPartyListItemDetailResponse,
-	TGetPartiesPayload,
 	TBanPartyMemberParams,
 	TChangePartyLeaderParams,
-	TParty,
 	TPartyDisbandData,
 	TPartyCompleteData,
 	TLeavePartyParams,
 	TFilterOption,
-	TPagenation,
 	IGetPartiesData,
 } from '../types/party';
 import {
