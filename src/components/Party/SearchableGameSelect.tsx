@@ -82,7 +82,7 @@ function SearchableGameSelect({ setOptionGame, validate }: TSearchableGameSelect
 			loading={isLoading}
 			// API 에러 시 비활성화
 			disabled={isError}
-			sx={{ width: 300 }}
+			sx={{ width: '100%' }}
 		/>
 	);
 }
