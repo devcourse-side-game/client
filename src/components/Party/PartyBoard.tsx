@@ -4,7 +4,7 @@ import { BOARD_PARTY } from '../../constants/Party';
 import PartyFilter from './PartyFilter';
 import PartyList from './PartyList';
 import { useQueryClient } from '@tanstack/react-query';
-import { TFilterOptions, TGetPartiesPayload, TTabType } from '../../types/Party';
+import { TFilterOptions, TGetPartiesPayload, TTabType } from '../../types/party';
 import { useInfiniteMyParties, useInfiniteParties } from '../../hooks/useParties';
 import { useModal } from '../../hooks/useModal';
 import {

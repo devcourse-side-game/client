@@ -9,7 +9,7 @@ import {
 	TPartyDisbandData,
 	TPartyCompleteData,
 	TLeavePartyParams,
-} from '../types/Party';
+} from '../types/party';
 import { IJoinPartyResponse, IPartiesResponse } from '../types/response';
 import { IJoinPartyRequest } from '../types/request';
 

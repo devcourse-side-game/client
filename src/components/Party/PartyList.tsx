@@ -1,7 +1,7 @@
 import React, { forwardRef, useEffect, useState } from 'react';
 import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 import PartyListItem from './PartyListItem';
-import { TParty } from '../../types/Party';
+import { TParty } from '../../types/party';
 import { PartyListContainer } from '../../styles/pages/party/PartyList.styles';
 import { InfiniteData } from '@tanstack/react-query';
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDisbandParty } from '../../../../hooks/useParties';
-import { TPartyFormFlow } from '../../../../types/Party';
+import { TPartyFormFlow } from '../../../../types/party';
 import { Button } from '@mui/material';
 import { DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
 

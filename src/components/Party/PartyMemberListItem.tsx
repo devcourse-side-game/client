@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Stack, Avatar, Typography, Chip, Button, Box } from '@mui/material';
-import { TPartyMember } from '../../types/Party';
+import { TPartyMember } from '../../types/party';
 import { PARTY_LIST_ITEM } from '../../constants/Party';
 import { useModal } from '../../hooks/useModal';
 import {

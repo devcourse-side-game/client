@@ -17,7 +17,7 @@ import {
 	TPartyDisbandData,
 	TPartyCompleteData,
 	TLeavePartyParams,
-} from '../types/Party';
+} from '../types/party';
 import {
 	banPartyMember,
 	changePartyLeader,

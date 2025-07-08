@@ -1,4 +1,4 @@
-import { TGame, TParty, TUserGameProfile } from './Party';
+import { TGame, TParty, TUserGameProfile } from './party';
 
 export interface Response {
 	message: string;

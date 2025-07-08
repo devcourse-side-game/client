@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { Stack, Chip, Typography } from '@mui/material';
 import { getTimeAgo } from '../../utils/formatters/date';
-import { TParty } from '../../types/Party';
+import { TParty } from '../../types/party';
 import PartyListItemDetail from './PartyListItemDetail';
 import {
 	GameImageBox,

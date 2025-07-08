@@ -6,7 +6,7 @@ import {
 } from '../types/response';
 import { GetGameListRequest } from '../types/request';
 import { fetchGameDetail, fetchGameList, fetchUserGameProfiles } from '../api/games';
-import { TGetUserGameProfilesQuery } from '../types/Party';
+import { TGetUserGameProfilesQuery } from '../types/party';
 
 export const useGameList = (payload: GetGameListRequest) => {
 	payload = {

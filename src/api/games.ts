@@ -5,7 +5,7 @@ import {
 	TGetUserGameProfilesResponse,
 } from '../types/response';
 import { GetGameListRequest } from '../types/request';
-import { TGetUserGameProfilesQuery } from '../types/Party';
+import { TGetUserGameProfilesQuery } from '../types/party';
 
 /** 기능 : 게임 목록 조회 */
 export const fetchGameList = async (payload: GetGameListRequest): Promise<TGetGameListResponse> => {

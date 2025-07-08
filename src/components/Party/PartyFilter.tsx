@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Typography, Chip, Button } from '@mui/material';
 import SearchableGameSelect from './SearchableGameSelect';
-import { TFilterOptions } from '../../types/Party';
+import { TFilterOptions } from '../../types/party';
 import {
 	PartyFilterContainer,
 	PartyFilterOptionsWrapper,
 	PartyFilterButtonContainer,
 	PartyFilterChipWrapper,
 } from '../../styles/pages/party/PartyFilter.styles';
-import { TGame } from '../../types/Party';
+import { TGame } from '../../types/party';
 
 type TPartyFilterProps = {
 	filterOptions: TFilterOptions[];

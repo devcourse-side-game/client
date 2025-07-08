@@ -1,5 +1,5 @@
 import { MESSAGE_ERROR } from '../constants/error';
-import { TPartyCreateFormErrors, TPartyCreateRequest } from '../types/Party';
+import { TPartyCreateFormErrors, TPartyCreateRequest } from '../types/party';
 
 export default function craetePratyFormValidation(party: TPartyCreateRequest) {
 	try {

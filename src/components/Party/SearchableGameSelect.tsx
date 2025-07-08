@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { TextField, Autocomplete, CircularProgress, Box, Typography } from '@mui/material';
-import { TGame } from '../../types/Party';
+import { TGame } from '../../types/party';
 import { useGameList } from '../../hooks/useGames';
 import GameImage from '../../assets/gameImage.png';
 

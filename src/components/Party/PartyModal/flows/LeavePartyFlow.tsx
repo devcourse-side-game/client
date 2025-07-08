@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLeaveParty } from '../../../../hooks/useParties';
-import { TPartyFormFlow } from '../../../../types/Party';
+import { TPartyFormFlow } from '../../../../types/party';
 import { DialogTitle, DialogContent, DialogActions, Button, Typography } from '@mui/material';
 type TLeavePartyFlowData = {
 	onFlowComplete: () => void;

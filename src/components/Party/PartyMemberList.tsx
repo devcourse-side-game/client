@@ -1,7 +1,7 @@
 import React from 'react';
 import { Stack } from '@mui/material';
 import PartyMemberListItem from './PartyMemberListItem';
-import { TPartyMember } from '../../types/Party';
+import { TPartyMember } from '../../types/party';
 
 export type TPartyMemberListProps = {
 	members: TPartyMember[] | null;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useJoinParty, useSelectedPartyDetail } from '../../../../hooks/useParties';
-import { TPartyFormFlow, TUserGameProfile } from '../../../../types/Party';
+import { TPartyFormFlow, TUserGameProfile } from '../../../../types/party';
 import { Button, TextField, Typography } from '@mui/material';
 import {
 	FormContainer,

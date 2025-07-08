@@ -14,9 +14,9 @@ import {
 	TPartyCreateRequest,
 	TPartyCreateFormErrors,
 	TUserGameProfile,
-} from '../../../../types/Party';
+} from '../../../../types/party';
 import { useCreateParty } from '../../../../hooks/useParties';
-import { TGame } from '../../../../types/Party';
+import { TGame } from '../../../../types/party';
 import {
 	FormContainer,
 	FormDialogActions,
