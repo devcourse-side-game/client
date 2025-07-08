@@ -40,16 +40,14 @@ const PartyList = forwardRef<HTMLDivElement, TPartyListProps>(
 				{/* <Stack> */}
 				{data?.pages
 					.flatMap((page) => page)
-					.map((party: IPartyListItem) =>
-						party ? (
-							<PartyListItem
-								key={party.id}
-								party={party}
-								expandedPartyId={expandedPartyId}
-								setExpandedPartyId={setExpandedPartyId}
-							/>
-						) : null
-					)}
+					.map((party: IPartyListItem) => (
+						<PartyListItem
+							key={party.id}
+							party={party}
+							expandedPartyId={expandedPartyId}
+							setExpandedPartyId={setExpandedPartyId}
+						/>
+					))}
 				<Box ref={ref} display='flex' justifyContent='center' py={4}>
 					{isFetching ? (
 						<CircularProgress />
