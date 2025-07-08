@@ -73,7 +73,12 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 		};
 		const errors = craetePratyFormValidation(newParty);
 		setErrors(errors);
-		if (errors.title || errors.gameUsername || (errors.accessCode && isPrivateChecked)) {
+		if (
+			errors.title ||
+			errors.gameId ||
+			errors.gameUsername ||
+			(errors.accessCode && isPrivateChecked)
+		) {
 			return;
 		}
 		mutate(newParty, {
