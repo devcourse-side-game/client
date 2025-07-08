@@ -30,9 +30,7 @@ function Home() {
 				navigate('/login');
 			}
 		} else {
-			if (isLoggedIn) {
-				navigate('/party-finder');
-			}
+			navigate('/party-finder');
 		}
 	};
 

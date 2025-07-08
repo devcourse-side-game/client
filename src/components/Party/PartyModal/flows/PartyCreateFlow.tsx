@@ -61,7 +61,7 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 	};
 	const handleOnCreateClick = () => {
 		if (!optionGame) {
-			alert('게임을 선택해주세요.');
+			setErrors((prev) => ({ ...prev, gameId: '게임을 선택해주세요.' }));
 			return;
 		}
 		const newParty: ICreatePartyPayload = {

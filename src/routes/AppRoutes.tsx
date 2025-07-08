@@ -13,11 +13,12 @@ function AppRoutes() {
 	const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
 	return (
 		<Routes>
-			<Route path='/' element={<Home />}>
-				<Route index element={<Navigate to='/my-parties' replace />} />
-				<Route path='my-parties' element={<Home />} />
-				<Route path='party-finder' element={<Home />} />
-			</Route>
+			<Route path='/my-parties' element={<Home />} />
+			<Route path='/party-finder' element={<Home />} />
+			<Route
+				path='/'
+				element={<Navigate to={isLoggedIn ? '/my-parties' : '/party-finder'} replace />}
+			/>
 			<Route path='/login' element={isLoggedIn ? <Navigate to='/' replace /> : <Login />} />
 			<Route path='/signup' element={isLoggedIn ? <Navigate to='/' replace /> : <Signup />} />
 			<Route path='/mypage' element={<MyPage />}>
