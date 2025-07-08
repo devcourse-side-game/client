@@ -28,11 +28,11 @@ export const useGameList = (payload: GetGameListRequest) => {
 	});
 };
 
-export const useGameDetail = (payload: number) => {
+export const useGameDetail = (partyId: number) => {
 	return useQuery<TGameDetailResponse, Error, TGameDetailResponse, ['games', number]>({
-		queryKey: ['games', payload],
+		queryKey: ['games', partyId],
 		queryFn: async () => {
-			const response = await fetchGameDetail(payload);
+			const response = await fetchGameDetail(partyId);
 			return response;
 		},
 	});

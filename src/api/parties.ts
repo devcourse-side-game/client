@@ -1,16 +1,18 @@
 import api from './axios';
 import {
-	TPartyCreateRequest,
-	TPartyCreateSuccessResponse,
-	TPartyListItemDetailResponse,
-	TGetPartiesPayload,
 	TBanPartyMemberParams,
 	TChangePartyLeaderParams,
 	TPartyDisbandData,
 	TPartyCompleteData,
 	TLeavePartyParams,
+	ICreatePartyPayload,
 } from '../types/party';
-import { IJoinPartyResponse, IPartiesResponse } from '../types/response';
+import {
+	ICreatePartyResponse,
+	IJoinPartyResponse,
+	IPartiesResponse,
+	TGameDetailResponse,
+} from '../types/response';
 import { IJoinPartyRequest } from '../types/request';
 
 /** 기능 : 파티 목록 조회 */
@@ -23,18 +25,16 @@ export const fetchParties = async (queryParams: URLSearchParams): Promise<IParti
 /** 기능 : 파티 세부 정보 조회 */
 export const fetchPartyDetail = async (
 	queryParams: URLSearchParams
-): Promise<TPartyListItemDetailResponse> => {
+): Promise<TGameDetailResponse> => {
 	const url = `/parties/${queryParams}`;
-	const response = await api.get<TPartyListItemDetailResponse>(url);
+	const response = await api.get<TGameDetailResponse>(url);
 	return response.data;
 };
 
 /** 기능 : 파티 생성 */
-export const createParty = async (
-	payload: TPartyCreateRequest
-): Promise<TPartyCreateSuccessResponse> => {
+export const createParty = async (payload: ICreatePartyPayload): Promise<ICreatePartyResponse> => {
 	const url = `/parties`;
-	const response = await api.post<TPartyCreateSuccessResponse>(url, payload);
+	const response = await api.post<ICreatePartyResponse>(url, payload);
 	return response.data;
 };
 

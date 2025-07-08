@@ -1,7 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { Stack, Chip, Typography } from '@mui/material';
 import { getTimeAgo } from '../../utils/formatters/date';
-import { TParty } from '../../types/party';
 import PartyListItemDetail from './PartyListItemDetail';
 import {
 	GameImageBox,
@@ -15,11 +14,12 @@ import {
 import GameImage from '../../assets/gameImage.png';
 import { useGameDetail } from '../../hooks/useGames';
 import LockIcon from '@mui/icons-material/Lock';
+import { IPartyListItem } from '../../types/party';
 // 임시 데이터 타입 및 더미데이터
 
 export type TPartyListItemProps = {
 	key: number;
-	party: TParty;
+	party: IPartyListItem;
 	expandedPartyId: number | null;
 	setExpandedPartyId: Dispatch<SetStateAction<number | null>>;
 };

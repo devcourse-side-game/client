@@ -28,8 +28,8 @@ export const fetchGameList = async (payload: GetGameListRequest): Promise<TGetGa
 };
 
 /** 기능 : 게임 상세 조회 */
-export const fetchGameDetail = async (payload: number): Promise<TGameDetailResponse> => {
-	const response = await api.get<TGameDetailResponse>(`/games/${payload}`);
+export const fetchGameDetail = async (partyId: number): Promise<TGameDetailResponse> => {
+	const response = await api.get<TGameDetailResponse>(`/games/${partyId}`);
 	return response.data;
 };
 

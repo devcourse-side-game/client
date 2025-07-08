@@ -6,7 +6,6 @@ import {
 	useQueryClient,
 } from '@tanstack/react-query';
 import {
-	TPartyCreateSuccessResponse,
 	TBanPartyMemberParams,
 	TChangePartyLeaderParams,
 	TPartyDisbandData,
@@ -14,6 +13,8 @@ import {
 	TLeavePartyParams,
 	TFilterOption,
 	IGetPartiesData,
+	TPagination,
+	ICreatePartyPayload,
 } from '../types/party';
 import {
 	banPartyMember,
@@ -27,7 +28,12 @@ import {
 	leaveParty,
 	fetchPartiesMine,
 } from '../api/parties';
-import { IJoinPartyResponse, IPartiesResponse } from '../types/response';
+import {
+	ICreatePartyResponse,
+	IJoinPartyResponse,
+	IPartiesResponse,
+	TGameDetailResponse,
+} from '../types/response';
 import { IJoinPartyRequest } from '../types/request';
 // import { createParty, fetchParties, fetchPartyDetail } from '../api/parties';
 
@@ -40,7 +46,7 @@ function addFilterOptionsToQueryParams(
 	});
 	return queryParams;
 }
-function addPagenationToQueryParams(queryParams: URLSearchParams, pagination: TPagenation) {
+function addPagenationToQueryParams(queryParams: URLSearchParams, pagination: TPagination) {
 	queryParams.append('page', pagination.page.toString());
 	queryParams.append('limit', pagination.limit.toString());
 	return queryParams;
@@ -54,7 +60,8 @@ export const useInfiniteParties = (getPartiesData: IGetPartiesData) => {
 		IPartiesResponse,
 		Error,
 		InfiniteData<IPartiesResponse>,
-		['parties', 'all']
+		['parties', 'all'],
+		number
 	>({
 		queryKey: ['parties', 'all'],
 		queryFn: ({ pageParam = 1 }) => {
@@ -109,9 +116,9 @@ export const useInfiniteMyParties = (getPartiesData: Pick<IGetPartiesData, 'pagi
 
 export const useSelectedPartyDetail = (partyId: number) => {
 	return useQuery<
-		TPartyListItemDetailResponse,
+		TGameDetailResponse,
 		Error,
-		TPartyListItemDetailResponse,
+		TGameDetailResponse,
 		['selectedPartyDetail', number]
 	>({
 		queryKey: ['selectedPartyDetail', partyId],
@@ -130,7 +137,7 @@ export const useSelectedPartyDetail = (partyId: number) => {
 export const useCreateParty = () => {
 	const queryClient = useQueryClient();
 
-	return useMutation<TPartyCreateSuccessResponse, Error, TPartyCreateRequest, unknown>({
+	return useMutation<ICreatePartyResponse, Error, ICreatePartyPayload>({
 		mutationFn: createParty,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['parties'] });
@@ -156,20 +163,23 @@ export const useJoinParty = () => {
 			});
 
 			// 2. 파티 목록의 특정 파티만 업데이트 (Optimistic Update)
-			queryClient.setQueryData(['parties'], (oldData: InfiniteData<TParty[]> | undefined) => {
-				if (!oldData) return oldData;
+			queryClient.setQueryData(
+				['parties'],
+				(oldData: InfiniteData<IPartiesResponse> | undefined) => {
+					if (!oldData) return oldData;
 
-				return {
-					...oldData,
-					pages: oldData.pages.map((page) =>
-						page.map((party) =>
-							party.id === variables.partyId
-								? { ...party, currentMemberCount: party.currentMemberCount + 1 }
-								: party
-						)
-					),
-				};
-			});
+					return {
+						...oldData,
+						pages: oldData.pages.map((page) =>
+							page.map((party) =>
+								party.id === variables.partyId
+									? { ...party, currentMemberCount: party.currentMemberCount + 1 }
+									: party
+							)
+						),
+					};
+				}
+			);
 		},
 		onError: (error) => {
 			console.error('파티 참가 실패', error);
@@ -189,20 +199,23 @@ export const useBanPartyMember = (params: TBanPartyMemberParams) => {
 				queryKey: ['selectedPartyDetail', params.partyId],
 			});
 			// 2. 파티 목록의 특정 파티만 업데이트 (Optimistic Update)
-			queryClient.setQueryData(['parties'], (oldData: InfiniteData<TParty[]> | undefined) => {
-				if (!oldData) return oldData;
+			queryClient.setQueryData(
+				['parties'],
+				(oldData: InfiniteData<IPartiesResponse> | undefined) => {
+					if (!oldData) return oldData;
 
-				return {
-					...oldData,
-					pages: oldData.pages.map((page) =>
-						page.map((party) =>
-							party.id === params.partyId
-								? { ...party, currentMemberCount: party.currentMemberCount - 1 }
-								: party
-						)
-					),
-				};
-			});
+					return {
+						...oldData,
+						pages: oldData.pages.map((page) =>
+							page.map((party) =>
+								party.id === params.partyId
+									? { ...party, currentMemberCount: party.currentMemberCount - 1 }
+									: party
+							)
+						),
+					};
+				}
+			);
 		},
 		onError: (error) => {
 			console.error('파티 멤버 추방 실패', error);
@@ -232,18 +245,23 @@ export const useDisbandParty = (params: TPartyDisbandData) => {
 			console.dir(data);
 			queryClient.invalidateQueries({ queryKey: ['parties'] });
 			queryClient.invalidateQueries({ queryKey: ['selectedPartyDetail', params.partyId] });
-			queryClient.setQueryData(['parties'], (oldData: InfiniteData<TParty[]> | undefined) => {
-				if (!oldData) return oldData;
+			queryClient.setQueryData(
+				['parties'],
+				(oldData: InfiniteData<IPartiesResponse> | undefined) => {
+					if (!oldData) return oldData;
 
-				return {
-					...oldData,
-					pages: oldData.pages.map((page) =>
-						page.map((party) =>
-							party.id === params.partyId ? { ...party, isCompleted: true } : party
-						)
-					),
-				};
-			});
+					return {
+						...oldData,
+						pages: oldData.pages.map((page) =>
+							page.map((party) =>
+								party.id === params.partyId
+									? { ...party, isCompleted: true }
+									: party
+							)
+						),
+					};
+				}
+			);
 		},
 		onError: (error) => {
 			console.error('파티 해산 실패', error);
@@ -260,18 +278,23 @@ export const useCompleteParty = (params: TPartyCompleteData) => {
 			console.dir(data);
 			queryClient.invalidateQueries({ queryKey: ['parties'] });
 			queryClient.invalidateQueries({ queryKey: ['selectedPartyDetail', params.partyId] });
-			queryClient.setQueryData(['parties'], (oldData: InfiniteData<TParty[]> | undefined) => {
-				if (!oldData) return oldData;
+			queryClient.setQueryData(
+				['parties'],
+				(oldData: InfiniteData<IPartiesResponse> | undefined) => {
+					if (!oldData) return oldData;
 
-				return {
-					...oldData,
-					pages: oldData.pages.map((page) =>
-						page.map((party) =>
-							party.id === params.partyId ? { ...party, isCompleted: true } : party
-						)
-					),
-				};
-			});
+					return {
+						...oldData,
+						pages: oldData.pages.map((page) =>
+							page.map((party) =>
+								party.id === params.partyId
+									? { ...party, isCompleted: true }
+									: party
+							)
+						),
+					};
+				}
+			);
 		},
 		onError: (error) => {
 			console.error('파티 완료 실패', error);
@@ -288,18 +311,23 @@ export const useLeaveParty = (params: TLeavePartyParams) => {
 			console.dir(data);
 			queryClient.invalidateQueries({ queryKey: ['parties'] });
 			queryClient.invalidateQueries({ queryKey: ['selectedPartyDetail', params.partyId] });
-			queryClient.setQueryData(['parties'], (oldData: InfiniteData<TParty[]> | undefined) => {
-				if (!oldData) return oldData;
+			queryClient.setQueryData(
+				['parties'],
+				(oldData: InfiniteData<IPartiesResponse> | undefined) => {
+					if (!oldData) return oldData;
 
-				return {
-					...oldData,
-					pages: oldData.pages.map((page) =>
-						page.map((party) =>
-							party.id === params.partyId ? { ...party, isCompleted: true } : party
-						)
-					),
-				};
-			});
+					return {
+						...oldData,
+						pages: oldData.pages.map((page) =>
+							page.map((party) =>
+								party.id === params.partyId
+									? { ...party, isCompleted: true }
+									: party
+							)
+						),
+					};
+				}
+			);
 		},
 		onError: (error) => {
 			console.error('파티 탈퇴 실패', error);

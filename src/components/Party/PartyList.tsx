@@ -1,12 +1,13 @@
 import React, { forwardRef, useEffect, useState } from 'react';
 import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 import PartyListItem from './PartyListItem';
-import { TParty } from '../../types/party';
+import { IPartyListItem } from '../../types/party';
 import { PartyListContainer } from '../../styles/pages/party/PartyList.styles';
 import { InfiniteData } from '@tanstack/react-query';
+import { IPartiesResponse } from '../../types/response';
 
 type TPartyListProps = {
-	data: InfiniteData<TParty[]> | undefined;
+	data: InfiniteData<IPartiesResponse> | undefined;
 	isLoading: boolean;
 	isFetching: boolean;
 	isSuccess: boolean;
@@ -39,7 +40,7 @@ const PartyList = forwardRef<HTMLDivElement, TPartyListProps>(
 				<Stack>
 					{data?.pages
 						.flatMap((page) => page)
-						.map((party: TParty) =>
+						.map((party: IPartyListItem) =>
 							party ? (
 								<PartyListItem
 									key={party.id}

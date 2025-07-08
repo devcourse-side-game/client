@@ -11,12 +11,12 @@ import React, { useState } from 'react';
 import SearchableGameSelect from '../../SearchableGameSelect';
 import {
 	TPartyFormFlow,
-	TPartyCreateRequest,
 	TPartyCreateFormErrors,
 	TUserGameProfile,
+	ICreatePartyPayload,
 } from '../../../../types/party';
 import { useCreateParty } from '../../../../hooks/useParties';
-import { TGame } from '../../../../types/party';
+import { TGame } from '../../../../types/game';
 import {
 	FormContainer,
 	FormDialogActions,
@@ -32,7 +32,7 @@ type TPartyCreateFormProps = {
 };
 
 function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
-	const [formTitle, setFormTitle] = useState('');
+	const [formTitle, setFormTitle] = useState<string>('');
 	const [optionGame, setOptionGame] = useState<TGame | null>(null);
 	const [purposeTag, setPurposeTag] = useState<string>('');
 	const [formDescription, setFormDescription] = useState<string>('');
@@ -60,7 +60,7 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 		setView('form');
 	};
 	const handleOnCreateClick = () => {
-		const newParty: TPartyCreateRequest = {
+		const newParty: ICreatePartyPayload = {
 			title: formTitle,
 			gameId: optionGame?.id,
 			purposeTag: purposeTag,
@@ -71,8 +71,6 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 			gameUsername: gameProfile?.gameUsername ?? '',
 			profileId: gameProfile?.id ?? null,
 		};
-		console.log(`gameUsername: ${gameProfile?.gameUsername}`);
-		console.log(`profileId: ${gameProfile?.id}`);
 		const errors = craetePratyFormValidation(newParty);
 		setErrors(errors);
 		if (errors.title || errors.gameUsername || (errors.accessCode && isPrivateChecked)) {

@@ -4,7 +4,7 @@ import { BOARD_PARTY } from '../../constants/Party';
 import PartyFilter from './PartyFilter';
 import PartyList from './PartyList';
 import { useQueryClient } from '@tanstack/react-query';
-import { TFilterOptions, TGetPartiesPayload, TTabType } from '../../types/party';
+import { IGetPartiesData, TFilterOption, TTabType } from '../../types/party';
 import { useInfiniteMyParties, useInfiniteParties } from '../../hooks/useParties';
 import { useModal } from '../../hooks/useModal';
 import {
@@ -22,19 +22,19 @@ const LIMIT = 8;
 function PartyBoard({ type }: { type: TTabType }) {
 	const queryClient = useQueryClient();
 	const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
-	const [filterOptions, setFilterOptions] = useState<TFilterOptions[]>([]);
+	const [filterOptions, setFilterOptions] = useState<TFilterOption[]>([]);
 	const [pagination, setPagination] = useState({
 		page: 1,
 		limit: LIMIT,
 	});
 
-	const payload: TGetPartiesPayload = {
+	const getPartiesData: IGetPartiesData = {
 		filterOptions,
 		pagination,
 	};
 
-	const allPartiesQuery = useInfiniteParties(payload);
-	const myPartiesQuery = useInfiniteMyParties(payload);
+	const allPartiesQuery = useInfiniteParties(getPartiesData);
+	const myPartiesQuery = useInfiniteMyParties(getPartiesData);
 	const currentQuery = type === TTabType.PARTY_FINDER ? allPartiesQuery : myPartiesQuery;
 	const {
 		data,
@@ -77,7 +77,7 @@ function PartyBoard({ type }: { type: TTabType }) {
 	};
 
 	// 필터 변경 시 페이지 초기화
-	const handleFilterChange = (newFilterOptions: TFilterOptions[]) => {
+	const handleFilterChange = (newFilterOptions: TFilterOption[]) => {
 		setFilterOptions(newFilterOptions);
 		setPagination((prev) => ({ ...prev, page: 1 })); // 페이지 초기화
 	};
