@@ -11,9 +11,9 @@ import React, { useState } from 'react';
 import SearchableGameSelect from '../../SearchableGameSelect';
 import {
 	TPartyFormFlow,
-	TPartyCreateFormErrors,
 	TUserGameProfile,
 	ICreatePartyPayload,
+	TCreatePartyValidationFormErrors,
 } from '../../../../types/party';
 import { useCreateParty } from '../../../../hooks/useParties';
 import { TGame } from '../../../../types/game';
@@ -40,7 +40,7 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 	const [accessCode, setAccessCode] = useState<string>('');
 	const [isPrivateChecked, setIsPrivateChecked] = useState(false);
 	const [gameProfile, setGameProfile] = useState<TUserGameProfile | null>(null);
-	const [errors, setErrors] = useState<TPartyCreateFormErrors>({
+	const [errors, setErrors] = useState<TCreatePartyValidationFormErrors>({
 		title: '',
 		gameUsername: '',
 		accessCode: '',

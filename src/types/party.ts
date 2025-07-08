@@ -81,7 +81,7 @@ export interface ICreatePartyPayload extends TCreatePartyInfo {
 	profileId: number | null;
 }
 
-export type TPartyCreateFormErrors = {
+export type TCreatePartyValidationFormErrors = {
 	title: string;
 	gameUsername: string;
 	gameId: string;

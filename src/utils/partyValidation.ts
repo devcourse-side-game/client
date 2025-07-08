@@ -1,11 +1,11 @@
 import { MESSAGE_ERROR } from '../constants/error';
-import { TPartyCreateFormErrors, ICreatePartyPayload } from '../types/party';
+import { TCreatePartyValidationFormErrors, ICreatePartyPayload } from '../types/party';
 
 export default function craetePratyFormValidation(party: ICreatePartyPayload) {
 	try {
 		console.log(party.profileId);
 		console.log(party.gameUsername);
-		const errors: TPartyCreateFormErrors = {
+		const errors: TCreatePartyValidationFormErrors = {
 			title: checkPartyTitle(party.title),
 			gameUsername: !party.profileId ? checkPartyGameUsername(party.gameUsername) : '',
 			accessCode: party.isPrivate ? checkPartyAccessCode(party.accessCode) : '',
@@ -16,7 +16,7 @@ export default function craetePratyFormValidation(party: ICreatePartyPayload) {
 		return errors;
 	} catch (error) {
 		console.error('파티 생성 유효성 검사 오류', error);
-		const errors: TPartyCreateFormErrors = {
+		const errors: TCreatePartyValidationFormErrors = {
 			title: '',
 			gameUsername: '',
 			accessCode: '',
