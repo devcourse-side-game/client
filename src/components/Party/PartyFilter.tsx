@@ -54,7 +54,9 @@ function PartyFilter({ filterOptions, setFilterOptions }: TPartyFilterProps) {
 	};
 	return (
 		<PartyFilterContainer>
-			<Typography variant='h6'>필터 옵션</Typography>
+			<Typography variant='h6' sx={{ color: 'text.secondary', fontWeight: '700' }}>
+				필터 옵션
+			</Typography>
 			<PartyFilterOptionsWrapper direction='row'>
 				<SearchableGameSelect setOptionGame={setOptionGame}></SearchableGameSelect>
 			</PartyFilterOptionsWrapper>

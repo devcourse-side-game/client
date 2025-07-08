@@ -44,9 +44,6 @@ function Header() {
 						sx={{ flexGrow: 0, display: { xs: 'flex' }, alignItems: 'center' }}
 						onClick={() => navigate('/')}
 					>
-						<AdbIcon
-							sx={{ display: { xs: 'flex', md: 'flex' }, mr: 1, cursor: 'pointer' }}
-						/>
 						<Typography
 							variant='h6'
 							noWrap

@@ -37,8 +37,8 @@ const PartyList = forwardRef<HTMLDivElement, TPartyListProps>(
 			);
 		return (
 			<PartyListContainer>
-				<Stack>
-					{data?.pages
+				{/* <Stack> */}
+				{data?.pages
 						.flatMap((page) => page)
 						.map((party: IPartyListItem) =>
 							party ? (
@@ -57,7 +57,7 @@ const PartyList = forwardRef<HTMLDivElement, TPartyListProps>(
 							<Typography variant='body1'>더이상 파티가 없습니다.</Typography>
 						)}
 					</Box>
-				</Stack>
+				{/* </Stack> */}
 			</PartyListContainer>
 		);
 	}

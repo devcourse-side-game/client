@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles';
-import { Box, Button, Stack } from '@mui/material';
+import { Box, Button, Paper, Stack } from '@mui/material';
 
-export const PartyFilterContainer = styled(Box)(({ theme }) => ({
+export const PartyFilterContainer = styled(Paper)(({ theme }) => ({
 	width: '100%',
 	display: 'flex',
 	flexDirection: 'column',
