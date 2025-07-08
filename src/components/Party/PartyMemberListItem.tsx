@@ -87,7 +87,7 @@ function PartyMemberListItem({
 				</Box>
 				<Box sx={{ flexGrow: 1 }}></Box>
 				{/* 강퇴 버튼 */}
-				{isLeader ? (
+				{isLeader && member.id === user?.id ? (
 					<Button
 						variant='contained'
 						color='warning'
