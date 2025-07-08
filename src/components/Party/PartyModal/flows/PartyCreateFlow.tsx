@@ -163,7 +163,7 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 							inputProps={{ min: 1, max: 16 }}
 							onChange={(e) => setFormMaxNum(parseInt(e.target.value))}
 						/>
-						{user && user.id ? (
+						{user && user.id && !!optionGame ? (
 							<UserGameProfileSelect
 								userId={user.id}
 								gameId={optionGame?.id}
@@ -171,7 +171,7 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 								validate={errors.gameUsername}
 							/>
 						) : (
-							<Typography>로그인 후 이용해주세요.</Typography>
+							<></>
 						)}
 					</FormDialogContent>
 					<FormDialogActions>
