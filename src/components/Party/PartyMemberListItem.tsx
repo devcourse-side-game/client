@@ -7,7 +7,6 @@ import {
 	PartyMemberListItemWrapper,
 	PartyMemberListWrapper,
 } from '../../styles/pages/party/PartyListItem.style';
-import { StarBorderRounded, StarRounded } from '@mui/icons-material';
 import { useUser } from '../../hooks/useUsers';
 
 type TPartyMemberListItemProps = {
@@ -100,12 +99,6 @@ function PartyMemberListItem({
 				) : (
 					<></>
 				)}
-				좋아요 버튼
-				<Button disabled={isCompleted}>좋아요</Button>
-				{/* 좋아요 아이콘 */}
-				<StarRounded color='primary' />
-				{/* 좋아요 아이콘 미선택 */}
-				<StarBorderRounded color='primary' />
 			</PartyMemberListItemWrapper>
 		</PartyMemberListWrapper>
 	);
