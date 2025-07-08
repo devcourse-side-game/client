@@ -45,7 +45,15 @@ function PartyBoard({ type }: { type: TTabType }) {
 		hasNextPage,
 		isFetchingNextPage,
 		error,
+		refetch, // 추가
 	} = currentQuery;
+
+	// 탭 변경 시 데이터 리페치
+	useEffect(() => {
+		if (type === TTabType.MY_PARTIES) {
+			refetch();
+		}
+	}, [type, refetch]);
 
 	// 모달 컴포넌트 사용
 	const { openModal } = useModal();
