@@ -5,7 +5,6 @@ import { RootState } from '../stores';
 
 export function useUser() {
 	const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
-	console.log('isLoggedIn', isLoggedIn);
 
 	return useQuery({
 		queryKey: ['me'],
