@@ -16,6 +16,7 @@ import { logout } from '../stores/authSlice';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { logoutApi } from '../api/auth';
 import { AxiosError } from 'axios';
+import { useQueryClient } from '@tanstack/react-query';
 
 function Header() {
 	// const [show, setShow] = useState(true);
@@ -23,6 +24,7 @@ function Header() {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const dispatch = useDispatch<AppDispatch>();
+	const queryClient = useQueryClient();
 
 	const show = !(location.pathname === '/login' || location.pathname === '/signup');
 
@@ -33,6 +35,8 @@ function Header() {
 		} catch (err) {
 			const axiosError = err as AxiosError<Response>;
 			console.log(axiosError);
+		} finally {
+			queryClient.invalidateQueries({ queryKey: ['me'] });
 		}
 	};
 

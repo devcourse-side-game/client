@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useLocation, useNavigate, Outlet } from 'react-router-dom';
 import PartyBoard from '../components/Party/PartyBoard';
 import { ModalProvider } from '../contexts/ModalProvider';
 import PartyGlobalModal from '../components/Party/PartyModal/PartyGlobalModal';
@@ -6,66 +7,39 @@ import { HomeContainer } from '../styles/pages/Home.styles';
 import { Tab, Tabs } from '@mui/material';
 import { TTabType } from '../types/party';
 
-function samePageLinkNavigation(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
-	if (
-		event.defaultPrevented ||
-		event.button !== 0 || // ignore everything but left-click
-		event.metaKey ||
-		event.ctrlKey ||
-		event.altKey ||
-		event.shiftKey
-	) {
-		return false;
-	}
-	return true;
-}
-
-interface LinkTabProps {
-	label?: string;
-	href?: string;
-	selected?: boolean;
-}
-
-function LinkTab(props: LinkTabProps) {
-	return (
-		<Tab
-			component='a'
-			onClick={(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-				// Routing libraries handle this, you can remove the onClick handle when using them.
-				if (samePageLinkNavigation(event)) {
-					event.preventDefault();
-				}
-			}}
-			aria-current={props.selected && 'page'}
-			{...props}
-		/>
-	);
-}
-
 function Home() {
-	const [tabValue, setTabValue] = useState<TTabType>(TTabType.PARTY_FINDER);
+	const location = useLocation();
+	const navigate = useNavigate();
+
+	// 현재 경로에 따라 탭 값 결정
+	const getTabValue = (): TTabType => {
+		if (location.pathname === '/my-parties') {
+			return TTabType.MY_PARTIES;
+		}
+		return TTabType.PARTY_FINDER;
+	};
+
 	const handleTabChange = (event: React.SyntheticEvent, newValue: TTabType) => {
-		if (
-			event.type !== 'click' ||
-			(event.type === 'click' &&
-				samePageLinkNavigation(event as React.MouseEvent<HTMLAnchorElement, MouseEvent>))
-		) {
-			setTabValue(newValue);
+		if (newValue === TTabType.MY_PARTIES) {
+			navigate('/my-parties');
+		} else {
+			navigate('/party-finder');
 		}
 	};
+
 	return (
 		<HomeContainer className='Home'>
 			<ModalProvider>
 				<Tabs
-					value={tabValue}
+					value={getTabValue()}
 					onChange={handleTabChange}
 					aria-label='nav tabs example'
 					role='navigation'
 				>
-					<LinkTab label='내 파티' href='/drafts' />
-					<LinkTab label='파티 찾기' href='/trash' />
+					<Tab label='내 파티' />
+					<Tab label='파티 찾기' />
 				</Tabs>
-				<PartyBoard type={tabValue}></PartyBoard>
+				<PartyBoard type={getTabValue()}></PartyBoard>
 				<PartyGlobalModal />
 			</ModalProvider>
 		</HomeContainer>
