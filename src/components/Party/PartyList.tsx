@@ -36,27 +36,27 @@ const PartyList = forwardRef<HTMLDivElement, TPartyListProps>(
 			);
 		return (
 			<PartyListContainer>
-				<Stack>
-					{data?.pages
-						.flatMap((page) => page)
-						.map((party: TParty) =>
-							party ? (
-								<PartyListItem
-									key={party.id}
-									party={party}
-									expandedPartyId={expandedPartyId}
-									setExpandedPartyId={setExpandedPartyId}
-								/>
-							) : null
-						)}
-					<Box ref={ref} display='flex' justifyContent='center' py={4}>
-						{isFetching ? (
-							<CircularProgress />
-						) : hasNextPage ? null : (
-							<Typography variant='body1'>더이상 파티가 없습니다.</Typography>
-						)}
-					</Box>
-				</Stack>
+				{/* <Stack> */}
+				{data?.pages
+					.flatMap((page) => page)
+					.map((party: TParty) =>
+						party ? (
+							<PartyListItem
+								key={party.id}
+								party={party}
+								expandedPartyId={expandedPartyId}
+								setExpandedPartyId={setExpandedPartyId}
+							/>
+						) : null
+					)}
+				<Box ref={ref} display='flex' justifyContent='center' py={4}>
+					{isFetching ? (
+						<CircularProgress />
+					) : hasNextPage ? null : (
+						<Typography variant='body1'>더이상 파티가 없습니다.</Typography>
+					)}
+				</Box>
+				{/* </Stack> */}
 			</PartyListContainer>
 		);
 	}
