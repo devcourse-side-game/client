@@ -1,12 +1,13 @@
 import React, { forwardRef, useEffect, useState } from 'react';
 import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 import PartyListItem from './PartyListItem';
-import { TParty } from '../../types/Party';
+import { IPartyListItem } from '../../types/party';
 import { PartyListContainer } from '../../styles/pages/party/PartyList.styles';
 import { InfiniteData } from '@tanstack/react-query';
+import { IPartiesResponse } from '../../types/response';
 
 type TPartyListProps = {
-	data: InfiniteData<TParty[]> | undefined;
+	data: InfiniteData<IPartiesResponse> | undefined;
 	isLoading: boolean;
 	isFetching: boolean;
 	isSuccess: boolean;
@@ -38,24 +39,24 @@ const PartyList = forwardRef<HTMLDivElement, TPartyListProps>(
 			<PartyListContainer>
 				{/* <Stack> */}
 				{data?.pages
-					.flatMap((page) => page)
-					.map((party: TParty) =>
-						party ? (
-							<PartyListItem
-								key={party.id}
-								party={party}
-								expandedPartyId={expandedPartyId}
-								setExpandedPartyId={setExpandedPartyId}
-							/>
-						) : null
-					)}
-				<Box ref={ref} display='flex' justifyContent='center' py={4}>
-					{isFetching ? (
-						<CircularProgress />
-					) : hasNextPage ? null : (
-						<Typography variant='body1'>더이상 파티가 없습니다.</Typography>
-					)}
-				</Box>
+						.flatMap((page) => page)
+						.map((party: IPartyListItem) =>
+							party ? (
+								<PartyListItem
+									key={party.id}
+									party={party}
+									expandedPartyId={expandedPartyId}
+									setExpandedPartyId={setExpandedPartyId}
+								/>
+							) : null
+						)}
+					<Box ref={ref} display='flex' justifyContent='center' py={4}>
+						{isFetching ? (
+							<CircularProgress />
+						) : hasNextPage ? null : (
+							<Typography variant='body1'>더이상 파티가 없습니다.</Typography>
+						)}
+					</Box>
 				{/* </Stack> */}
 			</PartyListContainer>
 		);

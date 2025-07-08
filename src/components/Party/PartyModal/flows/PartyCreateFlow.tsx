@@ -11,12 +11,12 @@ import React, { useState } from 'react';
 import SearchableGameSelect from '../../SearchableGameSelect';
 import {
 	TPartyFormFlow,
-	TPartyCreateRequest,
-	TPartyCreateFormErrors,
 	TUserGameProfile,
-} from '../../../../types/Party';
+	ICreatePartyPayload,
+	TCreatePartyValidationFormErrors,
+} from '../../../../types/party';
 import { useCreateParty } from '../../../../hooks/useParties';
-import { TGame } from '../../../../types/Party';
+import { TGame } from '../../../../types/game';
 import {
 	FormContainer,
 	FormDialogActions,
@@ -32,7 +32,7 @@ type TPartyCreateFormProps = {
 };
 
 function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
-	const [formTitle, setFormTitle] = useState('');
+	const [formTitle, setFormTitle] = useState<string>('');
 	const [optionGame, setOptionGame] = useState<TGame | null>(null);
 	const [purposeTag, setPurposeTag] = useState<string>('');
 	const [formDescription, setFormDescription] = useState<string>('');
@@ -40,7 +40,7 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 	const [accessCode, setAccessCode] = useState<string>('');
 	const [isPrivateChecked, setIsPrivateChecked] = useState(false);
 	const [gameProfile, setGameProfile] = useState<TUserGameProfile | null>(null);
-	const [errors, setErrors] = useState<TPartyCreateFormErrors>({
+	const [errors, setErrors] = useState<TCreatePartyValidationFormErrors>({
 		title: '',
 		gameUsername: '',
 		accessCode: '',
@@ -60,9 +60,9 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 		setView('form');
 	};
 	const handleOnCreateClick = () => {
-		const newParty: TPartyCreateRequest = {
+		const newParty: ICreatePartyPayload = {
 			title: formTitle,
-			gameId: optionGame?.id,
+			gameId: optionGame!.id,
 			purposeTag: purposeTag,
 			maxParticipants: formMaxNum,
 			description: formDescription ? formDescription : '',
@@ -71,16 +71,13 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 			gameUsername: gameProfile?.gameUsername ?? '',
 			profileId: gameProfile?.id ?? null,
 		};
-		console.log(`gameUsername: ${gameProfile?.gameUsername}`);
-		console.log(`profileId: ${gameProfile?.id}`);
 		const errors = craetePratyFormValidation(newParty);
 		setErrors(errors);
 		if (errors.title || errors.gameUsername || (errors.accessCode && isPrivateChecked)) {
 			return;
 		}
 		mutate(newParty, {
-			onSuccess: (data) => {
-				console.log(data.message);
+			onSuccess: () => {
 				setView('success');
 			},
 			onError: (error) => {

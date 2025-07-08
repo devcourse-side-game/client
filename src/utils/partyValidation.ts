@@ -1,14 +1,14 @@
 import { MESSAGE_ERROR } from '../constants/error';
-import { TPartyCreateFormErrors, TPartyCreateRequest } from '../types/Party';
+import { TCreatePartyValidationFormErrors, ICreatePartyPayload } from '../types/party';
 
-export default function craetePratyFormValidation(party: TPartyCreateRequest) {
+export default function craetePratyFormValidation(party: ICreatePartyPayload) {
 	try {
 		console.log(party.profileId);
 		console.log(party.gameUsername);
-		const errors: TPartyCreateFormErrors = {
+		const errors: TCreatePartyValidationFormErrors = {
 			title: checkPartyTitle(party.title),
 			gameUsername: !party.profileId ? checkPartyGameUsername(party.gameUsername) : '',
-			accessCode: checkPartyAccessCode(party.accessCode),
+			accessCode: party.isPrivate ? checkPartyAccessCode(party.accessCode) : '',
 			gameId: checkPartyGameId(party.gameId),
 			description: '',
 			maxParticipants: '',
@@ -16,7 +16,7 @@ export default function craetePratyFormValidation(party: TPartyCreateRequest) {
 		return errors;
 	} catch (error) {
 		console.error('파티 생성 유효성 검사 오류', error);
-		const errors: TPartyCreateFormErrors = {
+		const errors: TCreatePartyValidationFormErrors = {
 			title: '',
 			gameUsername: '',
 			accessCode: '',
@@ -46,7 +46,7 @@ function checkPartyGameUsername(gameUsername: string) {
 	}
 	return '';
 }
-function checkPartyAccessCode(accessCode: string) {
+function checkPartyAccessCode(accessCode: string | null) {
 	if (!accessCode) {
 		return MESSAGE_ERROR.ACCESS_CODE.REQUIRED;
 	}

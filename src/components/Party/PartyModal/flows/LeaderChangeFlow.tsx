@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TPartyFormFlow } from '../../../../types/Party';
+import { TPartyFormFlow } from '../../../../types/party';
 import { Box, Button, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
 import { useChangePartyLeader } from '../../../../hooks/useParties';
 

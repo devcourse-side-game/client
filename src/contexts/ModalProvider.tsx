@@ -1,5 +1,5 @@
 import { ReactNode, useMemo, useState } from 'react';
-import { TModalState } from '../types/Party';
+import { TModalState } from '../types/party';
 import { ModalContext } from './ModalContext';
 export function ModalProvider({ children }: { children: ReactNode }) {
 	const [modalState, setModalState] = useState<TModalState>({ type: '', payload: null });

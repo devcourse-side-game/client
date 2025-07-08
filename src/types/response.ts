@@ -1,4 +1,5 @@
-import { TGame, TParty, TUserGameProfile } from './Party';
+import { IPartyListItem, TUserGameProfile } from './party';
+import { TGame } from './game';
 
 export interface Response {
 	message: string;
@@ -28,7 +29,7 @@ export interface IUserDataResponse extends Response {
 export type TGetGameListResponse = TGame[];
 
 // 파티 목록 조회 응답
-export type IPartiesResponse = TParty[];
+export type IPartiesResponse = IPartyListItem[];
 
 // 파티 참가 응답
 export interface IJoinPartyResponse extends Response {

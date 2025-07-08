@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { TModalState } from '../types/Party';
+import { TModalState } from '../types/party';
 
 type TModalContext = {
 	modalState: TModalState;

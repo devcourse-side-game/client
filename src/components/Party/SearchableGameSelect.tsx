@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { TextField, Autocomplete, CircularProgress, Box, Typography } from '@mui/material';
-import { TGame } from '../../types/Party';
+import { TGame } from '../../types/game';
 import { useGameList } from '../../hooks/useGames';
 import GameImage from '../../assets/gameImage.png';
 
@@ -22,11 +22,11 @@ function SearchableGameSelect({ setOptionGame, validate }: TSearchableGameSelect
 	const games = isSuccess ? data : [];
 
 	return (
-		<Autocomplete
+		<Autocomplete<TGame>
 			// 선택된 값 (제어 컴포넌트)
 			value={selectedGame}
 			// 사용자가 항목을 선택했을 때 호출되는 함수
-			onChange={(event, newValue: TGame | null) => {
+			onChange={(event, newValue) => {
 				setSelectedGame(newValue);
 				setOptionGame(newValue);
 			}}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelectedPartyDetail } from '../../../../hooks/useParties';
-import { TPartyFormFlow } from '../../../../types/Party';
+import { TPartyFormFlow } from '../../../../types/party';
 import {
 	Box,
 	Button,

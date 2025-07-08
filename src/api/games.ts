@@ -5,7 +5,7 @@ import {
 	TGetUserGameProfilesResponse,
 } from '../types/response';
 import { GetGameListRequest } from '../types/request';
-import { TGetUserGameProfilesQuery } from '../types/Party';
+import { TGetUserGameProfilesQuery } from '../types/party';
 
 /** 기능 : 게임 목록 조회 */
 export const fetchGameList = async (payload: GetGameListRequest): Promise<TGetGameListResponse> => {
@@ -28,8 +28,8 @@ export const fetchGameList = async (payload: GetGameListRequest): Promise<TGetGa
 };
 
 /** 기능 : 게임 상세 조회 */
-export const fetchGameDetail = async (payload: number): Promise<TGameDetailResponse> => {
-	const response = await api.get<TGameDetailResponse>(`/games/${payload}`);
+export const fetchGameDetail = async (partyId: number): Promise<TGameDetailResponse> => {
+	const response = await api.get<TGameDetailResponse>(`/games/${partyId}`);
 	return response.data;
 };
 

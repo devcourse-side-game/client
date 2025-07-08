@@ -6,7 +6,7 @@ import {
 } from '../types/response';
 import { GetGameListRequest } from '../types/request';
 import { fetchGameDetail, fetchGameList, fetchUserGameProfiles } from '../api/games';
-import { TGetUserGameProfilesQuery } from '../types/Party';
+import { TGetUserGameProfilesQuery } from '../types/party';
 
 export const useGameList = (payload: GetGameListRequest) => {
 	payload = {
@@ -28,13 +28,14 @@ export const useGameList = (payload: GetGameListRequest) => {
 	});
 };
 
-export const useGameDetail = (payload: number) => {
+export const useGameDetail = (partyId: number, enabled: boolean) => {
 	return useQuery<TGameDetailResponse, Error, TGameDetailResponse, ['games', number]>({
-		queryKey: ['games', payload],
+		queryKey: ['games', partyId],
 		queryFn: async () => {
-			const response = await fetchGameDetail(payload);
+			const response = await fetchGameDetail(partyId);
 			return response;
 		},
+		enabled: enabled,
 	});
 };
 

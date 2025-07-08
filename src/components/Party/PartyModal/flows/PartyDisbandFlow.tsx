@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDisbandParty } from '../../../../hooks/useParties';
-import { TPartyFormFlow } from '../../../../types/Party';
+import { TPartyFormFlow } from '../../../../types/party';
 import { Button } from '@mui/material';
 import { DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
 
@@ -11,9 +11,9 @@ type TPartyDisbandFlowProps = {
 
 export default function PartyDisbandFlow({ onFlowComplete, partyId }: TPartyDisbandFlowProps) {
 	const [view, setView] = useState<TPartyFormFlow>('form');
-	const { mutate: disbandParty, isSuccess, isError } = useDisbandParty({ partyId });
+	const { mutate: disbandParty, isSuccess, isError } = useDisbandParty(partyId);
 	const handleOnClick = () => {
-		disbandParty({ partyId });
+		disbandParty(partyId);
 	};
 
 	useEffect(() => {

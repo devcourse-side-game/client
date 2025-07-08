@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { Typography, Chip, Button } from '@mui/material';
 import SearchableGameSelect from './SearchableGameSelect';
-import { TFilterOptions } from '../../types/Party';
+import { TFilterOption } from '../../types/party';
 import {
 	PartyFilterContainer,
 	PartyFilterOptionsWrapper,
 	PartyFilterButtonContainer,
 	PartyFilterChipWrapper,
 } from '../../styles/pages/party/PartyFilter.styles';
-import { TGame } from '../../types/Party';
+import { TGame } from '../../types/game';
 
 type TPartyFilterProps = {
-	filterOptions: TFilterOptions[];
-	setFilterOptions: (filterOptions: TFilterOptions[]) => void;
+	filterOptions: TFilterOption[];
+	setFilterOptions: (filterOptions: TFilterOption[]) => void;
 };
 
 function PartyFilter({ filterOptions, setFilterOptions }: TPartyFilterProps) {
@@ -21,7 +21,7 @@ function PartyFilter({ filterOptions, setFilterOptions }: TPartyFilterProps) {
 	const [filterPartyTitleText, setFilterPartyTitleText] = useState<string>('');
 
 	const handleFilterChange = () => {
-		const newOptions: TFilterOptions[] = [];
+		const newOptions: TFilterOption[] = [];
 		if (optionGame)
 			newOptions.push({ type: 'gameId', value: optionGame.id, label: optionGame.name });
 		if (filterPartyOwnerNicknameText)
@@ -59,20 +59,6 @@ function PartyFilter({ filterOptions, setFilterOptions }: TPartyFilterProps) {
 			</Typography>
 			<PartyFilterOptionsWrapper direction='row'>
 				<SearchableGameSelect setOptionGame={setOptionGame}></SearchableGameSelect>
-				{/* <TextField
-					variant='outlined'
-					value={filterPartyOwnerNicknameText}
-					type='Text'
-					label='파티장 이름 입력'
-					onChange={(e) => setFilterPartyOwnerNicknameText(e.target.value)}
-				></TextField>
-				<TextField
-					variant='outlined'
-					value={filterPartyTitleText}
-					type='Text'
-					label='파티 이름 입력'
-					onChange={(e) => setFilterPartyTitleText(e.target.value)}
-				></TextField> */}
 			</PartyFilterOptionsWrapper>
 			<PartyFilterChipWrapper>
 				{filterOptions.map((option) =>

@@ -4,7 +4,7 @@ import { ModalProvider } from '../contexts/ModalProvider';
 import PartyGlobalModal from '../components/Party/PartyModal/PartyGlobalModal';
 import { HomeContainer } from '../styles/pages/Home.styles';
 import { Tab, Tabs } from '@mui/material';
-import { TTabType } from '../types/Party';
+import { TTabType } from '../types/party';
 
 function samePageLinkNavigation(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
 	if (

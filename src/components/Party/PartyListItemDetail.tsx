@@ -13,21 +13,26 @@ type TPartyListItemDetailProps = {
 };
 
 function PartyListItemDetail({ partyId, isCompleted }: TPartyListItemDetailProps) {
-	const { data, isLoading, isError, error } = useSelectedPartyDetail(partyId);
+	const { data, isLoading, isError } = useSelectedPartyDetail(partyId);
 	const { openModal } = useModal();
 	const [isPartyMember, setIsPartyMember] = useState<boolean>(false);
 	const { data: user } = useUser();
 	const isLeader = data?.creatorId === user?.id;
 	useEffect(() => {
 		if (data) {
-			setIsPartyMember(
-				data?.members.some((member) => member.userId === user?.id) || false
-				// 사용자의 id를 member.userId로 넣어야 함
-			);
+			setIsPartyMember(data?.members.some((member) => member.userId === user?.id) || false);
 		}
 	}, [data, user]);
 	if (isLoading) return <div>파티세부 정보 로딩중...</div>;
-	if (isError) return <div> 에러가 발생했습니다 : {error.message} </div>;
+	if (isError) {
+		return (
+			<div>
+				{' '}
+				파티 세부 정보를 불러오는중 문제가 발생했습니다. 반복될경우 관리자에게
+				문의해주세요{' '}
+			</div>
+		);
+	}
 
 	return (
 		<Stack direction='column' spacing={2}>
