@@ -1,5 +1,5 @@
 import { styled } from '@mui/material/styles';
-import { Box, DialogContent, DialogTitle, DialogActions } from '@mui/material';
+import { Box, DialogContent, DialogTitle, DialogActions, Button } from '@mui/material';
 
 export const FormContainer = styled(Box)(({ theme }) => ({
 	width: '100%',
@@ -17,7 +17,15 @@ export const FormDialogTitle = styled(DialogTitle)(({ theme }) => ({
 	width: '100%',
 	fontSize: '24px',
 	fontWeight: 'bold',
-	color: theme.palette.primary.main,
+	color: theme.customColor.title.main,
+}));
+
+export const FormCommonButton = styled(Button)(({ theme }) => ({
+	backgroundColor: theme.customColor.button.selectBg,
+}));
+
+export const CancelButton = styled(Button)(({ theme }) => ({
+	color: theme.customColor.button.selectBg,
 }));
 
 export const FormDialogContent = styled(DialogContent)(({ theme }) => ({

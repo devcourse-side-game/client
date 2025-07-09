@@ -13,6 +13,8 @@ import {
 	PartyBoardHeaderWrapper,
 	PartyButtonWrapper,
 	InfiniteScrollContainer,
+	CreatePartyButton,
+	ResetPartyListButton,
 } from '../../styles/pages/party/PartyBoard.styles';
 import { useInView } from 'react-intersection-observer';
 import { useSelector } from 'react-redux';
@@ -119,15 +121,15 @@ function PartyBoard({ type }: { type: TTabType }) {
 				<></>
 			)}
 			<PartyButtonWrapper>
-				<Button variant='contained' onClick={handleOpenCreateModal}>
+				<CreatePartyButton variant='contained' onClick={handleOpenCreateModal}>
 					파티 생성
-				</Button>
+				</CreatePartyButton>
 				<Box sx={{ width: '100px' }}></Box>
 
-				<Button variant='text' onClick={handleRefreshClick}>
+				<ResetPartyListButton variant='text' onClick={handleRefreshClick}>
 					불러오기
 					<RestartAltIcon />
-				</Button>
+				</ResetPartyListButton>
 			</PartyButtonWrapper>
 
 			<InfiniteScrollContainer ref={scrollContainerRef}>

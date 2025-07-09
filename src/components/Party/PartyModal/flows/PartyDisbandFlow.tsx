@@ -3,6 +3,7 @@ import { useDisbandParty } from '../../../../hooks/useParties';
 import { TPartyFormFlow } from '../../../../types/party';
 import { Button } from '@mui/material';
 import { DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
+import { CancelButton, FormCommonButton } from '../../../../styles/pages/party/forms/Form.styles';
 
 type TPartyDisbandFlowProps = {
 	onFlowComplete: () => void;
@@ -38,7 +39,7 @@ export default function PartyDisbandFlow({ onFlowComplete, partyId }: TPartyDisb
 						</Typography>
 					</DialogContent>
 					<DialogActions>
-						<Button onClick={onFlowComplete}>취소</Button>
+						<CancelButton onClick={onFlowComplete}>취소</CancelButton>
 						<Button
 							onClick={handleOnClick}
 							variant='contained'
@@ -61,9 +62,9 @@ export default function PartyDisbandFlow({ onFlowComplete, partyId }: TPartyDisb
 					</DialogContent>
 					<DialogActions>
 						{/* 확인 버튼을 누르면 전체 흐름이 완료되었음을 부모에게 알립니다. */}
-						<Button onClick={onFlowComplete} variant='contained' autoFocus>
+						<FormCommonButton onClick={onFlowComplete} variant='contained' autoFocus>
 							확인
-						</Button>
+						</FormCommonButton>
 					</DialogActions>
 				</>
 			);
@@ -81,9 +82,9 @@ export default function PartyDisbandFlow({ onFlowComplete, partyId }: TPartyDisb
 					</DialogContent>
 					<DialogActions>
 						{/* 확인 버튼을 누르면 전체 흐름이 완료되었음을 부모에게 알립니다. */}
-						<Button onClick={onFlowComplete} variant='contained' autoFocus>
+						<FormCommonButton onClick={onFlowComplete} variant='contained' autoFocus>
 							확인
-						</Button>
+						</FormCommonButton>
 					</DialogActions>
 				</>
 			);

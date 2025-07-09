@@ -1,19 +1,21 @@
-import { Container, Grid, Link, Typography } from '@mui/material';
+import { Container, Grid, Link, styled, Typography } from '@mui/material';
 import AuthForm from '../components/auth/AuthForm';
 import { FormType } from '../constants/enums';
 
+const LoginContainer = styled(Container)(({ theme }) => ({
+	marginTop: '10dvh',
+}));
+
+const AuthTitle = styled(Typography)(({ theme }) => ({
+	fontSize: '48px',
+	textAlign: 'center',
+	color: theme.customColor.title.main,
+}));
+
 function Login() {
 	return (
-		<Container maxWidth='sm' sx={{ marginTop: '10dvh' }}>
-			<Typography
-				variant='h2'
-				component='h2'
-				sx={{
-					textAlign: 'center',
-				}}
-			>
-				로그인
-			</Typography>
+		<LoginContainer maxWidth='sm'>
+			<AuthTitle>로그인</AuthTitle>
 			<AuthForm formType={FormType.LOGIN} />
 			<Grid
 				container
@@ -32,7 +34,7 @@ function Login() {
 					</Link>
 				</Grid>
 			</Grid>
-		</Container>
+		</LoginContainer>
 	);
 }
 

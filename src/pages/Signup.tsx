@@ -1,19 +1,23 @@
-import { Container, Typography } from '@mui/material';
+import { Container, styled, Typography } from '@mui/material';
 import AuthForm from '../components/auth/AuthForm';
 import { FormType } from '../constants/enums';
+
+const AuthTitle = styled(Typography)(({ theme }) => ({
+	fontSize: '48px',
+	textAlign: 'center',
+	color: theme.customColor.title.main,
+}));
 
 function Signup() {
 	return (
 		<Container maxWidth='sm' sx={{ marginTop: '10dvh' }}>
-			<Typography
-				variant='h2'
-				component='h2'
+			<AuthTitle
 				sx={{
 					textAlign: 'center',
 				}}
 			>
 				회원가입
-			</Typography>
+			</AuthTitle>
 			<AuthForm formType={FormType.SIGNUP} />
 		</Container>
 	);

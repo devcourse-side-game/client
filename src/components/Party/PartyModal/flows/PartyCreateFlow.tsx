@@ -18,6 +18,8 @@ import {
 import { useCreateParty } from '../../../../hooks/useParties';
 import { TGame } from '../../../../types/game';
 import {
+	CancelButton,
+	FormCommonButton,
 	FormContainer,
 	FormDialogActions,
 	FormDialogContent,
@@ -179,14 +181,14 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 						)}
 					</FormDialogContent>
 					<FormDialogActions>
-						<Button onClick={onFlowComplete}>취소</Button>
-						<Button
+						<CancelButton onClick={onFlowComplete}>취소</CancelButton>
+						<FormCommonButton
 							onClick={handleOnCreateClick}
 							variant='contained'
 							disabled={isPending}
 						>
 							{isPending ? '생성 중...' : '파티 생성'}
-						</Button>
+						</FormCommonButton>
 					</FormDialogActions>
 				</FormContainer>
 			);
@@ -201,9 +203,9 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 					</FormDialogContent>
 					<FormDialogActions>
 						{/* 확인 버튼을 누르면 전체 흐름이 완료되었음을 부모에게 알립니다. */}
-						<Button onClick={onFlowComplete} variant='contained' autoFocus>
+						<FormCommonButton onClick={onFlowComplete} variant='contained' autoFocus>
 							확인
-						</Button>
+						</FormCommonButton>
 					</FormDialogActions>
 				</FormContainer>
 			);
@@ -217,9 +219,9 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 						</Typography>
 					</FormDialogContent>
 					<FormDialogActions>
-						<Button onClick={onFlowFailed} variant='contained' autoFocus>
+						<FormCommonButton onClick={onFlowFailed} variant='contained' autoFocus>
 							확인
-						</Button>
+						</FormCommonButton>
 					</FormDialogActions>
 				</FormContainer>
 			);
@@ -233,9 +235,9 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 						</Typography>
 					</FormDialogContent>
 					<FormDialogActions>
-						<Button onClick={onFlowComplete} variant='contained' autoFocus>
+						<FormCommonButton onClick={onFlowComplete} variant='contained' autoFocus>
 							확인
-						</Button>
+						</FormCommonButton>
 					</FormDialogActions>
 				</FormContainer>
 			);

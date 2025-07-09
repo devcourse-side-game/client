@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useJoinParty, useSelectedPartyDetail } from '../../../../hooks/useParties';
 import { TPartyFormFlow, TUserGameProfile } from '../../../../types/party';
-import { Button, TextField, Typography } from '@mui/material';
+import { TextField, Typography } from '@mui/material';
 import {
+	CancelButton,
+	FormCommonButton,
 	FormContainer,
 	FormDialogActions,
 	FormDialogContent,
@@ -78,10 +80,14 @@ export default function PartyJoinFlow({ onFlowComplete, partyId, isPrivate }: TP
 						)}
 					</FormDialogContent>
 					<FormDialogActions>
-						<Button onClick={onFlowComplete}>취소</Button>
-						<Button onClick={handleOnJoinClick} variant='contained' disabled={false}>
+						<CancelButton onClick={onFlowComplete}>취소</CancelButton>
+						<FormCommonButton
+							onClick={handleOnJoinClick}
+							variant='contained'
+							disabled={false}
+						>
 							{'참가'}
-						</Button>
+						</FormCommonButton>
 					</FormDialogActions>
 				</FormContainer>
 			);
@@ -99,9 +105,9 @@ export default function PartyJoinFlow({ onFlowComplete, partyId, isPrivate }: TP
 					</FormDialogContent>
 					<FormDialogActions>
 						{/* 확인 버튼을 누르면 전체 흐름이 완료되었음을 부모에게 알립니다. */}
-						<Button onClick={onFlowComplete} variant='contained' autoFocus>
+						<FormCommonButton onClick={onFlowComplete} variant='contained' autoFocus>
 							확인
-						</Button>
+						</FormCommonButton>
 					</FormDialogActions>
 				</FormContainer>
 			);
@@ -119,9 +125,9 @@ export default function PartyJoinFlow({ onFlowComplete, partyId, isPrivate }: TP
 					</FormDialogContent>
 					<FormDialogActions>
 						{/* 확인 버튼을 누르면 전체 흐름이 완료되었음을 부모에게 알립니다. */}
-						<Button onClick={onFlowComplete} variant='contained' autoFocus>
+						<FormCommonButton onClick={onFlowComplete} variant='contained' autoFocus>
 							확인
-						</Button>
+						</FormCommonButton>
 					</FormDialogActions>
 				</FormContainer>
 			);
@@ -139,9 +145,9 @@ export default function PartyJoinFlow({ onFlowComplete, partyId, isPrivate }: TP
 					</FormDialogContent>
 					<FormDialogActions>
 						{/* 확인 버튼을 누르면 전체 흐름이 완료되었음을 부모에게 알립니다. */}
-						<Button onClick={onFlowComplete} variant='contained' autoFocus>
+						<FormCommonButton onClick={onFlowComplete} variant='contained' autoFocus>
 							확인
-						</Button>
+						</FormCommonButton>
 					</FormDialogActions>
 				</FormContainer>
 			);

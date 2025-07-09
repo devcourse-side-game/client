@@ -5,6 +5,7 @@ import {
 	FormHelperText,
 	Grid,
 	Link,
+	styled,
 	TextField,
 	Typography,
 	useTheme,
@@ -21,7 +22,6 @@ import { useAuthForm } from '../../hooks/useAuthForm';
 import CheckIcon from '@mui/icons-material/Check';
 
 import {
-	ALREADU_USED_USERNAME,
 	EMAIL_ALREADY_USED_ERROR,
 	ENTER_EMAIL,
 	ENTER_PASSWORD,
@@ -46,6 +46,14 @@ import { AppDispatch } from '../../stores';
 import { Response } from '../../types/response';
 import { useQueryClient } from '@tanstack/react-query';
 import { EMAIL_REGEX } from '../../constants/regex';
+
+const AuthButton = styled(Button)(({ theme }) => ({
+	backgroundColor: theme.customColor.button.selectBg,
+	height: '45px',
+}));
+const CheckUsernameButton = styled(Button)(({ theme }) => ({
+	backgroundColor: theme.customColor.button.selectBg,
+}));
 
 // 비밀번호 충족 조건 validate
 function PasswordValidateMessage({ check, content }: IPasswordValidBoxPorps) {
@@ -230,7 +238,7 @@ function AuthForm({ formType }: IFormTypeProps) {
 											/>
 										</Grid>
 										<Grid size={'grow'} sx={{ height: '100%' }}>
-											<Button
+											<CheckUsernameButton
 												variant='contained'
 												fullWidth
 												onClick={confirmUsername}
@@ -240,7 +248,7 @@ function AuthForm({ formType }: IFormTypeProps) {
 												}}
 											>
 												확인
-											</Button>
+											</CheckUsernameButton>
 										</Grid>
 									</Grid>
 								)}
@@ -320,13 +328,13 @@ function AuthForm({ formType }: IFormTypeProps) {
 						{errorMessage}
 					</FormHelperText>
 
-					<Button
+					<AuthButton
 						variant='contained'
 						type='submit'
 						sx={{ backgroundColor: theme.customColor.mainButton }}
 					>
 						{formType === FormType.LOGIN ? LOGIN_TITLE : SIGNUP_TITLE}
-					</Button>
+					</AuthButton>
 				</FormControl>
 			</form>
 			{FormType.SIGNUP === formType && (

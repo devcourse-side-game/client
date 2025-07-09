@@ -1,10 +1,10 @@
 import { styled } from '@mui/material/styles';
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 
 //container wrapper grid
 
 export const PartyBoardContainer = styled(Box)(({ theme }) => ({
-	width: '60%',
+	width: '100%',
 	minWidth: '600px',
 	display: 'flex',
 	flexDirection: 'column',
@@ -31,6 +31,15 @@ export const PartyButtonWrapper = styled(Box)(({ theme }) => ({
 	justifyContent: 'space-between',
 	gap: theme.spacing(2),
 }));
+
+export const CreatePartyButton = styled(Button)(({ theme }) => ({
+	backgroundColor: theme.customColor.button.selectBg,
+}));
+
+export const ResetPartyListButton = styled(Button)(({ theme }) => ({
+	color: theme.customColor.title.sub,
+}));
+
 export const InfiniteScrollContainer = styled(Box)(() => ({
 	width: '100%',
 	overflowY: 'scroll',

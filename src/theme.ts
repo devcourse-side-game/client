@@ -24,6 +24,9 @@ declare module '@mui/material/styles' {
 				selectText: string;
 				borderColor: string;
 			};
+			pratyList: {
+				bg: string;
+			};
 			defaultText: string;
 			mainButton: string;
 			grayText: string;
@@ -53,6 +56,9 @@ declare module '@mui/material/styles' {
 				selectText: string;
 				borderColor: string;
 			};
+			pratyList: {
+				bg: string;
+			};
 			defaultText?: string;
 			mainButton?: string;
 			grayText?: string;
@@ -73,15 +79,18 @@ export const customThemeMap = {
 				logoText: '#1e272e',
 			},
 			title: {
-				main: '#5352ed',
-				sub: '#D8B4FE',
+				main: '#9b59b6',
+				sub: '#be93dc',
 			},
 			button: {
-				selectBg: '#AB5CFD',
+				selectBg: '#9b59b6',
 				defaultBg: '#f1f2f6',
 				defaultText: '#000',
-				selectText: '#fff',
+				selectText: '#ffffff',
 				borderColor: '#ddd',
+			},
+			pratyList: {
+				bg: '#e6e0f3',
 			},
 			defaultText: '#000',
 			grayText: '#ddd',
@@ -94,7 +103,6 @@ export const customThemeMap = {
 			},
 			text: {
 				primary: '#000000',
-				secondary: '#cb9aff',
 			},
 		},
 	}),
@@ -106,19 +114,22 @@ export const customThemeMap = {
 				subBg: '#fff',
 			},
 			header: {
-				bg: '#1e272e',
+				bg: '#1c1b22',
 				logoText: '#f1f2f6',
 			},
 			title: {
-				main: '#70a1ff',
-				sub: '#D8B4FE',
+				main: '#9b59b6',
+				sub: '#be93dc',
 			},
 			button: {
-				selectBg: '#AB5CFD',
-				defaultBg: '#1e272e',
+				selectBg: '#9b59b6',
+				defaultBg: '#1c1b22',
 				defaultText: '#ddd',
 				selectText: '#fff',
 				borderColor: '#ddd',
+			},
+			pratyList: {
+				bg: '#2a2933',
 			},
 			defaultText: '#fff',
 			grayText: '#7f8c8d',
@@ -126,12 +137,11 @@ export const customThemeMap = {
 		},
 		palette: {
 			background: {
-				default: '#2d3436',
+				default: '#1c1b22',
 				paper: '#1e1e1e',
 			},
 			text: {
 				primary: '#ffffff',
-				secondary: '#cccccc',
 			},
 		},
 	}),

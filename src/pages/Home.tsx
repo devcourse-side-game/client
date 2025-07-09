@@ -35,7 +35,7 @@ function Home() {
 	};
 
 	return (
-		<HomeContainer className='Home'>
+		<HomeContainer className='Home' maxWidth='lg' minWidth='sm' margin='auto'>
 			<ModalProvider>
 				<Tabs
 					value={getTabValue()}

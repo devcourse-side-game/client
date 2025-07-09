@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useSelectedPartyDetail } from '../../hooks/useParties';
-import { Button, Stack, Typography } from '@mui/material';
+import { Button, Stack, Typography, useTheme } from '@mui/material';
 import { PARTY_LIST_ITEM } from '../../constants/Party';
 import PartyMemberList from './PartyMemberList';
 import { PartyListItemButtonWrapper } from '../../styles/pages/party/PartyListItem.style';
 import { useModal } from '../../hooks/useModal';
 import { useUser } from '../../hooks/useUsers';
+import { FormCommonButton } from '../../styles/pages/party/forms/Form.styles';
 
 type TPartyListItemDetailProps = {
 	partyId: number;
@@ -18,6 +19,7 @@ function PartyListItemDetail({ partyId, isCompleted }: TPartyListItemDetailProps
 	const [isPartyMember, setIsPartyMember] = useState<boolean>(false);
 	const { data: user } = useUser();
 	const isLeader = data?.creatorId === user?.id;
+	const theme = useTheme();
 
 	useEffect(() => {
 		if (data && user) {
@@ -69,7 +71,7 @@ function PartyListItemDetail({ partyId, isCompleted }: TPartyListItemDetailProps
 
 				{/* 파티 참가 버튼 - 파티 멤버가 아니고 모집이 완료되지 않은 경우 */}
 				{!isPartyMember && !isCompleted && (
-					<Button
+					<FormCommonButton
 						variant='contained'
 						onClick={() => {
 							openModal('join', {
@@ -79,7 +81,7 @@ function PartyListItemDetail({ partyId, isCompleted }: TPartyListItemDetailProps
 						}}
 					>
 						파티 참가
-					</Button>
+					</FormCommonButton>
 				)}
 
 				{/* 리더 전용 버튼들 - 리더이고 모집이 완료되지 않은 경우 */}

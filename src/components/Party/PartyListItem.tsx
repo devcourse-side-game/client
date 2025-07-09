@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { Stack, Chip, Typography } from '@mui/material';
+import { Stack, Chip, Typography, useTheme } from '@mui/material';
 import { getTimeAgo } from '../../utils/formatters/date';
 import PartyListItemDetail from './PartyListItemDetail';
 import {
@@ -32,6 +32,7 @@ function PartyListItem({ party, expandedPartyId, setExpandedPartyId }: TPartyLis
 		if (isExpanded) setExpandedPartyId(null);
 		else setExpandedPartyId(party.id);
 	};
+	const theme = useTheme();
 
 	// 리스트 아이템 클릭 시
 	return (
@@ -39,6 +40,9 @@ function PartyListItem({ party, expandedPartyId, setExpandedPartyId }: TPartyLis
 			<PartyListItemAccordion
 				expanded={expandedPartyId === party.id}
 				onChange={handleOnAccordionChange}
+				sx={{
+					backgroundColor: theme.customColor.pratyList.bg,
+				}}
 			>
 				<PartyListItemSummaryWrapper>
 					{/* 게임 이미지 */}
