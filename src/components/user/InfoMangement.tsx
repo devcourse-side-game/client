@@ -11,16 +11,18 @@ import {
 import { useUser } from '../../hooks/useUsers';
 import { useDialog } from '../../contexts/AuthModalContext';
 import { deleteUserAip } from '../../api/user';
-import { useNavigate } from 'react-router-dom';
+import { AppDispatch } from '../../stores';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../stores/authSlice';
 
 function MyPageComponent() {
-	const navigate = useNavigate();
+	const dispatch = useDispatch<AppDispatch>();
 
 	function handleSave() {
 		show('정말로 계정을 삭제하시겠습니까?', async () => {
 			console.log('계정 삭제 처리 진행');
 			await deleteUserAip(); // 계정 삭제 처리 진행
-			navigate('/');
+			await dispatch(logout()); // Redux 상태 & localStorage 정리
 		});
 	}
 
