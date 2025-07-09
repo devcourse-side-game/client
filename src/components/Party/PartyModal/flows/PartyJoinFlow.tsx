@@ -3,7 +3,7 @@ import { useJoinParty, useSelectedPartyDetail } from '../../../../hooks/useParti
 import { TPartyFormFlow, TUserGameProfile } from '../../../../types/party';
 import { TextField, Typography } from '@mui/material';
 import {
-	CancelButton,
+	TextButton,
 	FormCommonButton,
 	FormContainer,
 	FormDialogActions,
@@ -80,7 +80,7 @@ export default function PartyJoinFlow({ onFlowComplete, partyId, isPrivate }: TP
 						)}
 					</FormDialogContent>
 					<FormDialogActions>
-						<CancelButton onClick={onFlowComplete}>취소</CancelButton>
+						<TextButton onClick={onFlowComplete}>취소</TextButton>
 						<FormCommonButton
 							onClick={handleOnJoinClick}
 							variant='contained'

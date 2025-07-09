@@ -80,11 +80,12 @@ function PartyListItem({ party, expandedPartyId, setExpandedPartyId }: TPartyLis
 							{/* 파티 참여 인원 */}
 							<Typography
 								variant='body2'
-								color={
-									party.currentMemberCount === party.maxParticipants
-										? 'error'
-										: 'text.secondary'
-								}
+								sx={{
+									color:
+										party.currentMemberCount === party.maxParticipants
+											? 'red'
+											: theme.customColor.defaultText,
+								}}
 							>
 								{`(${party.currentMemberCount} / ${party.maxParticipants})`}
 							</Typography>

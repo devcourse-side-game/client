@@ -1,21 +1,20 @@
-import { ListItemText, MenuItem, useTheme } from '@mui/material';
+import { ListItemText, useTheme } from '@mui/material';
 import { IMypageMenuItem } from '../../types/user';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { MenuItemList } from '../../styles/pages/party/forms/Form.styles';
 
 function MenuItemCompoent({ menuTitle, path }: IMypageMenuItem) {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const select = location.pathname === path;
-	const theme = useTheme();
 
 	async function moveComponent() {
 		await navigate(path);
 	}
-
 	return (
-		<MenuItem sx={{ height: '55px' }} selected={select} onClick={moveComponent}>
-			<ListItemText sx={{ color: theme.customColor.defaultText }}>{menuTitle}</ListItemText>
-		</MenuItem>
+		<MenuItemList selected={select} onClick={moveComponent}>
+			<ListItemText>{menuTitle}</ListItemText>
+		</MenuItemList>
 	);
 }
 

@@ -3,7 +3,7 @@ import { useDisbandParty } from '../../../../hooks/useParties';
 import { TPartyFormFlow } from '../../../../types/party';
 import { Button } from '@mui/material';
 import { DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
-import { CancelButton, FormCommonButton } from '../../../../styles/pages/party/forms/Form.styles';
+import { TextButton, FormCommonButton } from '../../../../styles/pages/party/forms/Form.styles';
 
 type TPartyDisbandFlowProps = {
 	onFlowComplete: () => void;
@@ -39,7 +39,7 @@ export default function PartyDisbandFlow({ onFlowComplete, partyId }: TPartyDisb
 						</Typography>
 					</DialogContent>
 					<DialogActions>
-						<CancelButton onClick={onFlowComplete}>취소</CancelButton>
+						<TextButton onClick={onFlowComplete}>취소</TextButton>
 						<Button
 							onClick={handleOnClick}
 							variant='contained'

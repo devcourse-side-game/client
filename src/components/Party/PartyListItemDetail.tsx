@@ -96,7 +96,7 @@ function PartyListItemDetail({ partyId, isCompleted }: TPartyListItemDetailProps
 						>
 							파티 해산
 						</Button>
-						<Button
+						<FormCommonButton
 							variant='contained'
 							color='primary'
 							onClick={() => {
@@ -104,7 +104,7 @@ function PartyListItemDetail({ partyId, isCompleted }: TPartyListItemDetailProps
 							}}
 						>
 							파티 모집 완료
-						</Button>
+						</FormCommonButton>
 					</Stack>
 				)}
 

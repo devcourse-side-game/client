@@ -1,5 +1,4 @@
 import {
-	Button,
 	FormControlLabel,
 	FormGroup,
 	InputAdornment,
@@ -18,7 +17,7 @@ import {
 import { useCreateParty } from '../../../../hooks/useParties';
 import { TGame } from '../../../../types/game';
 import {
-	CancelButton,
+	TextButton,
 	FormCommonButton,
 	FormContainer,
 	FormDialogActions,
@@ -181,7 +180,7 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 						)}
 					</FormDialogContent>
 					<FormDialogActions>
-						<CancelButton onClick={onFlowComplete}>취소</CancelButton>
+						<TextButton onClick={onFlowComplete}>취소</TextButton>
 						<FormCommonButton
 							onClick={handleOnCreateClick}
 							variant='contained'

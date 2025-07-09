@@ -18,7 +18,6 @@ const ThemeContext = createContext<ThemeContextType | undefined>({
 
 export function UseThemeContext() {
 	const ctx = useContext(ThemeContext);
-	console.log('[DEBUG] ThemeContext value:', ctx); // ✅ null이면 감싸지 않은 것
 	if (!ctx) {
 		console.warn('⚠️ ThemeContext가 적용되지 않았습니다. 기본값으로 처리됩니다.');
 		return {

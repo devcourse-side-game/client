@@ -1,13 +1,13 @@
-import { Avatar, Box, Grid, Typography } from '@mui/material';
+import { Avatar, Box, Grid, Paper, Typography, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 function GameConectBox() {
+	const theme = useTheme();
 	return (
-		<Box
+		<Paper
 			sx={{
 				width: '100%',
-				bgcolor: '#e7e7e7',
-				'&:hover': { bgcolor: '#ddd' },
+				'&:hover': { bgcolor: theme.customColor.input.bg },
 				borderRadius: '15px',
 				mt: 1,
 				cursor: 'pointer',
@@ -27,7 +27,7 @@ function GameConectBox() {
 					<AddIcon />
 				</Grid>
 			</Grid>
-		</Box>
+		</Paper>
 	);
 }
 

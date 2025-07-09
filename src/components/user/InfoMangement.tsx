@@ -5,8 +5,10 @@ import {
 	Container,
 	Divider,
 	Grid,
+	Modal,
 	TextField,
 	Typography,
+	useTheme,
 } from '@mui/material';
 import { useUser } from '../../hooks/useUsers';
 import { useDialog } from '../../contexts/AuthModalContext';
@@ -14,6 +16,7 @@ import { deleteUserAip } from '../../api/user';
 import { AppDispatch } from '../../stores';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../stores/authSlice';
+import { FormInputs, TextButton } from '../../styles/pages/party/forms/Form.styles';
 
 function MyPageComponent() {
 	const dispatch = useDispatch<AppDispatch>();
@@ -28,6 +31,7 @@ function MyPageComponent() {
 
 	const { data, isLoading } = useUser();
 	const { show } = useDialog();
+	const theme = useTheme();
 
 	return isLoading ? (
 		<div>Loading...</div>
@@ -46,7 +50,7 @@ function MyPageComponent() {
 					<Avatar src='/profile.jpg' sx={{ width: 64, height: 64 }} />
 					<Box>
 						<Typography variant='h6'>{data?.username}</Typography>
-						<Typography color='text.secondary'>
+						<Typography color={theme.customColor.title.sub}>
 							{data?.createdAt.toString().split('T')[0]}
 						</Typography>
 					</Box>
@@ -54,33 +58,33 @@ function MyPageComponent() {
 
 				<Divider sx={{ my: 2 }} />
 
-				<TextField fullWidth label='이메일' value={data?.email} disabled sx={{ mt: 2 }} />
+				<FormInputs fullWidth label='이메일' value={data?.email} disabled sx={{ mt: 2 }} />
 				<Grid container spacing={2}>
 					<Grid size={10}>
-						<TextField
+						<FormInputs
 							fullWidth
 							label='비밀번호'
 							type='password'
-							value={data?.password}
+							value='defaultPassword'
 							disabled
 							sx={{ mt: 2 }}
 						/>
 					</Grid>
 					<Grid size={'grow'} sx={{ height: '100%' }}>
-						<Button
+						<TextButton
 							sx={{ height: '55px', mt: 2 }}
 							variant='text'
 							fullWidth
 							onClick={() => console.log('ㅇㅇㅇ')}
 						>
 							수정
-						</Button>
+						</TextButton>
 					</Grid>
 				</Grid>
 
 				<Grid container spacing={2} sx={{ mb: 4 }}>
 					<Grid size={10}>
-						<TextField
+						<FormInputs
 							fullWidth
 							label='닉네임'
 							value={data?.username}
@@ -89,14 +93,14 @@ function MyPageComponent() {
 						/>
 					</Grid>
 					<Grid size={'grow'} sx={{ height: '100%' }}>
-						<Button
+						<TextButton
 							sx={{ height: '55px', mt: 2 }}
 							variant='text'
 							fullWidth
 							onClick={() => console.log('ㅇㅇㅇ')}
 						>
 							수정
-						</Button>
+						</TextButton>
 					</Grid>
 				</Grid>
 

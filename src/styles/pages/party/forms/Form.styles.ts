@@ -1,5 +1,13 @@
 import { styled } from '@mui/material/styles';
-import { Box, DialogContent, DialogTitle, DialogActions, Button } from '@mui/material';
+import {
+	Box,
+	DialogContent,
+	DialogTitle,
+	DialogActions,
+	Button,
+	TextField,
+	MenuItem,
+} from '@mui/material';
 
 export const FormContainer = styled(Box)(({ theme }) => ({
 	width: '100%',
@@ -22,9 +30,10 @@ export const FormDialogTitle = styled(DialogTitle)(({ theme }) => ({
 
 export const FormCommonButton = styled(Button)(({ theme }) => ({
 	backgroundColor: theme.customColor.button.selectBg,
+	color: theme.customColor.button.selectText,
 }));
 
-export const CancelButton = styled(Button)(({ theme }) => ({
+export const TextButton = styled(Button)(({ theme }) => ({
 	color: theme.customColor.button.selectBg,
 }));
 
@@ -44,4 +53,38 @@ export const FormDialogActions = styled(DialogActions)(({ theme }) => ({
 	justifyContent: 'flex-end',
 	gap: theme.spacing(1),
 	padding: '10px',
+}));
+
+export const FormInputs = styled(TextField)(({ theme }) => ({
+	'& .MuiInputBase-input': {
+		color: theme.customColor.input.text,
+	},
+	'& .MuiOutlinedInput-root': {
+		backgroundColor: theme.customColor.input.bg,
+		'&.Mui-focused fieldset': {
+			borderColor: theme.customColor.input.border,
+		},
+	},
+	'& .MuiInputLabel-root': {
+		color: theme.customColor.input.text,
+		'&.Mui-focused': {
+			color: theme.customColor.input.border,
+		},
+	},
+}));
+
+export const MenuItemList = styled(MenuItem)(({ theme }) => ({
+	height: '55px',
+	color: theme.customColor.defaultText,
+	'&:hover': {
+		backgroundColor: theme.customColor.input.bg,
+		color: theme.customColor.title.main,
+	},
+	'&.Mui-selected': {
+		backgroundColor: theme.customColor.input.bg,
+		color: theme.customColor.title.main,
+		'&:hover': {
+			backgroundColor: theme.customColor.input.bg,
+		},
+	},
 }));

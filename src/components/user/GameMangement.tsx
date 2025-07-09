@@ -13,8 +13,11 @@ function GameMangement() {
 			<Divider sx={{ my: 2 }} />
 
 			<Container>
-				<GameConectBox />
-				<GameConectBox />
+				<div>
+					<h4>개발중...</h4>
+				</div>
+				{/* <GameConectBox />
+				<GameConectBox /> */}
 			</Container>
 		</Container>
 	);

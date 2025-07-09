@@ -24,6 +24,12 @@ declare module '@mui/material/styles' {
 				selectText: string;
 				borderColor: string;
 			};
+			input: {
+				text: string;
+				bg: string;
+				subBg?: string;
+				border: string;
+			};
 			pratyList: {
 				bg: string;
 			};
@@ -55,6 +61,12 @@ declare module '@mui/material/styles' {
 				defaultText: string;
 				selectText: string;
 				borderColor: string;
+			};
+			input: {
+				text: string;
+				bg: string;
+				subBg?: string;
+				border: string;
 			};
 			pratyList: {
 				bg: string;
@@ -89,17 +101,23 @@ export const customThemeMap = {
 				selectText: '#ffffff',
 				borderColor: '#ddd',
 			},
+			input: {
+				text: '#1e1e23',
+				bg: '#f3e8ff',
+				subBg: '#f1f2f6',
+				border: '#9b59b6',
+			},
 			pratyList: {
 				bg: '#e6e0f3',
 			},
 			defaultText: '#000',
-			grayText: '#ddd',
+			grayText: '#7f8c8d',
 			validatText: '#2ecc71',
 		},
 		palette: {
 			background: {
 				default: '#f1f2f6',
-				paper: '#ffffff',
+				paper: '#e6e0f3',
 			},
 			text: {
 				primary: '#000000',
@@ -128,6 +146,12 @@ export const customThemeMap = {
 				selectText: '#fff',
 				borderColor: '#ddd',
 			},
+			input: {
+				text: '#1e1e23',
+				bg: '#f3e8ff',
+				subBg: '#2a2933',
+				border: '#9b59b6',
+			},
 			pratyList: {
 				bg: '#2a2933',
 			},
@@ -138,7 +162,7 @@ export const customThemeMap = {
 		palette: {
 			background: {
 				default: '#1c1b22',
-				paper: '#1e1e1e',
+				paper: '#2a2933',
 			},
 			text: {
 				primary: '#ffffff',

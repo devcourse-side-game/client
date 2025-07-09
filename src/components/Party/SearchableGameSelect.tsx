@@ -83,7 +83,21 @@ function SearchableGameSelect({ setOptionGame, validate }: TSearchableGameSelect
 					error={!!validate}
 					helperText={validate}
 					sx={{
-						color: theme.customColor.defaultText,
+						'& .MuiInputBase-input': {
+							color: theme.customColor.grayText,
+						},
+						'& .MuiOutlinedInput-root': {
+							backgroundColor: theme.customColor.input.subBg,
+							'&.Mui-focused fieldset': {
+								borderColor: theme.customColor.input.border,
+							},
+						},
+						'& .MuiInputLabel-root': {
+							color: theme.customColor.grayText,
+							'&.Mui-focused': {
+								color: theme.customColor.input.border,
+							},
+						},
 					}}
 				/>
 			)}

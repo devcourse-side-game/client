@@ -3,7 +3,7 @@ import { TPartyFormFlow } from '../../../../types/party';
 import { useCompleteParty } from '../../../../hooks/useParties';
 import { Button } from '@mui/material';
 import { DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
-import { CancelButton, FormCommonButton } from '../../../../styles/pages/party/forms/Form.styles';
+import { TextButton, FormCommonButton } from '../../../../styles/pages/party/forms/Form.styles';
 
 type TPartyCompleteFlowProps = {
 	onFlowComplete: () => void;
@@ -36,7 +36,7 @@ export default function PartyCompleteFlow({ onFlowComplete, partyId }: TPartyCom
 						</Typography>
 					</DialogContent>
 					<DialogActions>
-						<CancelButton onClick={onFlowComplete}>취소</CancelButton>
+						<TextButton onClick={onFlowComplete}>취소</TextButton>
 						<FormCommonButton
 							onClick={handleOnClick}
 							variant='contained'

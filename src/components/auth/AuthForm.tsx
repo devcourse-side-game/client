@@ -46,6 +46,7 @@ import { AppDispatch } from '../../stores';
 import { Response } from '../../types/response';
 import { useQueryClient } from '@tanstack/react-query';
 import { EMAIL_REGEX } from '../../constants/regex';
+import { FormInputs } from '../../styles/pages/party/forms/Form.styles';
 
 const AuthButton = styled(Button)(({ theme }) => ({
 	backgroundColor: theme.customColor.button.selectBg,
@@ -76,7 +77,6 @@ function PasswordValidateMessage({ check, content }: IPasswordValidBoxPorps) {
 		</Box>
 	);
 }
-
 function FormInput({ error, control, label, required, inputName, inputType = 'text' }: IFormInput) {
 	return (
 		<Controller
@@ -86,14 +86,16 @@ function FormInput({ error, control, label, required, inputName, inputType = 'te
 				required,
 			}}
 			render={({ field }) => (
-				<TextField
+				<FormInputs
 					{...field}
 					error={!!error[inputName]}
 					label={label}
 					type={inputType}
-					sx={{ marginBottom: '10px' }}
 					slotProps={{
 						htmlInput: EMAIL_REGEX,
+					}}
+					sx={{
+						marginBottom: '10px',
 					}}
 				/>
 			)}
@@ -229,7 +231,7 @@ function AuthForm({ formType }: IFormTypeProps) {
 								render={({ field }) => (
 									<Grid container spacing={2} sx={{ marginBottom: '10px' }}>
 										<Grid size={10}>
-											<TextField
+											<FormInputs
 												{...field}
 												inputRef={field.ref}
 												error={!!errors.username}

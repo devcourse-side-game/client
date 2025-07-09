@@ -63,6 +63,7 @@ export const PartyMemberListWrapper = styled(Stack)(({ theme }) => ({
 	justifyContent: 'center',
 	gap: theme.spacing(1),
 	width: '100%',
+	marginBottom: '7px',
 }));
 
 export const PartyMemberListItemWrapper = styled(Box)(({ theme }) => ({

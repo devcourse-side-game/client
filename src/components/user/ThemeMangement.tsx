@@ -16,7 +16,6 @@ function ThemeMangement() {
 		}
 	}
 
-	console.log(select);
 	const theme = useTheme();
 	return (
 		<Container maxWidth='sm' sx={{ p: 2, width: '500px' }}>
