@@ -1,4 +1,4 @@
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import { Box, Button, Paper, Stack } from '@mui/material';
 
 export const PartyFilterContainer = styled(Paper)(({ theme }) => ({
@@ -36,8 +36,8 @@ export const PartyFilterButton = styled(Button)(({ theme }) => ({
 	alignItems: 'center',
 	justifyContent: 'center',
 	borderRadius: theme.shape.borderRadius,
-	backgroundColor: theme.palette.primary.main,
-	color: theme.palette.primary.contrastText,
+	backgroundColor: theme.customColor.button.selectBg,
+	color: theme.customColor.button.selectText,
 	gap: theme.spacing(2),
 }));
 export const PartyFilterChipWrapper = styled(Box)(({ theme }) => ({

@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { ThemeType } from '../constants/enums';
 import { CssBaseline, ThemeProvider } from '@mui/material';
-import themeMap from '../theme';
+import { customThemeMap } from '../theme';
 import { Theme } from '@emotion/react';
 
 interface ThemeContextType {
@@ -40,7 +40,8 @@ export function CustomThemeProvider({ children }: { children: React.ReactNode })
 		setMode(mode);
 	};
 
-	const theme: Theme = useMemo(() => themeMap[mode], [mode]);
+	const theme: Theme = useMemo(() => customThemeMap[mode], [mode]);
+
 
 	return (
 		<ThemeContext.Provider value={{ mode, toggleThemeMode, setThemeMode }}>

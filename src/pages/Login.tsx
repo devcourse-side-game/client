@@ -1,12 +1,19 @@
-import { Container, Grid, Link } from '@mui/material';
+import { Container, Grid, Link, Typography } from '@mui/material';
 import AuthForm from '../components/auth/AuthForm';
-import FormTitle from '../components/auth/FormTitle';
 import { FormType } from '../constants/enums';
 
 function Login() {
 	return (
 		<Container maxWidth='sm' sx={{ marginTop: '10dvh' }}>
-			<FormTitle title='로그인' />
+			<Typography
+				variant='h2'
+				component='h2'
+				sx={{
+					textAlign: 'center',
+				}}
+			>
+				로그인
+			</Typography>
 			<AuthForm formType={FormType.LOGIN} />
 			<Grid
 				container

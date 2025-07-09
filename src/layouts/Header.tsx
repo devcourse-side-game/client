@@ -7,8 +7,8 @@ import {
 	IconButton,
 	Toolbar,
 	Typography,
+	useTheme,
 } from '@mui/material';
-import AdbIcon from '@mui/icons-material/Adb';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../stores';
@@ -25,6 +25,7 @@ function Header() {
 	const location = useLocation();
 	const dispatch = useDispatch<AppDispatch>();
 	const queryClient = useQueryClient();
+	const theme = useTheme();
 
 	const show = !(location.pathname === '/login' || location.pathname === '/signup');
 
@@ -41,24 +42,29 @@ function Header() {
 	};
 
 	return (
-		<AppBar position='static'>
-			<Container maxWidth='xl'>
+		<AppBar
+			position='static'
+			elevation={0}
+			sx={{
+				backgroundColor: theme.customColor.header.bg,
+			}}
+		>
+			<Container maxWidth='lg'>
 				<Toolbar sx={{ display: { xs: 'flex', md: 'flex' }, mr: 1 }} disableGutters>
 					<Box
 						sx={{ flexGrow: 0, display: { xs: 'flex' }, alignItems: 'center' }}
 						onClick={() => navigate('/')}
 					>
 						<Typography
-							variant='h6'
+							variant='h5'
 							noWrap
 							component='a'
 							sx={{
 								mr: 2,
 								display: { xs: 'none', md: 'flex' },
-								fontFamily: 'monospace',
-								fontWeight: 700,
-								letterSpacing: '0',
-								color: 'inherit',
+								letterSpacing: '-1px',
+								fontWeight: 'bold',
+								color: theme.customColor.header.logoText,
 								textDecoration: 'none',
 								cursor: 'pointer',
 							}}
@@ -76,17 +82,22 @@ function Header() {
 								>
 									<Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
 								</IconButton>
-								<IconButton sx={{ color: '#fff' }} onClick={handleLogout}>
+								<IconButton
+									sx={{ color: theme.customColor.button.defaultText }}
+									onClick={handleLogout}
+								>
 									<LogoutIcon></LogoutIcon>
 								</IconButton>
 							</>
 						) : (
 							show && (
 								<Button
-									variant='contained'
-									color='primary'
+									variant='text'
 									fullWidth
 									onClick={() => navigate('/login')}
+									sx={{
+										color: theme.customColor.button.defaultText,
+									}}
 								>
 									로그인
 								</Button>

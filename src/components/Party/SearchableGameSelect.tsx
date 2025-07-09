@@ -1,5 +1,12 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
-import { TextField, Autocomplete, CircularProgress, Box, Typography } from '@mui/material';
+import {
+	TextField,
+	Autocomplete,
+	CircularProgress,
+	Box,
+	Typography,
+	useTheme,
+} from '@mui/material';
 import { TGame } from '../../types/game';
 import { useGameList } from '../../hooks/useGames';
 import GameImage from '../../assets/gameImage.png';
@@ -20,6 +27,7 @@ function SearchableGameSelect({ setOptionGame, validate }: TSearchableGameSelect
 	});
 
 	const games = isSuccess ? data : [];
+	const theme = useTheme();
 
 	return (
 		<Autocomplete<TGame>
@@ -71,8 +79,12 @@ function SearchableGameSelect({ setOptionGame, validate }: TSearchableGameSelect
 							</>
 						),
 					}}
+					color='primary'
 					error={!!validate}
 					helperText={validate}
+					sx={{
+						color: theme.customColor.defaultText,
+					}}
 				/>
 			)}
 			onInputChange={(event, newInputValue) => {

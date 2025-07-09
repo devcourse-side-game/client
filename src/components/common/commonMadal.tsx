@@ -2,10 +2,16 @@ import { Button, Dialog, DialogActions, DialogContent, DialogContentText } from 
 import { useDialog } from '../../contexts/AuthModalContext';
 
 function CommonModal() {
-	const { isOpen, message, hide, onConfirm } = useDialog();
+	const { isOpen, message, hide, onConfirm, onCancle } = useDialog();
 
 	const handleConfirm = () => {
 		if (onConfirm) onConfirm();
+
+		hide();
+	};
+
+	const handleCancle = () => {
+		if (onCancle) onCancle();
 
 		hide();
 	};
@@ -21,6 +27,11 @@ function CommonModal() {
 					<Button onClick={handleConfirm} color='primary'>
 						확인
 					</Button>
+					{onCancle ? (
+						<Button onClick={handleCancle} color='error'>
+							취소
+						</Button>
+					) : null}
 				</DialogActions>
 			</Dialog>
 		</div>

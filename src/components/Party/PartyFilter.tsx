@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Typography, Chip, Button } from '@mui/material';
+import { Typography, Chip, Button, useTheme } from '@mui/material';
 import SearchableGameSelect from './SearchableGameSelect';
 import { TFilterOption } from '../../types/party';
 import {
@@ -7,6 +7,7 @@ import {
 	PartyFilterOptionsWrapper,
 	PartyFilterButtonContainer,
 	PartyFilterChipWrapper,
+	PartyFilterButton,
 } from '../../styles/pages/party/PartyFilter.styles';
 import { TGame } from '../../types/game';
 
@@ -52,9 +53,10 @@ function PartyFilter({ filterOptions, setFilterOptions }: TPartyFilterProps) {
 		);
 		setFilterOptions(newFilterOption);
 	};
+	const theme = useTheme();
 	return (
 		<PartyFilterContainer>
-			<Typography variant='h6' sx={{ color: 'text.secondary', fontWeight: '700' }}>
+			<Typography variant='h6' sx={{ color: theme.customColor.title.sub, fontWeight: '700' }}>
 				필터 옵션
 			</Typography>
 			<PartyFilterOptionsWrapper direction='row'>
@@ -73,12 +75,16 @@ function PartyFilter({ filterOptions, setFilterOptions }: TPartyFilterProps) {
 			</PartyFilterChipWrapper>
 
 			<PartyFilterButtonContainer>
-				<Button variant='text' onClick={handleFilterReset}>
+				<Button
+					variant='text'
+					onClick={handleFilterReset}
+					sx={{ color: theme.customColor.title.sub }}
+				>
 					필터 초기화
 				</Button>
-				<Button variant='contained' onClick={handleFilterChange}>
+				<PartyFilterButton variant='contained' onClick={handleFilterChange}>
 					필터 적용
-				</Button>
+				</PartyFilterButton>
 			</PartyFilterButtonContainer>
 		</PartyFilterContainer>
 	);

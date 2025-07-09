@@ -1,4 +1,4 @@
-export interface IMenuItem {
+export interface IMypageMenuItem {
 	menuTitle: string;
 	path: string;
 }

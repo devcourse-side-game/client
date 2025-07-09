@@ -1,10 +1,28 @@
-import { Box, Button, FormControl, FormHelperText, Grid, Link, TextField } from '@mui/material';
+import {
+	Box,
+	Button,
+	FormControl,
+	FormHelperText,
+	Grid,
+	Link,
+	TextField,
+	Typography,
+	useTheme,
+} from '@mui/material';
 import { FormType } from '../../constants/enums';
-import { IFormTypeProps, IUserFormData } from '../../types/auth';
+import {
+	IFormInput,
+	IFormTypeProps,
+	IPasswordValidBoxPorps,
+	IUserFormData,
+} from '../../types/auth';
 import { Controller } from 'react-hook-form';
 import { useAuthForm } from '../../hooks/useAuthForm';
+import CheckIcon from '@mui/icons-material/Check';
+
 import {
 	ALREADU_USED_USERNAME,
+	EMAIL_ALREADY_USED_ERROR,
 	ENTER_EMAIL,
 	ENTER_PASSWORD,
 	ENTER_USERNAME,
@@ -12,7 +30,6 @@ import {
 	NOT_FOUND_USER,
 	PASSWORD_MISMATCH_ERROR,
 } from '../../constants/error';
-import PasswordValidBox from './PasswordValidBox';
 import {
 	LOGIN_TITLE,
 	PASSWORD_LENGTH_VALID,
@@ -22,13 +39,59 @@ import {
 import { AxiosError } from 'axios';
 import { loginApi, signupApi } from '../../api/auth';
 import { useDialog } from '../../contexts/AuthModalContext';
-import FormInput from './FormInput';
 import { loginSuccess } from '../../stores/authSlice';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../stores';
 import { Response } from '../../types/response';
 import { useQueryClient } from '@tanstack/react-query';
+import { EMAIL_REGEX } from '../../constants/regex';
+
+// 비밀번호 충족 조건 validate
+function PasswordValidateMessage({ check, content }: IPasswordValidBoxPorps) {
+	const theme = useTheme();
+	return (
+		<Box display='flex' alignItems='center' gap={1}>
+			<CheckIcon
+				sx={{
+					fontSize: 16,
+					color: `${check ? theme.customColor.validatText : theme.customColor.grayText}`,
+				}}
+			/>
+			<Typography
+				sx={{
+					color: `${check ? theme.customColor.validatText : theme.customColor.grayText}`,
+				}}
+			>
+				{content}
+			</Typography>
+		</Box>
+	);
+}
+
+function FormInput({ error, control, label, required, inputName, inputType = 'text' }: IFormInput) {
+	return (
+		<Controller
+			name={inputName}
+			control={control}
+			rules={{
+				required,
+			}}
+			render={({ field }) => (
+				<TextField
+					{...field}
+					error={!!error[inputName]}
+					label={label}
+					type={inputType}
+					sx={{ marginBottom: '10px' }}
+					slotProps={{
+						htmlInput: EMAIL_REGEX,
+					}}
+				/>
+			)}
+		/>
+	);
+}
 
 function AuthForm({ formType }: IFormTypeProps) {
 	const {
@@ -47,6 +110,8 @@ function AuthForm({ formType }: IFormTypeProps) {
 	const navigate = useNavigate();
 	const dispatch = useDispatch<AppDispatch>();
 	const queryClient = useQueryClient();
+	const theme = useTheme();
+
 	const errorMessage =
 		errors.email?.message ||
 		errors.password?.message ||
@@ -93,13 +158,13 @@ function AuthForm({ formType }: IFormTypeProps) {
 		} catch (err: unknown) {
 			const axiosError = err as AxiosError<Response>;
 			const response = axiosError.response?.data;
-			console.log(err);
+			console.log(response?.errorCode);
 			switch (response?.errorCode) {
 				case ErrorCode.DATABASE_ERROR:
 					show(response.message);
 					break;
 				case ErrorCode.USER_ALREADY_EXISTS:
-					setError('username', { message: ALREADU_USED_USERNAME });
+					setError('email', { message: EMAIL_ALREADY_USED_ERROR });
 					break;
 				case ErrorCode.REPASSWORD_MISMATCH:
 					setError('passwordCheck', { message: PASSWORD_MISMATCH_ERROR });
@@ -169,7 +234,10 @@ function AuthForm({ formType }: IFormTypeProps) {
 												variant='contained'
 												fullWidth
 												onClick={confirmUsername}
-												sx={{ height: '55px' }}
+												sx={{
+													height: '55px',
+													backgroundColor: theme.customColor.mainButton,
+												}}
 											>
 												확인
 											</Button>
@@ -207,11 +275,12 @@ function AuthForm({ formType }: IFormTypeProps) {
 							/>
 
 							<Box>
-								<PasswordValidBox
+								<PasswordValidateMessage
 									check={isLengthValid}
 									content={PASSWORD_LENGTH_VALID}
 								/>
-								<PasswordValidBox
+
+								<PasswordValidateMessage
 									check={isComplexValid}
 									content={PASSWORD_LETTER_VALID}
 								/>
@@ -251,7 +320,11 @@ function AuthForm({ formType }: IFormTypeProps) {
 						{errorMessage}
 					</FormHelperText>
 
-					<Button variant='contained' type='submit'>
+					<Button
+						variant='contained'
+						type='submit'
+						sx={{ backgroundColor: theme.customColor.mainButton }}
+					>
 						{formType === FormType.LOGIN ? LOGIN_TITLE : SIGNUP_TITLE}
 					</Button>
 				</FormControl>

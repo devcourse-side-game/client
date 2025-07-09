@@ -85,19 +85,10 @@ export function useAuthForm({ formType }: IFormTypeProps) {
 	};
 
 	const onValidate = async (data: IUserFormData) => {
-		if (!data.email) {
-			setError('email', { message: ENTER_EMAIL });
-			return false;
-		}
-		if (!EMAIL_REGEX.test(data.email)) {
-			setError('email', { message: EMAIL_VALIDATION_ERROR });
-			return false;
-		}
-		if (!data.password) {
-			setError('password', { message: ENTER_PASSWORD });
-			return false;
-		}
-
+		// if (!EMAIL_REGEX.test(data.email)) {
+		// 	setError('email', { message: EMAIL_VALIDATION_ERROR });
+		// 	return false;
+		// }
 		if (formType === FormType.SIGNUP) {
 			// 유저 닉네임 확인
 			if (!data.username) {

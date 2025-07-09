@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Typography, useTheme } from '@mui/material';
 import { BOARD_PARTY } from '../../constants/Party';
 import PartyFilter from './PartyFilter';
 import PartyList from './PartyList';
@@ -7,6 +7,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { IGetPartiesData, TFilterOption, TTabType } from '../../types/party';
 import { useInfiniteMyParties, useInfiniteParties } from '../../hooks/useParties';
 import { useModal } from '../../hooks/useModal';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import {
 	PartyBoardContainer,
 	PartyBoardHeaderWrapper,
@@ -90,10 +91,19 @@ function PartyBoard({ type }: { type: TTabType }) {
 		setPagination((prev) => ({ ...prev, page: 1 })); // 페이지 초기화
 	};
 
+	const theme = useTheme();
 	return (
 		<PartyBoardContainer>
 			<PartyBoardHeaderWrapper>
-				<Typography variant='h3'>{BOARD_PARTY.PARTY_BOARD_TITLE}</Typography>
+				<Typography
+					variant='h3'
+					sx={{
+						letterSpacing: '-4px',
+						color: theme.customColor.title.main,
+					}}
+				>
+					{BOARD_PARTY.PARTY_BOARD_TITLE}
+				</Typography>
 				<Typography variant='h6' fontWeight={400}>
 					{type === TTabType.PARTY_FINDER
 						? BOARD_PARTY.PARTY_BOARD_SUBTITLE_FINDER
@@ -109,12 +119,14 @@ function PartyBoard({ type }: { type: TTabType }) {
 				<></>
 			)}
 			<PartyButtonWrapper>
-				<Box sx={{ width: '100px' }}></Box>
-				<Button variant='text' onClick={handleRefreshClick}>
-					새로운 게시글 불러오기
-				</Button>
 				<Button variant='contained' onClick={handleOpenCreateModal}>
 					파티 생성
+				</Button>
+				<Box sx={{ width: '100px' }}></Box>
+
+				<Button variant='text' onClick={handleRefreshClick}>
+					불러오기
+					<RestartAltIcon />
 				</Button>
 			</PartyButtonWrapper>
 

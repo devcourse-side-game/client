@@ -1,3 +1,7 @@
+body{
+ -ms-overflow-style: none;
+ }
+
 .App {
   text-align: center;
 }
