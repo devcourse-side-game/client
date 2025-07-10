@@ -21,7 +21,7 @@ export const ChipContainer = styled(Stack)(() => ({
 	flexDirection: 'row',
 	alignItems: 'center',
 	justifyContent: 'left',
-	height: '40px',
+	marginTop: '10px',
 }));
 
 export const PartyListItemDetailsWrapper = styled(AccordionDetails)(() => ({
@@ -30,16 +30,17 @@ export const PartyListItemDetailsWrapper = styled(AccordionDetails)(() => ({
 	flexDirection: 'column',
 	alignItems: 'left',
 	justifyContent: 'left',
+	marginLeft: '10px',
 }));
 
 export const PartyListItemTitleWrapper = styled(Stack)(({ theme }) => ({
 	display: 'flex',
 	flexDirection: 'row',
-	alignItems: 'flex-end',
+	alignItems: 'center',
 	justifyContent: 'left',
 	gap: theme.spacing(1),
 	fontSize: '16px',
-	height: '40px',
+	// height: '40px',
 }));
 export const PartyListItemButtonWrapper = styled(Box)(() => ({
 	display: 'flex',
@@ -67,7 +68,7 @@ export const PartyMemberListWrapper = styled(Stack)(({ theme }) => ({
 }));
 
 export const PartyMemberListItemWrapper = styled(Box)(({ theme }) => ({
-	border: `1px solid ${theme.palette.grey[300]}`,
+	border: `1px solid ${theme.palette.grey[400]}`,
 	height: '60px',
 	borderRadius: '10px',
 	padding: '10px',

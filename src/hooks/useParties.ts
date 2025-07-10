@@ -133,8 +133,8 @@ export const useCreateParty = () => {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['parties'] });
 		},
-		onError: () => {
-			console.error('파티 생성 실패');
+		onError: (error) => {
+			console.error('파티 생성 실패', error);
 			//TODO: 에러 로깅이 들어가면 좋을것 같습니다
 		},
 	});

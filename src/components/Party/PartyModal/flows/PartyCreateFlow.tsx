@@ -110,6 +110,9 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 							error={!!errors.title}
 							helperText={errors.title}
 							onChange={(e) => setFormTitle(e.target.value)}
+							inputProps={{
+								maxLength: 100,
+							}}
 						/>
 						<SearchableGameSelect
 							setOptionGame={setOptionGame}
