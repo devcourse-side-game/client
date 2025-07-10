@@ -13,7 +13,7 @@ function App() {
 		<Provider store={store}>
 			<CustomThemeProvider>
 				<AuthModalProvider>
-					<BrowserRouter>
+					<BrowserRouter basename={process.env.PUBLIC_URL}>
 						<Header />
 						<Box sx={{ flexGrow: 1 }}>
 							<AppRoutes />
