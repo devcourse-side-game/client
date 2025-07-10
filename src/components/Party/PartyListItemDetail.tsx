@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelectedPartyDetail } from '../../hooks/useParties';
-import { Button, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Button, Divider, Stack, Typography, useTheme } from '@mui/material';
 import { PARTY_LIST_ITEM } from '../../constants/Party';
 import PartyMemberList from './PartyMemberList';
 import { PartyListItemButtonWrapper } from '../../styles/pages/party/PartyListItem.style';
@@ -41,29 +41,42 @@ function PartyListItemDetail({ partyId, isCompleted }: TPartyListItemDetailProps
 	}
 
 	return (
-		<Stack direction='column' spacing={2}>
-			<Typography variant='h6' align='left'>
-				{PARTY_LIST_ITEM.DETAILS_TITLE}
-			</Typography>
-			<Typography variant='body2' align='left'>
-				{data.description || '설명이 없습니다'}
-			</Typography>
-			<Typography variant='h6' align='left'>
+		<Stack direction='column' spacing={1} width='100%'>
+			<Divider />
+			<Box sx={{ minHeight: '150px', padding: '5px 0' }}>
+				<Typography variant='h6'>{PARTY_LIST_ITEM.DETAILS_TITLE}</Typography>
+				<Typography
+					variant='body1'
+					sx={{ marginTop: '5px', maxHeight: '120px', overflow: 'auto' }}
+				>
+					{data.description || '설명이 없습니다'}
+				</Typography>
+			</Box>
+
+			<Divider />
+
+			<Typography variant='h6'>
 				{PARTY_LIST_ITEM.getPartyMembersTitle(data.members.length, data.maxParticipants)}
 			</Typography>
+
 			<PartyMemberList
 				members={data.members}
 				partyId={data.id}
 				isCompleted={isCompleted}
 				partyLeaderId={data.leaderId}
 			/>
+
 			<PartyListItemButtonWrapper>
 				{/* 모집 완료 메시지 */}
 				{isCompleted && (
 					<Typography
 						variant='body2'
 						color='text.secondary'
-						sx={{ mb: 1, textAlign: 'center' }}
+						sx={{
+							textAlign: 'center',
+							color: theme.customColor.defaultText,
+							marginLeft: 'auto',
+						}}
 					>
 						모집이 완료되어 새로운 멤버를 받지 않습니다
 					</Typography>
@@ -86,7 +99,7 @@ function PartyListItemDetail({ partyId, isCompleted }: TPartyListItemDetailProps
 
 				{/* 리더 전용 버튼들 - 리더이고 모집이 완료되지 않은 경우 */}
 				{isLeader && !isCompleted && (
-					<Stack direction='row' spacing={1}>
+					<Stack direction='row' spacing={1} sx={{ marginLeft: 'auto' }}>
 						<Button
 							variant='contained'
 							color='error'
@@ -113,6 +126,7 @@ function PartyListItemDetail({ partyId, isCompleted }: TPartyListItemDetailProps
 					<Button
 						variant='contained'
 						color='error'
+						sx={{ marginLeft: 'auto' }}
 						onClick={() => {
 							openModal('leaveParty', {
 								partyId: partyId,

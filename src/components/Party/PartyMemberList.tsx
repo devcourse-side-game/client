@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stack } from '@mui/material';
+import { Stack, useTheme } from '@mui/material';
 import PartyMemberListItem from './PartyMemberListItem';
 import { TPartyMember } from '../../types/party';
 

@@ -31,6 +31,7 @@ export const FormDialogTitle = styled(DialogTitle)(({ theme }) => ({
 export const FormCommonButton = styled(Button)(({ theme }) => ({
 	backgroundColor: theme.customColor.button.selectBg,
 	color: theme.customColor.button.selectText,
+	marginLeft: 'auto',
 }));
 
 export const TextButton = styled(Button)(({ theme }) => ({
@@ -71,6 +72,22 @@ export const FormInputs = styled(TextField)(({ theme }) => ({
 			color: theme.customColor.input.border,
 		},
 	},
+
+	// '& .MuiInputBase-input': {
+	// 	color: theme.customColor.grayText,
+	// },
+	// '& .MuiOutlinedInput-root': {
+	// 	backgroundColor: theme.customColor.input.subBg,
+	// 	'&.Mui-focused fieldset': {
+	// 		borderColor: theme.customColor.input.border,
+	// 	},
+	// },
+	// '& .MuiInputLabel-root': {
+	// 	color: theme.customColor.grayText,
+	// 	'&.Mui-focused': {
+	// 		color: theme.customColor.input.border,
+	// 	},
+	// },
 }));
 
 export const MenuItemList = styled(MenuItem)(({ theme }) => ({
