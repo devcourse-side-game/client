@@ -4,7 +4,7 @@ import { refreshTokenApi } from './auth';
 import { store } from '../stores';
 
 const api = axios.create({
-	baseURL: 'http://nas.stann.kr:4545/api', // 주소
+	baseURL: 'https://nas.stann.kr:4545/api', // 주소
 	headers: {
 		'Content-Type': 'application/json',
 	},
