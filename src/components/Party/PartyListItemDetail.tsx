@@ -18,7 +18,7 @@ function PartyListItemDetail({ partyId, isCompleted }: TPartyListItemDetailProps
 	const { openModal } = useModal();
 	const [isPartyMember, setIsPartyMember] = useState<boolean>(false);
 	const { data: user } = useUser();
-	const isLeader = data?.creatorId === user?.id;
+	const isLeader = data?.leaderId === user?.id;
 	const theme = useTheme();
 
 	useEffect(() => {
@@ -55,7 +55,7 @@ function PartyListItemDetail({ partyId, isCompleted }: TPartyListItemDetailProps
 				members={data.members}
 				partyId={data.id}
 				isCompleted={isCompleted}
-				partyLeaderId={data.creatorId}
+				partyLeaderId={data.leaderId}
 			/>
 			<PartyListItemButtonWrapper>
 				{/* 모집 완료 메시지 */}

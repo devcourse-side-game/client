@@ -12,9 +12,10 @@ export interface IPartyBase {
 	isCompleted: boolean;
 	isPrivate: boolean;
 	accessCode: string | null;
-	creatorId: number;
+	leaderId: number;
 	purposeTag: string;
 	maxParticipants: number;
+	leader: TLeader;
 }
 export type TLeader = {
 	userId: number;
@@ -22,7 +23,6 @@ export type TLeader = {
 	gameUsername: string;
 };
 export interface IPartyListItem extends IPartyBase {
-	leader: TLeader;
 	gameBannerUrl: string;
 	currentMemberCount: number;
 }
@@ -36,7 +36,6 @@ export type TPartyMember = {
 	gameUsername: string;
 };
 export interface IPartyDetail extends IPartyBase {
-	creator: TUser;
 	game: TGame;
 	members: TPartyMember[];
 }
@@ -74,8 +73,8 @@ export interface IGetPartiesData {
 }
 
 // ===== 파티 생성 관련 타입 =====
-type TPartyAutoGenerateInfo = 'id' | 'createdAt' | 'updatedAt' | 'isCompleted' | 'creatorId';
-export type TCreatePartyInfo = Omit<IPartyBase, TPartyAutoGenerateInfo>;
+type TPartyAutoGenerateInfo = 'id' | 'createdAt' | 'updatedAt' | 'isCompleted' | 'leaderId';
+export type TCreatePartyInfo = Omit<Omit<IPartyBase, 'leader'>, TPartyAutoGenerateInfo>;
 export interface ICreatePartyPayload extends TCreatePartyInfo {
 	gameUsername: string;
 	profileId: number | null;
