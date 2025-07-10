@@ -21,3 +21,17 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+.github
+
+.vscode
+.gitignore
+
+.app.tsx
+.app.js
+/testSori
+
+.gitattributes
+.gitignore
+
+.env

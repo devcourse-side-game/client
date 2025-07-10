@@ -1,0 +1,110 @@
+import React, { useEffect, useState } from 'react';
+import { TPartyFormFlow } from '../../../../types/party';
+import {
+	Box,
+	Button,
+	DialogActions,
+	DialogContent,
+	DialogTitle,
+	Divider,
+	Typography,
+} from '@mui/material';
+import { useBanPartyMember } from '../../../../hooks/useParties';
+import { FormCommonButton, TextButton } from '../../../../styles/pages/party/forms/Form.styles';
+
+type TPartyJoinFlowProps = {
+	onFlowComplete: () => void;
+	partyId: number;
+	userId: number;
+	userName: string;
+};
+
+export default function MemberBanFlow({
+	onFlowComplete,
+	partyId,
+	userId,
+	userName,
+}: TPartyJoinFlowProps) {
+	const [view, setView] = useState<TPartyFormFlow>('form');
+	const { mutate: banPartyMember, isSuccess, isError } = useBanPartyMember({ partyId, userId });
+
+	useEffect(() => {
+		if (isSuccess) {
+			setView('success');
+		} else if (isError) {
+			setView('failed');
+		}
+	}, [isSuccess, isError]);
+	const handleOnBanClick = () => {
+		// TODO: 맴버 밴 api 호출 필요
+		banPartyMember({ partyId, userId });
+	};
+	switch (view) {
+		case 'form':
+			return (
+				<>
+					<DialogTitle>멤버 강퇴</DialogTitle>
+					<DialogContent sx={{ paddingBottom: 0 }}>
+						<Typography sx={{ py: 4, textAlign: 'center' }}>
+							<span style={{ fontWeight: 'bold' }}>{userName}</span>님을 파티에서
+							내보내시겠습니까?
+						</Typography>
+						<Divider />
+						<Box sx={{ padding: '5px 0' }}>
+							<div>선택 멤버</div>
+							<Typography
+								sx={{ fontWeight: 'bold', fontSize: '18px' }}
+							>{`${userName}`}</Typography>
+						</Box>
+					</DialogContent>
+					<DialogActions>
+						<TextButton onClick={onFlowComplete}>취소</TextButton>
+						<Button
+							onClick={handleOnBanClick}
+							color='error'
+							variant='contained'
+							disabled={false}
+						>
+							{'내쫒기'}
+						</Button>
+					</DialogActions>
+				</>
+			);
+		case 'success':
+			return (
+				<>
+					<DialogTitle>멤버 강퇴</DialogTitle>
+					<DialogContent>
+						<Typography sx={{ py: 4, textAlign: 'center' }}>
+							{`${userName}님을 파티에서 내보냈습니다`}
+						</Typography>
+					</DialogContent>
+					<DialogActions>
+						{/* 확인 버튼을 누르면 전체 흐름이 완료되었음을 부모에게 알립니다. */}
+						<FormCommonButton onClick={onFlowComplete} variant='contained' autoFocus>
+							확인
+						</FormCommonButton>
+					</DialogActions>
+				</>
+			);
+		case 'failed':
+			return (
+				<>
+					<DialogTitle>멤버 강퇴</DialogTitle>
+					<DialogContent>
+						<Typography sx={{ py: 4, textAlign: 'center' }}>
+							{`${userName}님을 파티에서 내보내는데 실패했습니다`}
+						</Typography>
+					</DialogContent>
+					<DialogActions>
+						{/* 확인 버튼을 누르면 전체 흐름이 완료되었음을 부모에게 알립니다. */}
+						<FormCommonButton onClick={onFlowComplete} variant='contained' autoFocus>
+							확인
+						</FormCommonButton>
+					</DialogActions>
+				</>
+			);
+		default:
+			return <></>;
+	}
+}

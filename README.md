@@ -130,3 +130,6 @@ my-app/
 ├── vite.config.ts # 또는 CRA면 webpack 설정
 └── package.json
 ```
+
+
+

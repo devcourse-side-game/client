@@ -25,6 +25,7 @@ export default tseslint.config(
 			'arrow-body-style': 'off',
 			'prefer-arrow-callback': 'off',
 			'react/jsx-no-target-blank': 'off',
+			'@typescript-eslint/no-empty-interface': 'off',
 			'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
 			'@typescript-eslint/naming-convention': [
 				'error',
@@ -44,6 +45,33 @@ export default tseslint.config(
 				{
 					selector: 'method',
 					format: null, // 클래스/객체 메서드도 제외
+				},
+				{
+					selector: 'variable',
+					modifiers: ['const'],
+					format: ['UPPER_CASE'],
+					filter: {
+						regex: '^[A-Z0-9_]+$',
+						match: true,
+					},
+				},
+				{
+					selector: 'variable',
+					modifiers: ['const'],
+					filter: {
+						regex: 'Context$', // 정규식: 이름이 Context로 끝나는 경우 - 함수형 컨텍스트
+						match: true,
+					},
+					format: ['PascalCase'],
+				},
+				{
+					selector: 'variable',
+					modifiers: ['const'],
+					filter: {
+						regex: '^[A-Z][a-zA-Z]*(Accordion|Container|Button|Title|Header|Modal|Form|List|Item|Select|Input|Box|Card|Panel|Section|Wrapper|Component|Styled|Style)$', // 스타일 컴포넌트 일반 패턴
+						match: true,
+					},
+					format: ['PascalCase'],
 				},
 			],
 			'prettier/prettier': [
