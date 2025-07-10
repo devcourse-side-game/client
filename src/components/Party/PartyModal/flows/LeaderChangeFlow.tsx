@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { TPartyFormFlow } from '../../../../types/party';
 import { Box, Button, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
 import { useChangePartyLeader } from '../../../../hooks/useParties';
+import { FormCommonButton, TextButton } from '../../../../styles/pages/party/forms/Form.styles';
 
 type TPartyJoinFlowProps = {
 	onFlowComplete: () => void;
@@ -37,20 +38,27 @@ export default function LeaderChangeFlow({
 			return (
 				<>
 					<DialogTitle>파티 리더 교체</DialogTitle>
-					<DialogContent>
+					<DialogContent sx={{ paddingBottom: 0 }}>
 						<Typography sx={{ py: 4, textAlign: 'center' }}>
-							{`${userName}님으로 리더를 바꾸시겠습니까?`}
+							<span style={{ fontWeight: 'bold' }}>{userName}</span>님으로 리더를
+							바꾸시겠습니까?
 						</Typography>
 						<Box>
-							<div>이 멤버를 리더로 바꾸시겠습니까?</div>
-							<Typography>{`${userName}`}</Typography>
+							<div>선택 멤버</div>
+							<Typography
+								sx={{ fontWeight: 'bold', fontSize: '18px' }}
+							>{`${userName}`}</Typography>
 						</Box>
 					</DialogContent>
 					<DialogActions>
-						<Button onClick={onFlowComplete}>취소</Button>
-						<Button onClick={handleOnClick} variant='contained' disabled={false}>
+						<TextButton onClick={onFlowComplete}>취소</TextButton>
+						<FormCommonButton
+							onClick={handleOnClick}
+							variant='contained'
+							disabled={false}
+						>
 							{'리더 교체'}
-						</Button>
+						</FormCommonButton>
 					</DialogActions>
 				</>
 			);
@@ -65,9 +73,9 @@ export default function LeaderChangeFlow({
 					</DialogContent>
 					<DialogActions>
 						{/* 확인 버튼을 누르면 전체 흐름이 완료되었음을 부모에게 알립니다. */}
-						<Button onClick={onFlowComplete} variant='contained' autoFocus>
+						<FormCommonButton onClick={onFlowComplete} variant='contained' autoFocus>
 							확인
-						</Button>
+						</FormCommonButton>
 					</DialogActions>
 				</>
 			);
@@ -82,9 +90,9 @@ export default function LeaderChangeFlow({
 					</DialogContent>
 					<DialogActions>
 						{/* 확인 버튼을 누르면 전체 흐름이 완료되었음을 부모에게 알립니다. */}
-						<Button onClick={onFlowComplete} variant='contained' autoFocus>
+						<FormCommonButton onClick={onFlowComplete} variant='contained' autoFocus>
 							확인
-						</Button>
+						</FormCommonButton>
 					</DialogActions>
 				</>
 			);

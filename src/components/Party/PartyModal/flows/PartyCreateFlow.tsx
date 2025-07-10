@@ -5,6 +5,7 @@ import {
 	Switch,
 	TextField,
 	Typography,
+	useTheme,
 } from '@mui/material';
 import React, { useState } from 'react';
 import SearchableGameSelect from '../../SearchableGameSelect';
@@ -23,6 +24,7 @@ import {
 	FormDialogActions,
 	FormDialogContent,
 	FormDialogTitle,
+	FormInputs,
 } from '../../../../styles/pages/party/forms/Form.styles';
 import craetePratyFormValidation from '../../../../utils/partyValidation';
 import UserGameProfileSelect from '../../UserGameProfileSelect';
@@ -49,6 +51,7 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 		maxParticipants: '',
 		gameId: '',
 	});
+	const theme = useTheme();
 
 	//유저 정보 가져오기
 	const { data: user } = useUser();
@@ -102,7 +105,7 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 				<FormContainer>
 					<FormDialogTitle>새로운 파티 생성</FormDialogTitle>
 					<FormDialogContent>
-						<TextField
+						<FormInputs
 							value={formTitle}
 							required
 							type='text'
@@ -127,11 +130,19 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 										inputProps={{ 'aria-label': 'Basic switch' }}
 									/>
 								}
+								sx={{
+									'& .MuiSwitch-switchBase.Mui-checked': {
+										color: theme.customColor.button.selectBg, // 체크된 thumb 색
+									},
+									'& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+										backgroundColor: theme.customColor.input.bg, // 체크 시 트랙 색
+									},
+								}}
 								label={isPrivateChecked ? '비공개 파티' : '공개 파티'}
 							/>
 						</FormGroup>
 						{isPrivateChecked ? (
-							<TextField
+							<FormInputs
 								value={accessCode}
 								required={isPrivateChecked}
 								type='text'
@@ -139,14 +150,14 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 								onChange={(e) => setAccessCode(e.target.value)}
 							/>
 						) : null}
-						<TextField
+						<FormInputs
 							value={purposeTag}
 							type='text'
 							label='파티 목적 태그'
 							placeholder='ex) 레이드, 랭크게임 등'
 							onChange={(e) => setPurposeTag(e.target.value)}
 						/>
-						<TextField
+						<FormInputs
 							value={formDescription}
 							multiline
 							minRows={1}
@@ -157,7 +168,7 @@ function PartyCreateFlow({ onFlowComplete }: TPartyCreateFormProps) {
 							}}
 							onChange={(e) => setFormDescription(e.target.value)}
 						/>
-						<TextField
+						<FormInputs
 							value={formMaxNum}
 							type='number'
 							label='파티 인원 수'

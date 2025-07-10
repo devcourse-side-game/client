@@ -1,15 +1,9 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
-import {
-	TextField,
-	Autocomplete,
-	CircularProgress,
-	Box,
-	Typography,
-	useTheme,
-} from '@mui/material';
+import { TextField, Autocomplete, CircularProgress, Box, Typography } from '@mui/material';
 import { TGame } from '../../types/game';
 import { useGameList } from '../../hooks/useGames';
 import GameImage from '../../assets/gameImage.png';
+import { FormInputs } from '../../styles/pages/party/forms/Form.styles';
 
 type TSearchableGameSelectProps = {
 	setOptionGame: Dispatch<SetStateAction<TGame | null>>;
@@ -27,7 +21,6 @@ function SearchableGameSelect({ setOptionGame, validate }: TSearchableGameSelect
 	});
 
 	const games = isSuccess ? data : [];
-	const theme = useTheme();
 
 	return (
 		<Autocomplete<TGame>
@@ -67,7 +60,7 @@ function SearchableGameSelect({ setOptionGame, validate }: TSearchableGameSelect
 			)}
 			// 화면에 렌더링될 입력창(TextField)의 형태 정의
 			renderInput={(params) => (
-				<TextField
+				<FormInputs
 					{...params}
 					label='게임 검색 및 선택'
 					InputProps={{
@@ -79,26 +72,8 @@ function SearchableGameSelect({ setOptionGame, validate }: TSearchableGameSelect
 							</>
 						),
 					}}
-					color='primary'
 					error={!!validate}
 					helperText={validate}
-					sx={{
-						'& .MuiInputBase-input': {
-							color: theme.customColor.grayText,
-						},
-						'& .MuiOutlinedInput-root': {
-							backgroundColor: theme.customColor.input.subBg,
-							'&.Mui-focused fieldset': {
-								borderColor: theme.customColor.input.border,
-							},
-						},
-						'& .MuiInputLabel-root': {
-							color: theme.customColor.grayText,
-							'&.Mui-focused': {
-								color: theme.customColor.input.border,
-							},
-						},
-					}}
 				/>
 			)}
 			onInputChange={(event, newInputValue) => {

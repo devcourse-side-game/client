@@ -77,7 +77,14 @@ function PasswordValidateMessage({ check, content }: IPasswordValidBoxPorps) {
 		</Box>
 	);
 }
-function FormInput({ error, control, label, required, inputName, inputType = 'text' }: IFormInput) {
+export function FormInput({
+	error,
+	control,
+	label,
+	required,
+	inputName,
+	inputType = 'text',
+}: IFormInput) {
 	return (
 		<Controller
 			name={inputName}

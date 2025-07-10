@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { TPartyFormFlow } from '../../../../types/party';
-import { Box, Button, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
+import {
+	Box,
+	Button,
+	DialogActions,
+	DialogContent,
+	DialogTitle,
+	Divider,
+	Typography,
+} from '@mui/material';
 import { useBanPartyMember } from '../../../../hooks/useParties';
+import { FormCommonButton, TextButton } from '../../../../styles/pages/party/forms/Form.styles';
 
 type TPartyJoinFlowProps = {
 	onFlowComplete: () => void;
@@ -35,18 +44,27 @@ export default function MemberBanFlow({
 			return (
 				<>
 					<DialogTitle>멤버 강퇴</DialogTitle>
-					<DialogContent>
+					<DialogContent sx={{ paddingBottom: 0 }}>
 						<Typography sx={{ py: 4, textAlign: 'center' }}>
-							{`${userName}님을 파티에서 내보내시겠습니까?`}
+							<span style={{ fontWeight: 'bold' }}>{userName}</span>님을 파티에서
+							내보내시겠습니까?
 						</Typography>
-						<Box>
-							<div>내보낼 유저</div>
-							<Typography>{`${userName}`}</Typography>
+						<Divider />
+						<Box sx={{ padding: '5px 0' }}>
+							<div>선택 멤버</div>
+							<Typography
+								sx={{ fontWeight: 'bold', fontSize: '18px' }}
+							>{`${userName}`}</Typography>
 						</Box>
 					</DialogContent>
 					<DialogActions>
-						<Button onClick={onFlowComplete}>취소</Button>
-						<Button onClick={handleOnBanClick} variant='contained' disabled={false}>
+						<TextButton onClick={onFlowComplete}>취소</TextButton>
+						<Button
+							onClick={handleOnBanClick}
+							color='error'
+							variant='contained'
+							disabled={false}
+						>
 							{'내쫒기'}
 						</Button>
 					</DialogActions>
@@ -63,9 +81,9 @@ export default function MemberBanFlow({
 					</DialogContent>
 					<DialogActions>
 						{/* 확인 버튼을 누르면 전체 흐름이 완료되었음을 부모에게 알립니다. */}
-						<Button onClick={onFlowComplete} variant='contained' autoFocus>
+						<FormCommonButton onClick={onFlowComplete} variant='contained' autoFocus>
 							확인
-						</Button>
+						</FormCommonButton>
 					</DialogActions>
 				</>
 			);
@@ -80,9 +98,9 @@ export default function MemberBanFlow({
 					</DialogContent>
 					<DialogActions>
 						{/* 확인 버튼을 누르면 전체 흐름이 완료되었음을 부모에게 알립니다. */}
-						<Button onClick={onFlowComplete} variant='contained' autoFocus>
+						<FormCommonButton onClick={onFlowComplete} variant='contained' autoFocus>
 							확인
-						</Button>
+						</FormCommonButton>
 					</DialogActions>
 				</>
 			);

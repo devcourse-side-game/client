@@ -1,4 +1,4 @@
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import { Box, Button, Paper, Stack } from '@mui/material';
 
 export const PartyFilterContainer = styled(Paper)(({ theme }) => ({

@@ -9,51 +9,43 @@ export const PartyListItemContainer = styled(Box)(() => ({
 }));
 export const PartyListItemAccordion = styled(Accordion)(() => ({
 	width: '100%',
+	padding: '8px 0',
+	borderRadius: '15px',
 }));
 export const PartyListItemSummaryWrapper = styled(AccordionSummary)(() => ({
 	display: 'flex',
-	flexDirection: 'row',
 	alignItems: 'center',
 	justifyContent: 'left',
 }));
 export const ChipContainer = styled(Stack)(() => ({
 	display: 'flex',
-	flexDirection: 'row',
 	alignItems: 'center',
 	justifyContent: 'left',
-	marginTop: '10px',
 }));
 
-export const PartyListItemDetailsWrapper = styled(AccordionDetails)(() => ({
+export const PartyListItemDetailsWrapper = styled(AccordionDetails)(({ theme }) => ({
 	display: 'flex',
-	width: '100%',
-	flexDirection: 'column',
+	width: '99.5%',
+	margin: 'auto',
 	alignItems: 'left',
 	justifyContent: 'left',
-	marginLeft: '10px',
 }));
 
 export const PartyListItemTitleWrapper = styled(Stack)(({ theme }) => ({
 	display: 'flex',
-	flexDirection: 'row',
 	alignItems: 'center',
 	justifyContent: 'left',
-	gap: theme.spacing(1),
 	fontSize: '16px',
 	// height: '40px',
 }));
 export const PartyListItemButtonWrapper = styled(Box)(() => ({
+	width: '100%',
 	display: 'flex',
-	flexDirection: 'row',
-	alignItems: 'flex-end',
-	justifyContent: 'right',
 }));
 export const GameImageBox = styled(Box)(() => ({
-	height: '87px',
-	width: '231px',
-	backgroundColor: 'darkcyan',
-	textAlign: 'center',
-	margin: '10px',
+	width: '25%',
+	minWidth: '245px',
+	marginRight: '15px',
 }));
 
 // 파티 멤버 관련 스타일
@@ -68,7 +60,7 @@ export const PartyMemberListWrapper = styled(Stack)(({ theme }) => ({
 }));
 
 export const PartyMemberListItemWrapper = styled(Box)(({ theme }) => ({
-	border: `1px solid ${theme.palette.grey[400]}`,
+	// border: `1px solid ${theme.palette.grey[400]}`,
 	height: '60px',
 	borderRadius: '10px',
 	padding: '10px',
